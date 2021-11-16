@@ -1,0 +1,27 @@
+<div class="home-frame">
+  <mat-card class="todocard" class="mat-elevation-z5">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>D.O.G.</mat-card-title>
+      <mat-card-subtitle>Domestic Organization Guru</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="add-note">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Podaj nazwę notatki" class="textareafull" [formControl]="noteName"
+            name="nameNote">
+        </mat-form-field>
+        <span class="example-spacer"></span>
+        <button mat-button type="submit" (click)="createNotePack()">Utwórz notatkę</button>
+      </form>
+      <form class="add-note">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Dołącz do notatek o nazwie" class="textareafull"
+            [formControl]="joinSessionByName" name="joinSessionByName">
+        </mat-form-field>
+        <span class="example-spacer"></span>
+        <button mat-button type="submit" (click)="joinSession()">Dołącz do notowania</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
