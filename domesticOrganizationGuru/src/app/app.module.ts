@@ -8,6 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material/material.module';
 import { StartComponent } from './modules/start/start.component';
 import { ToDoListComponent } from './modules/to-do-list/to-do-list.component';
+import { StoreModule } from '@ngrx/store';
+import { rootReducer } from './state/root.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,11 @@ import { ToDoListComponent } from './modules/to-do-list/to-do-list.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    StoreModule.forRoot({'settings': rootReducer}),
+    StoreDevtoolsModule.instrument({
+      name: 'Domestic Organization Guru',
+      maxAge: 25
+    })
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

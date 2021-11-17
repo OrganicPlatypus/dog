@@ -1,8 +1,11 @@
+import { getNoteNameSelector } from '../../state/root.selector';
+import { NoteSettingsState } from './../../state/app.state';
 import { Component, OnInit } from '@angular/core';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { UpdateNoteRequestDto } from 'src/app/services/service-proxy/service-proxy';
 import { TodoItem } from './models/to-do';
 import { ToDoService } from './services/to-do-service.service';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'to-do-list',
@@ -19,13 +22,15 @@ export class ToDoListComponent implements OnInit {
   notesLifespan: number = 0;
   constructor(
     private toDoService: ToDoService,
-    private organizerApiService: OrganizerApiService
+    private organizerApiService: OrganizerApiService,
+    private store: Store<NoteSettingsState>,
   ) {
   }
 
   ngOnInit() {
     this.toDoList = this.toDoService.getToDoList();
     //TODO: dodać guarda z przekierowaniem na landing page jeżeli w storze nie ma dodanej nazwy notatek.
+    this.store.select(getNoteNameSelector).subscribe(x=> {console.log('getNoteNameSelector NAME: ', x)})
   }
 
   updateNotesPack() {
