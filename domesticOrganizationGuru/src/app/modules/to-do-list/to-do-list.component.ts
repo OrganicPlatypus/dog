@@ -69,11 +69,9 @@ export class ToDoListComponent implements OnInit {
 
   markItemAsDone(markedItem: TodoItem) {
     this.toDoService.completeItem(markedItem, true);
-    //this.openSnackBar("Item Done!", "Dismiss");
   }
   markItemAsNotDone(markedItem: TodoItem) {
     this.toDoService.completeItem(markedItem, false);
-    // this.openSnackBar("Item Not Done!", "Dismiss");
   }
   saveChangedItem() {
     if (this.noteInput && this.noteInput !== "") {
@@ -81,17 +79,6 @@ export class ToDoListComponent implements OnInit {
       this.editValue = false;
       this.noteInput = undefined;
       this.todoItem = new TodoItem('');
-      // this.openSnackBar("Updated Successfuly!", "Dismiss");
     }
   }
-  // openSnackBar(message: string, action: string) {
-  //   this.snackBar.open(message, action, {
-  //     duration: 2000,
-  //     verticalPosition: 'top',
-  //   });
-  // }
-
-  // toggleCheck(i) {
-
-  // }
 }

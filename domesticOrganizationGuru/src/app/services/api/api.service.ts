@@ -1,9 +1,9 @@
-import { CreateNotesPackDto, NoteDto, NotesSessionDto, UpdateNoteRequestDto } from '../service-proxy/service-proxy';
-import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
-import { HttpClient, HttpContext, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { retry, catchError, tap, map } from 'rxjs/operators';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { BaseApiService } from './baseApi/baseApi.service';
+import { CreateNotesPackDto, NotesSessionDto, UpdateNoteRequestDto } from '../service-proxy/service-proxy';
+import { Injectable, InjectionToken } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -11,14 +11,17 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
   providedIn: 'root'
 })
 
-export class OrganizerApiService {
+export class OrganizerApiService extends BaseApiService {
 
   private baseUrl: string;
 
   constructor(private http: HttpClient) {
+    super();
+    //TODO: Przenieść do BaseApiService
     this.baseUrl = "https://localhost:44365";
    }
 
+  //TODO: Przenieść do BaseApiService
   //  constructor(private http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
   //   this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
   //  }
@@ -71,16 +74,5 @@ export class OrganizerApiService {
     .pipe(
         catchError(this.handleError)
     );
-  }
-
-  handleError(error: any) {
-     let errorMessage = '';
-     if(error.error instanceof ErrorEvent) {
-       errorMessage = error.error.message;
-     } else {
-       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-     }
-     window.alert(errorMessage);
-     return throwError(errorMessage);
   }
 }
