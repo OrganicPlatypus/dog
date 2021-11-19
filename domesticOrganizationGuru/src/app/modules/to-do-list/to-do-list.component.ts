@@ -16,7 +16,7 @@ export class ToDoListComponent implements OnInit {
   public toDoList = this.toDoService.getToDoList();
   public todoItem = new TodoItem('');
 
-  noteInput = "";
+  noteInput: string | undefined = undefined;
 
   editValue: boolean = false;
 
@@ -36,7 +36,7 @@ export class ToDoListComponent implements OnInit {
   }
 
   updateNotesPack() {
-    this.toDoService.addItem(new TodoItem(this.todoItem.noteText));
+    this.toDoService.addItem(new TodoItem(this.noteInput));
 
     const updateNoteRequestDto = <UpdateNoteRequestDto> {
       noteName: this.notesPackName,
@@ -45,13 +45,16 @@ export class ToDoListComponent implements OnInit {
       notesPack: this.toDoList.value
     }
     this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe();
-    this.todoItem.noteText = undefined;
+    this.noteInput = undefined;
   }
 
   addNewItem() {
-    this.toDoService.addItem(new TodoItem(this.todoItem.noteText));
+    if (this.noteInput && this.noteInput !== ""){
 
-    this.todoItem.noteText = undefined;
+      this.toDoService.addItem(new TodoItem(this.noteInput));
+
+      this.noteInput = undefined;
+    }
   }
 
   deleteNoteItem(noteToRemove: TodoItem) {
@@ -60,6 +63,7 @@ export class ToDoListComponent implements OnInit {
 
   editItem(editedItem: TodoItem) {
     this.todoItem = editedItem;
+    this.noteInput = editedItem.noteText;
     this.editValue = true;
   }
 
@@ -72,10 +76,11 @@ export class ToDoListComponent implements OnInit {
     // this.openSnackBar("Item Not Done!", "Dismiss");
   }
   saveChangedItem() {
-    if (this.todoItem) {
-      this.toDoService.editItem(this.todoItem);
+    if (this.noteInput && this.noteInput !== "") {
+      this.toDoService.editItem(this.todoItem, this.noteInput);
       this.editValue = false;
-      this.todoItem.noteText = undefined;
+      this.noteInput = undefined;
+      this.todoItem = new TodoItem('');
       // this.openSnackBar("Updated Successfuly!", "Dismiss");
     }
   }

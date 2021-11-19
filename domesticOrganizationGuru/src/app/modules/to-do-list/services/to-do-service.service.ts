@@ -30,7 +30,9 @@ export class ToDoService {
       this.todoList.next(this.todos);
       }
 
-    public editItem(editedItem: TodoItem) {
+    public editItem(editedItem: TodoItem, noteInput: string) {
+      editedItem.noteText = noteInput;
+      this.todoList.next(this.todos);
     }
   }
 
