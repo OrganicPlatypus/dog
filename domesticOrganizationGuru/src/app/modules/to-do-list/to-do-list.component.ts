@@ -16,6 +16,8 @@ export class ToDoListComponent implements OnInit {
   public toDoList = this.toDoService.getToDoList();
   public todoItem = new TodoItem('');
 
+  noteInput = "";
+
   editValue: boolean = false;
 
   notesPackName: string = "";
@@ -43,7 +45,6 @@ export class ToDoListComponent implements OnInit {
       notesPack: this.toDoList.value
     }
     this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe();
-
     this.todoItem.noteText = undefined;
   }
 
@@ -57,35 +58,24 @@ export class ToDoListComponent implements OnInit {
     this.toDoService.removeNoteItem(noteToRemove);
   }
 
-  editItem(i: any) {
-
+  editItem(editedItem: TodoItem) {
+    this.todoItem = editedItem;
+    this.editValue = true;
   }
 
-  markItemAsDone(item: any) {
-    // this.inputValue.content = item.content;
-    // this.inputValue.isDone = true;
-    // this.todoDoc = this.afs.doc(`Todolist/${item.id}`);
-    // this.todoDoc.update(this.inputValue);
-    // this.inputValue.content = "";
+  markItemAsDone(markedItem: TodoItem) {
+    this.toDoService.completeItem(markedItem, true);
     //this.openSnackBar("Item Done!", "Dismiss");
   }
-  markItemAsNotDone(item: any) {
-    // this.inputValue.content = item.content;
-    // this.inputValue.isDone = false;
-    // this.todoDoc = this.afs.doc(`Todolist/${item.id}`);
-    // this.todoDoc.update(this.inputValue);
-    // this.inputValue.content = "";
+  markItemAsNotDone(markedItem: TodoItem) {
+    this.toDoService.completeItem(markedItem, false);
     // this.openSnackBar("Item Not Done!", "Dismiss");
   }
-  saveNewItem() {
-    if (true) {
-
-      // this.inputValue.isDone = false;
-      // this.inputValue.datemodified = new Date();
-      // this.todoDoc = this.afs.doc(`Todolist/${this.inputId}`);
-      // this.todoDoc.update(this.inputValue);
-      // this.editValue = false;
-      // this.inputValue.content = "";
+  saveChangedItem() {
+    if (this.todoItem) {
+      this.toDoService.editItem(this.todoItem);
+      this.editValue = false;
+      this.todoItem.noteText = undefined;
       // this.openSnackBar("Updated Successfuly!", "Dismiss");
     }
   }

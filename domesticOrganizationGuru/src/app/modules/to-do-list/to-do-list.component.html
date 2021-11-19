@@ -5,10 +5,9 @@
       <mat-toolbar-row>
         <span [ngClass]="{'done-true': item.isComplete}">{{item.noteText}}</span>
         <span class="example-spacer"></span>
-        <mat-icon (click)="markItemAsDone(item)" class="btn" *ngIf="!item.isComplete"> check</mat-icon>
-        <mat-icon (click)="markItemAsNotDone(item)" class="btn" *ngIf="item.isComplete"> undo</mat-icon>
-
-        <mat-icon (click)="editItem(item)" class="btn"> edit</mat-icon>
+        <mat-icon (click)="markItemAsDone(item)" class="btn" *ngIf="!item.isComplete">check</mat-icon>
+        <mat-icon (click)="markItemAsNotDone(item)" class="btn" *ngIf="item.isComplete">undo</mat-icon>
+        <mat-icon (click)="editItem(item)" class="btn">edit</mat-icon>
         <mat-icon (click)="deleteNoteItem(item)" class="btn">delete</mat-icon>
       </mat-toolbar-row>
     </mat-toolbar>
@@ -21,7 +20,7 @@
     </mat-form-field>
     <span class="example-spacer"></span>
     <button mat-button (click)="addNewItem()" *ngIf="!editValue">Add</button>
-    <button mat-button (click)="saveNewItem()" *ngIf="editValue">Save</button>
+    <button mat-button (click)="saveChangedItem()" *ngIf="editValue">Save</button>
   </form>
 
 </mat-card>
