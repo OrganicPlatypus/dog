@@ -1,4 +1,3 @@
-import { NoteSettingsState, State } from './../../state/app.state';
 import { CreateNotesPackDto } from './../../services/service-proxy/service-proxy';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { Component, OnInit } from '@angular/core';
@@ -7,8 +6,9 @@ import { FormControl } from '@angular/forms';
 import { ConfigurationApiService } from 'src/app/services/api/configuration-api.service';
 import { Store } from '@ngrx/store';
 
-import * as SettingsActions from '../../state/root.actions';
-import { getMinutesTillExpireSelector } from '../../state/root.selector';
+import * as SettingsActions from '../../state/states/settings/settings.actions';
+import { getMinutesTillExpireSelector } from '../../state/states/settings/settings.selector';
+import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 
 
 @Component({

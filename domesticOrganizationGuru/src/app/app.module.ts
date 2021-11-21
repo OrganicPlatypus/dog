@@ -9,8 +9,8 @@ import { MaterialModule } from './shared/material/material.module';
 import { StartComponent } from './modules/start/start.component';
 import { ToDoListComponent } from './modules/to-do-list/to-do-list.component';
 import { StoreModule } from '@ngrx/store';
-import { rootReducer } from './state/root.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducers } from './state/app.state';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    StoreModule.forRoot({'settings': rootReducer}),
+    StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({
       name: 'Domestic Organization Guru',
       maxAge: 25

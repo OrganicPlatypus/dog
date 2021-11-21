@@ -1,4 +1,3 @@
-import { NoteSettingsState } from './../../state/app.state';
 import { Component, OnInit } from '@angular/core';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { UpdateNoteRequestDto } from 'src/app/services/service-proxy/service-proxy';
@@ -6,7 +5,8 @@ import { TodoItem } from './models/to-do';
 import { ToDoService } from './services/to-do-service.service';
 import { Store } from '@ngrx/store';
 import { zip } from 'rxjs';
-import * as SettingsSelectors from '../../state/root.selector'
+import * as SettingsSelectors from '../../state/states/settings/settings.selector'
+import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 
 @Component({
   selector: 'to-do-list',

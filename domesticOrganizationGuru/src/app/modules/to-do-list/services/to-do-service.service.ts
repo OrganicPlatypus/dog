@@ -13,7 +13,7 @@ export class ToDoService implements OnInit{
     constructor() { }
 
     ngOnInit(){
-
+      //TODO: Get notes if any
     }
 
     public getToDoList = () => this.todoList;
