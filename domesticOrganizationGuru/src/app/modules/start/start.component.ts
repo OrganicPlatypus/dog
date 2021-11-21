@@ -50,7 +50,9 @@ export class StartComponent implements OnInit {
 
   public joinSession(){
     this.organizerApiService.joinTheNote(this.joinSessionByName.value).subscribe((notesPack) => {
-    this.router.navigate(['/to-do']);
+    if(notesPack){
+      this.router.navigate(['/to-do']);
+    }
   });
   }
 }

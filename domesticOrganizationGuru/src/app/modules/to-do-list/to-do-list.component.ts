@@ -1,4 +1,3 @@
-import { getNoteNameSelector } from '../../state/root.selector';
 import { NoteSettingsState } from './../../state/app.state';
 import { Component, OnInit } from '@angular/core';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
@@ -6,6 +5,8 @@ import { UpdateNoteRequestDto } from 'src/app/services/service-proxy/service-pro
 import { TodoItem } from './models/to-do';
 import { ToDoService } from './services/to-do-service.service';
 import { Store } from '@ngrx/store';
+import { zip } from 'rxjs';
+import * as SettingsSelectors from '../../state/root.selector'
 
 @Component({
   selector: 'to-do-list',
@@ -32,28 +33,44 @@ export class ToDoListComponent implements OnInit {
   ngOnInit() {
     this.toDoList = this.toDoService.getToDoList();
     //TODO: dodać guarda z przekierowaniem na landing page jeżeli w storze nie ma dodanej nazwy notatek.
-    this.store.select(getNoteNameSelector).subscribe(x=> {console.log('getNoteNameSelector NAME: ', x)})
+
+    zip(
+      this.store.select(SettingsSelectors.getNoteNameSelector),
+      this.store.select(SettingsSelectors.getMinutesTillExpireSelector)
+    )
+    .subscribe(
+      noteSettings => {
+        this.notesPackName = noteSettings[0]!
+        this.notesLifespan = noteSettings[1]!
+      }
+    )
   }
 
   updateNotesPack() {
-    this.toDoService.addItem(new TodoItem(this.noteInput));
-
     const updateNoteRequestDto = <UpdateNoteRequestDto> {
       noteName: this.notesPackName,
       expirationMinutesRange: this.notesLifespan,
 
       notesPack: this.toDoList.value
     }
-    this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe();
-    this.noteInput = undefined;
+    this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe(()=>{
+      this.toDoService.addItem(new TodoItem(this.noteInput));
+      this.noteInput = undefined;
+    });
   }
 
   addNewItem() {
     if (this.noteInput && this.noteInput !== ""){
-
       this.toDoService.addItem(new TodoItem(this.noteInput));
+      const updateNoteRequestDto = <UpdateNoteRequestDto> {
+        noteName: this.notesPackName,
+        expirationMinutesRange: this.notesLifespan,
 
-      this.noteInput = undefined;
+        notesPack: this.toDoList.value
+      }
+      this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe(()=>{
+        this.noteInput = undefined;
+      });
     }
   }
 

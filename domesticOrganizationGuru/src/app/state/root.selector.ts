@@ -6,3 +6,4 @@ const getSettingsState = createFeatureSelector<NoteSettingsState>('settings');
 export const getMinutesTillExpireSelector = createSelector(getSettingsState, (state:NoteSettingsState) => state.minutesUntilExpire);
 export const getNoteNameSelector = createSelector(getSettingsState, (state:NoteSettingsState) => state.noteName);
 
+//TODO: add combined reducer

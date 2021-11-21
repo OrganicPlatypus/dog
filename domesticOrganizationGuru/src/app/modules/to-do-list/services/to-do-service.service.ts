@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { TodoItem } from '../models/to-do';
 
@@ -6,11 +6,15 @@ import { TodoItem } from '../models/to-do';
   providedIn: 'root'
 })
 
-export class ToDoService {
+export class ToDoService implements OnInit{
     private todos: TodoItem[] = []
     private todoList = new BehaviorSubject<TodoItem[]>(this.todos);
 
     constructor() { }
+
+    ngOnInit(){
+
+    }
 
     public getToDoList = () => this.todoList;
 
