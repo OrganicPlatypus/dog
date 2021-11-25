@@ -6,5 +6,5 @@ export const setExpirationTimerAction = createAction(setExpirationTimerActionNam
 export const setNoteNameActionName = "[Root state] Sets note name";
 export const setNoteNameAction = createAction(setNoteNameActionName, props<{ noteName: string }>());
 
-export const clearStateActionName = "[Root state] Clear into root state";
+export const clearStateActionName = "[Root state] Clear settings state";
 export const clearStateAction = createAction(clearStateActionName);

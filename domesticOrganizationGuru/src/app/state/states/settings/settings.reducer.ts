@@ -1,9 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
-import * as RootActions  from './root.actions';
-import { initialState, NoteSettingsState } from './app.state';
+import * as RootActions  from './settings.actions';
+import { initialSettingsState, NoteSettingsState } from './settings.inteface';
 
-export const rootReducer = createReducer(
-  initialState,
+export const settingsReducer = createReducer(
+  initialSettingsState,
   on( RootActions.setExpirationTimerAction, (state: NoteSettingsState, action) => ({
       ...state,
       minutesUntilExpire: action.expirationTimer
@@ -15,7 +15,7 @@ export const rootReducer = createReducer(
     })
   ),
   on(RootActions.clearStateAction, () => ({
-      ...initialState
+      ...initialSettingsState
     })
   )
 )

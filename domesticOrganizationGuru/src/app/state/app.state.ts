@@ -1,24 +1,11 @@
+import { ActionReducerMap } from "@ngrx/store";
+import { notesReducer } from "./states/notes/notes.reducer";
+import { settingsReducer } from "./states/settings/settings.reducer";
+
 export interface State {
-  // minutesUntilExpire: number | undefined;
-  // noteName: string | undefined;
 }
 
-export interface SettingsState extends State{
-  settings: NoteSettingsState
-}
-
-export interface NoteSettingsState {
-  minutesUntilExpire: number | undefined;
-  noteName: string | undefined;
-}
-
-export const initialState: NoteSettingsState = {
-  minutesUntilExpire: 0,
-  noteName: ""
-}
-
-
-// export const initialState: State = {
-//   minutesUntilExpire: 0,
-//   noteName: ""
-// }
+export const reducers: ActionReducerMap<State> = {
+  settings: settingsReducer,
+  notes: notesReducer
+};

@@ -1,4 +1,4 @@
-import { NoteSettingsState, State } from './../../state/app.state';
+import { TodoItem } from './../to-do-list/models/to-do';
 import { CreateNotesPackDto } from './../../services/service-proxy/service-proxy';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { Component, OnInit } from '@angular/core';
@@ -7,9 +7,9 @@ import { FormControl } from '@angular/forms';
 import { ConfigurationApiService } from 'src/app/services/api/configuration-api.service';
 import { Store } from '@ngrx/store';
 
-import * as SettingsActions from '../../state/root.actions';
-import { getMinutesTillExpireSelector } from '../../state/root.selector';
-
+import * as SettingsActions from '../../state/states/settings/settings.actions';
+import * as NotesActions from '../../state/states/notes/notes.actions';
+import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 
 @Component({
   selector: 'app-start',
@@ -50,7 +50,17 @@ export class StartComponent implements OnInit {
 
   public joinSession(){
     this.organizerApiService.joinTheNote(this.joinSessionByName.value).subscribe((notesPack) => {
-    this.router.navigate(['/to-do']);
+      if(notesPack){
+        let todoItems : TodoItem[] = []
+        notesPack.notes?.map((note) => {
+          let todoItem = new TodoItem(note.noteText)
+          todoItem.isComplete = note.isComplete;
+          todoItems.push(todoItem)
+        })
+        this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}))
+        this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : this.joinSessionByName.value}))
+        this.router.navigate(['/to-do']);
+    }
   });
   }
 }

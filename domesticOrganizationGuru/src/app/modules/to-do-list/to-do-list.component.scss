@@ -1,0 +1,24 @@
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.btn{
+  cursor: pointer;
+}
+.full-width{
+  width: 80%;
+  margin-top:20px;
+}
+.example-spacer {
+  flex: 1 1 auto;
+}
+.todoitem{
+  margin: 5px 0;
+  color:#fff;
+  text-overflow: ellipsis
+}
+.done-true{
+  text-decoration: line-through #d50000;
+}
+.done-false{
+  text-decoration: none;
+}

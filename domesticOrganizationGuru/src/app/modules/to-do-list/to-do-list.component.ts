@@ -1,11 +1,12 @@
-import { getNoteNameSelector } from '../../state/root.selector';
-import { NoteSettingsState } from './../../state/app.state';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { UpdateNoteRequestDto } from 'src/app/services/service-proxy/service-proxy';
 import { TodoItem } from './models/to-do';
 import { ToDoService } from './services/to-do-service.service';
 import { Store } from '@ngrx/store';
+import { zip } from 'rxjs';
+import * as SettingsSelectors from '../../state/states/settings/settings.selector'
+import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 
 @Component({
   selector: 'to-do-list',
@@ -15,6 +16,8 @@ import { Store } from '@ngrx/store';
 export class ToDoListComponent implements OnInit {
   public toDoList = this.toDoService.getToDoList();
   public todoItem = new TodoItem('');
+
+  noteInput: string | undefined = undefined;
 
   editValue: boolean = false;
 
@@ -28,75 +31,82 @@ export class ToDoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.toDoList = this.toDoService.getToDoList();
+    //this.toDoList = this.toDoService.getToDoList();
     //TODO: dodać guarda z przekierowaniem na landing page jeżeli w storze nie ma dodanej nazwy notatek.
-    this.store.select(getNoteNameSelector).subscribe(x=> {console.log('getNoteNameSelector NAME: ', x)})
+
+    zip(
+      this.store.select(SettingsSelectors.getNoteNameSelector),
+      this.store.select(SettingsSelectors.getMinutesTillExpireSelector)
+    )
+    .subscribe(
+      noteSettings => {
+        console.log('ngOnInit ToDoListComponent')
+        this.notesPackName = noteSettings[0]!
+        this.notesLifespan = noteSettings[1]!
+      }
+    )
   }
 
   updateNotesPack() {
-    this.toDoService.addItem(new TodoItem(this.todoItem.noteText));
-
     const updateNoteRequestDto = <UpdateNoteRequestDto> {
       noteName: this.notesPackName,
       expirationMinutesRange: this.notesLifespan,
 
       notesPack: this.toDoList.value
     }
-    this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe();
-
-    this.todoItem.noteText = undefined;
+    this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe(()=>{
+      this.toDoService.addItem(new TodoItem(this.noteInput));
+      this.noteInput = undefined;
+    });
   }
 
   addNewItem() {
-    this.toDoService.addItem(new TodoItem(this.todoItem.noteText));
-
-    this.todoItem.noteText = undefined;
+    if (this.noteInput && this.noteInput !== ""){
+      this.toDoService.addItem(new TodoItem(this.noteInput));
+      this.updateSource();
+    }
   }
 
   deleteNoteItem(noteToRemove: TodoItem) {
     this.toDoService.removeNoteItem(noteToRemove);
+    this.updateSource();
   }
 
-  editItem(i: any) {
-
+  editItem(editedItem: TodoItem) {
+    this.todoItem = editedItem;
+    this.noteInput = editedItem.noteText;
+    this.editValue = true;
   }
 
-  markItemAsDone(item: any) {
-    // this.inputValue.content = item.content;
-    // this.inputValue.isDone = true;
-    // this.todoDoc = this.afs.doc(`Todolist/${item.id}`);
-    // this.todoDoc.update(this.inputValue);
-    // this.inputValue.content = "";
-    //this.openSnackBar("Item Done!", "Dismiss");
+  markItemAsDone(markedItem: TodoItem) {
+    this.toDoService.completeItem(markedItem, true);
+    this.updateSource();
   }
-  markItemAsNotDone(item: any) {
-    // this.inputValue.content = item.content;
-    // this.inputValue.isDone = false;
-    // this.todoDoc = this.afs.doc(`Todolist/${item.id}`);
-    // this.todoDoc.update(this.inputValue);
-    // this.inputValue.content = "";
-    // this.openSnackBar("Item Not Done!", "Dismiss");
-  }
-  saveNewItem() {
-    if (true) {
 
-      // this.inputValue.isDone = false;
-      // this.inputValue.datemodified = new Date();
-      // this.todoDoc = this.afs.doc(`Todolist/${this.inputId}`);
-      // this.todoDoc.update(this.inputValue);
-      // this.editValue = false;
-      // this.inputValue.content = "";
-      // this.openSnackBar("Updated Successfuly!", "Dismiss");
+  markItemAsNotDone(markedItem: TodoItem) {
+    this.toDoService.completeItem(markedItem, false);
+    this.updateSource();
+  }
+
+  saveChangedItem() {
+    if (this.noteInput && this.noteInput !== "") {
+      this.toDoService.editItem(this.todoItem, this.noteInput);
+      this.editValue = false;
+      this.noteInput = undefined;
+      this.todoItem = new TodoItem('');
+      this.updateSource();
     }
   }
-  // openSnackBar(message: string, action: string) {
-  //   this.snackBar.open(message, action, {
-  //     duration: 2000,
-  //     verticalPosition: 'top',
-  //   });
-  // }
 
-  // toggleCheck(i) {
+  private updateSource() {
+    const updateNoteRequestDto = <UpdateNoteRequestDto>{
+      noteName: this.notesPackName,
+      expirationMinutesRange: this.notesLifespan,
 
-  // }
+      notesPack: this.toDoList.value
+    };
+    this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe(() => {
+      this.noteInput = undefined;
+    });
+  }
 }
