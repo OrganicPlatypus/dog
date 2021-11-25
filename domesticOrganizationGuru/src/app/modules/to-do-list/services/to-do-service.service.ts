@@ -1,26 +1,39 @@
-import { Injectable, OnInit } from '@angular/core';
+import { NotePointsState } from './../../../state/states/notes/notes.inteface';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { TodoItem } from '../models/to-do';
+import { Store } from '@ngrx/store';
+import { getExistingNotesSelector } from './../../../state/states/notes/notes.selector';
+import { clearNotesStateAction } from './../../../state/states/notes/notes.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class ToDoService implements OnInit{
-    private todos: TodoItem[] = []
+export class ToDoService {
+    todos: TodoItem[] = []
     private todoList = new BehaviorSubject<TodoItem[]>(this.todos);
 
-    constructor() { }
+    constructor(private store: Store<NotePointsState>) { }
 
-    ngOnInit(){
-      //TODO: Get notes if any
+    public getToDoList = () => {
+      this.store.select(getExistingNotesSelector)
+      .subscribe( notes => {
+        if(notes.length > 0){
+          notes
+            .map(note => {
+              this.todos.push(note)
+              this.todoList.next(this.todos);
+          })
+          this.store.dispatch(clearNotesStateAction())
+        }
+      })
+      return this.todoList;
     }
-
-    public getToDoList = () => this.todoList;
 
     public addItem = (newItem: TodoItem) =>
       this.todos.unshift(newItem) && this.todoList.next(this.todos);
-
+  //TODO: dodać strategię
     public removeNoteItem(noteToRemove: TodoItem) {
         const noteToRemoveIndex = this.todos.findIndex(note => note === noteToRemove);
         if (noteToRemoveIndex > -1) {
@@ -28,14 +41,22 @@ export class ToDoService implements OnInit{
         this.todoList.next(this.todos);
         }
       }
-
+  //TODO: dodać strategię
     public completeItem(noteStatusToBeChanged: TodoItem, completionFlag: boolean) {
-      noteStatusToBeChanged.isComplete = completionFlag;
-      this.todoList.next(this.todos);
+        const noteToRemoveIndex = this.todos.findIndex(note => note === noteStatusToBeChanged);
+        this.todos[noteToRemoveIndex] = {
+            noteText:noteStatusToBeChanged.noteText,
+            isComplete : completionFlag
+          } as TodoItem;
+        this.todoList.next(this.todos);
       }
-
+  //TODO: dodać strategię
     public editItem(editedItem: TodoItem, noteInput: string) {
-      editedItem.noteText = noteInput;
+      const noteToRemoveIndex = this.todos.findIndex(note => note === editedItem);
+      this.todos[noteToRemoveIndex] = {
+          noteText: noteInput,
+          isComplete : editedItem.isComplete
+        } as TodoItem;
       this.todoList.next(this.todos);
     }
   }

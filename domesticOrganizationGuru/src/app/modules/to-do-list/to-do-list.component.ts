@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { UpdateNoteRequestDto } from 'src/app/services/service-proxy/service-proxy';
 import { TodoItem } from './models/to-do';
@@ -31,7 +31,7 @@ export class ToDoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.toDoList = this.toDoService.getToDoList();
+    //this.toDoList = this.toDoService.getToDoList();
     //TODO: dodać guarda z przekierowaniem na landing page jeżeli w storze nie ma dodanej nazwy notatek.
 
     zip(
@@ -40,6 +40,7 @@ export class ToDoListComponent implements OnInit {
     )
     .subscribe(
       noteSettings => {
+        console.log('ngOnInit ToDoListComponent')
         this.notesPackName = noteSettings[0]!
         this.notesLifespan = noteSettings[1]!
       }
@@ -62,20 +63,13 @@ export class ToDoListComponent implements OnInit {
   addNewItem() {
     if (this.noteInput && this.noteInput !== ""){
       this.toDoService.addItem(new TodoItem(this.noteInput));
-      const updateNoteRequestDto = <UpdateNoteRequestDto> {
-        noteName: this.notesPackName,
-        expirationMinutesRange: this.notesLifespan,
-
-        notesPack: this.toDoList.value
-      }
-      this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe(()=>{
-        this.noteInput = undefined;
-      });
+      this.updateSource();
     }
   }
 
   deleteNoteItem(noteToRemove: TodoItem) {
     this.toDoService.removeNoteItem(noteToRemove);
+    this.updateSource();
   }
 
   editItem(editedItem: TodoItem) {
@@ -86,16 +80,33 @@ export class ToDoListComponent implements OnInit {
 
   markItemAsDone(markedItem: TodoItem) {
     this.toDoService.completeItem(markedItem, true);
+    this.updateSource();
   }
+
   markItemAsNotDone(markedItem: TodoItem) {
     this.toDoService.completeItem(markedItem, false);
+    this.updateSource();
   }
+
   saveChangedItem() {
     if (this.noteInput && this.noteInput !== "") {
       this.toDoService.editItem(this.todoItem, this.noteInput);
       this.editValue = false;
       this.noteInput = undefined;
       this.todoItem = new TodoItem('');
+      this.updateSource();
     }
+  }
+
+  private updateSource() {
+    const updateNoteRequestDto = <UpdateNoteRequestDto>{
+      noteName: this.notesPackName,
+      expirationMinutesRange: this.notesLifespan,
+
+      notesPack: this.toDoList.value
+    };
+    this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe(() => {
+      this.noteInput = undefined;
+    });
   }
 }

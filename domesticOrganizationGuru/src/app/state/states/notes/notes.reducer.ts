@@ -9,7 +9,7 @@ export const notesReducer = createReducer(
       notes: action.notes
     })
   ),
-  on(NotesActions.clearStateAction, () => ({
+  on(NotesActions.clearNotesStateAction, () => ({
       ...initialNotesState
     })
   )
