@@ -3,9 +3,9 @@ using DomesticOrganizationGuru.Api.Model.Dto;
 
 namespace DomesticOrganizationGuru.Api.Model.MappingProfiles
 {
-    public class NoteMapper: Profile
+    public class NoteMapperProfile: Profile
     {
-        public NoteMapper()
+        public NoteMapperProfile()
         {
             CreateMap<NoteDto, Note>()
                 .ReverseMap();

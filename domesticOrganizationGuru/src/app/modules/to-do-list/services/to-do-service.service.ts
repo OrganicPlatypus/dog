@@ -20,7 +20,6 @@ export class ToDoService {
       this.store.select(getExistingNotesSelector)
       .subscribe( notes => {
         if(notes.length > 0){
-          //this.resetNotes();
           this.todos.length = 0
           notes
             .map(note => {
@@ -28,8 +27,6 @@ export class ToDoService {
               this.todoList.next(this.todos);
           })
           this.store.dispatch(clearNotesStateAction())
-
-          //this.store.dispatch(setExistingNotesAction({ notes : []}))
         }
       })
       return this.todoList;

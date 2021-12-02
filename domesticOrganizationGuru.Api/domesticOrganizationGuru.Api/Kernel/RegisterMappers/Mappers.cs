@@ -13,8 +13,8 @@ namespace DomesticOrganizationGuru.Api.Kernel.RegisterMappers
 
             var profiles = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new NotesPackMapper());
-                mc.AddProfile(new NoteMapper());
+                mc.AddProfile(new NotesPackMapperProfile());
+                mc.AddProfile(new NoteMapperProfile());
             });
             var mapper = profiles.CreateMapper();
 

@@ -10,10 +10,9 @@ namespace DomesticOrganizationGuru.Api.HubConfig
 
         public string ConnectionId { get; private set; }
 
-        public void CreateGroup(string groupName, string connectionId)
+        public void CreateGroup(string groupName)
         {
             Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            //Clients.Caller.DisplayMessage(string.Format($"wiadomośc która przyszła z frontu, to: {groupName}"));
         }
 
         public string GetConnectionId() => Context.ConnectionId;
