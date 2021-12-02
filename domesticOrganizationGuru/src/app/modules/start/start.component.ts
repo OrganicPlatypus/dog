@@ -1,3 +1,4 @@
+import { NotesSignalService } from './../../services/signalR/notes.signal.service';
 import { TodoItem } from './../to-do-list/models/to-do';
 import { CreateNotesPackDto } from './../../services/service-proxy/service-proxy';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
@@ -22,12 +23,17 @@ export class StartComponent implements OnInit {
   noteName = new FormControl('');
   joinSessionByName = new FormControl('');
 
+
+
+  hubHelloMessage: string ="";
+
   constructor(
     private store: Store<NoteSettingsState>,
     public router: Router,
 
     public organizerApiService: OrganizerApiService,
-    public configurationApiService: ConfigurationApiService
+    public configurationApiService: ConfigurationApiService,
+    public signalrService: NotesSignalService
   ) {}
 
   ngOnInit() {
@@ -42,25 +48,33 @@ export class StartComponent implements OnInit {
       expirationMinutesRange: this.initialExpirationSpan,
       noteName: this.noteName.value
     }
-    this.organizerApiService.createNote(notesPack).subscribe((noteName) => {
-      this.store.dispatch(SettingsActions.setNoteNameAction({noteName : noteName}))
-      this.router.navigate(['/to-do']);
-    });
+    this.organizerApiService
+      .createNote(notesPack)
+        .subscribe((noteName) => {
+          this.store.dispatch(SettingsActions.setNoteNameAction({noteName : noteName}))
+          this.signalrService.joinGroup(noteName);
+          console.log('createNotePack connectionId', this.signalrService.connection.connectionId)
+          this.router.navigate(['/to-do']);
+        });
   }
 
   public joinSession(){
-    this.organizerApiService.joinTheNote(this.joinSessionByName.value).subscribe((notesPack) => {
-      if(notesPack){
-        let todoItems : TodoItem[] = []
-        notesPack.notes?.map((note) => {
-          let todoItem = new TodoItem(note.noteText)
-          todoItem.isComplete = note.isComplete;
-          todoItems.push(todoItem)
-        })
-        this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}))
-        this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : this.joinSessionByName.value}))
-        this.router.navigate(['/to-do']);
-    }
-  });
+    const sessionName = this.joinSessionByName.value;
+    this.organizerApiService
+      .joinTheNote(sessionName)
+        .subscribe((notesPack) => {
+          if(notesPack){
+            let todoItems : TodoItem[] = []
+            notesPack.notes?.map((note) => {
+              let todoItem = new TodoItem(note.noteText)
+              todoItem.isComplete = note.isComplete;
+              todoItems.push(todoItem)
+            })
+            this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}))
+            this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : this.joinSessionByName.value}))
+            this.signalrService.joinGroup(sessionName);
+            this.router.navigate(['/to-do']);
+          }
+        });
   }
 }

@@ -5884,11 +5884,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\domesticOrganizationGuru\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.Tests\\DomesticOrganizationGuru.Api.Tests.csproj",
+      "projectUniqueName": "D:\\dog\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.Tests\\DomesticOrganizationGuru.Api.Tests.csproj",
       "projectName": "DomesticOrganizationGuru.Api.Tests",
-      "projectPath": "D:\\domesticOrganizationGuru\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.Tests\\DomesticOrganizationGuru.Api.Tests.csproj",
+      "projectPath": "D:\\dog\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.Tests\\DomesticOrganizationGuru.Api.Tests.csproj",
       "packagesPath": "C:\\Users\\Domek\\.nuget\\packages\\",
-      "outputPath": "D:\\domesticOrganizationGuru\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.Tests\\obj\\",
+      "outputPath": "D:\\dog\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Domek\\AppData\\Roaming\\NuGet\\NuGet.Config",

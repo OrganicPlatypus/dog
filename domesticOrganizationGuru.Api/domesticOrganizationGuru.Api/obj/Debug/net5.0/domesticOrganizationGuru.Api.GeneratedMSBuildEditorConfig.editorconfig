@@ -7,4 +7,4 @@ build_property.PublishSingleFile =
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
 build_property.RootNamespace = DomesticOrganizationGuru.Api
-build_property.ProjectDir = D:\domesticOrganizationGuru\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\
+build_property.ProjectDir = D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\

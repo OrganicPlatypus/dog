@@ -9,6 +9,7 @@ namespace DomesticOrganizationGuru.Api.Kernel.RegistrationContainers
         public static void RegisterServices(this IServiceCollection services)
         {
             services.AddTransient<INotesService, NotesService>();
+            services.AddScoped<INotesNotificationsService, NotesNotificationsService>();
         }
     }
 }

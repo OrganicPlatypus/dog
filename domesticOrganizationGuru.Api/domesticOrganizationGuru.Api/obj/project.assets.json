@@ -3717,11 +3717,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\domesticOrganizationGuru\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.csproj",
+      "projectUniqueName": "D:\\dog\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.csproj",
       "projectName": "DomesticOrganizationGuru.Api",
-      "projectPath": "D:\\domesticOrganizationGuru\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.csproj",
+      "projectPath": "D:\\dog\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.csproj",
       "packagesPath": "C:\\Users\\Domek\\.nuget\\packages\\",
-      "outputPath": "D:\\domesticOrganizationGuru\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\obj\\",
+      "outputPath": "D:\\dog\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Domek\\AppData\\Roaming\\NuGet\\NuGet.Config",

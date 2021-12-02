@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using DomesticOrganizationGuru.Api.HubConfig;
 
 namespace domesticOrganizationGuru.Api
 {
@@ -31,6 +32,7 @@ namespace domesticOrganizationGuru.Api
             services.RegisterRopositories();
             services.RegisterMappers();
 
+            services.AddSignalR();
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -39,10 +41,11 @@ namespace domesticOrganizationGuru.Api
             });
             services.AddCors(o => o.AddPolicy(PolicyName, builder =>
                 {
-                    //WithOrigins("http://localhost:4200")
-                    builder.AllowAnyOrigin()
+                    builder.WithOrigins("http://localhost:4200")
+                    //builder.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
+                    builder.AllowCredentials();
                 })
             );
         }
@@ -67,6 +70,7 @@ namespace domesticOrganizationGuru.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<NotesHub>(string.Format($"/{nameof(NotesHub).ToLowerInvariant()}"));
             });
         }
     }

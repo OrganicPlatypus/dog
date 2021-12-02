@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { throwError } from 'rxjs';
+
+export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable({
   providedIn: 'root'
 })
 export class BaseApiService {
+
   handleError(error: any) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

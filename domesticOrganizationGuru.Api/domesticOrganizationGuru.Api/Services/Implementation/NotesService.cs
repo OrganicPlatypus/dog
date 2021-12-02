@@ -12,14 +12,17 @@ namespace DomesticOrganizationGuru.Api.Services.Implementation
     public class NotesService : INotesService
     {
         private readonly INotesRepository _notesRepository;
+        private readonly INotesNotificationsService _notesNotificationsService;
         private readonly IMapper _mapper;
 
         public NotesService(
             INotesRepository notesRepository,
-            IMapper mapper)
+            IMapper mapper, 
+            INotesNotificationsService notesNotificationsService)
         {
             _notesRepository = notesRepository;
             _mapper = mapper;
+            _notesNotificationsService = notesNotificationsService;
         }
 
         public async Task<NotesSessionDto> GetNotes(string key)
@@ -36,6 +39,11 @@ namespace DomesticOrganizationGuru.Api.Services.Implementation
             rawNote.Password = StringSha256Hash(updateNoteRequest.NoteName);
 
             await _notesRepository.UpdateNote(rawNote);
+            await _notesNotificationsService.UpdateGroupNotesAsync(
+                "UpdateNotesState", 
+                updateNoteRequest.NoteName, 
+                updateNoteRequest.ConnectionId, 
+                updateNoteRequest.NotesPack);
         }
 
         public async Task DeleteEntry(string key)
