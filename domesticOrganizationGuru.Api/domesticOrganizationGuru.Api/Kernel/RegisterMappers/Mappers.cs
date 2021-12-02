@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using DomesticOrganizationGuru.Api.Model.MappingProfiles;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DomesticOrganizationGuru.Api.Kernel.RegisterMappers
@@ -11,14 +9,7 @@ namespace DomesticOrganizationGuru.Api.Kernel.RegisterMappers
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            var profiles = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new NotesPackMapperProfile());
-                mc.AddProfile(new NoteMapperProfile());
-            });
-            var mapper = profiles.CreateMapper();
-
-            services.AddSingleton(mapper);
+            services.AddSingleton(AutoMapperConfiguration.Mapper);
         }
     }
 }

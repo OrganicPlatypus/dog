@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
-using DomesticOrganizationGuru.Api.Model;
-using DomesticOrganizationGuru.Api.Model.Dto;
-using DomesticOrganizationGuru.Api.Model.MappingProfiles;
+using domesticOrganizationGuru.AutoMapper.MappingProfiles;
+using domesticOrganizationGuru.Common.Dto;
+using domesticOrganizationGuru.Entities;
 using DomesticOrganizationGuru.Api.Tests.TestData;
 using Xunit;
 
 namespace DomesticOrganizationGuru.Api.Tests
 {
-
     public class MapperConfigurationsTests
     {
         [Fact]

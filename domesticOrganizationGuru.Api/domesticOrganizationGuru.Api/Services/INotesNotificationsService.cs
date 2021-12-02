@@ -1,4 +1,4 @@
-﻿using DomesticOrganizationGuru.Api.Model.Dto;
+﻿using domesticOrganizationGuru.Common.Dto;
 using System.Threading.Tasks;
 
 namespace DomesticOrganizationGuru.Api.Services

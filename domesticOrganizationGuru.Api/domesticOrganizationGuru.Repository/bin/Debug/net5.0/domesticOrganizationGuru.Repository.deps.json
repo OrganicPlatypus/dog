@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "domesticOrganizationGuru.Repository/1.0.0": {
+        "dependencies": {
+          "domesticOrganizationGuru.Entities": "1.0.0"
+        },
+        "runtime": {
+          "domesticOrganizationGuru.Repository.dll": {}
+        }
+      },
+      "domesticOrganizationGuru.Entities/1.0.0": {
+        "runtime": {
+          "domesticOrganizationGuru.Entities.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "domesticOrganizationGuru.Repository/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "domesticOrganizationGuru.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

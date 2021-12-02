@@ -1,10 +1,8 @@
-﻿using DomesticOrganizationGuru.Api.Model.Dto;
+﻿using domesticOrganizationGuru.Common.Dto;
 using DomesticOrganizationGuru.Api.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DomesticOrganizationGuru.Api.Controllers

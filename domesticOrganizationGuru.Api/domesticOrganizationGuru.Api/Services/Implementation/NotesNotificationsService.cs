@@ -1,5 +1,5 @@
-﻿using DomesticOrganizationGuru.Api.HubConfig;
-using DomesticOrganizationGuru.Api.Model.Dto;
+﻿using domesticOrganizationGuru.Common.Dto;
+using DomesticOrganizationGuru.Api.HubConfig;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 

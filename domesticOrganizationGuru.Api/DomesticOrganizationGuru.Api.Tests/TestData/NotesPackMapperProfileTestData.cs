@@ -1,5 +1,4 @@
-﻿using DomesticOrganizationGuru.Api.Model;
-using DomesticOrganizationGuru.Api.Model.Dto;
+﻿using domesticOrganizationGuru.Common.Dto;
 using System.Collections;
 using System.Collections.Generic;
 

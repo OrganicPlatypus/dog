@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
+using domesticOrganizationGuru.Common.Dto;
+using domesticOrganizationGuru.Entities;
 using DomesticOrganizationGuru.Api.Kernel.CustomExceptions;
-using DomesticOrganizationGuru.Api.Model;
-using DomesticOrganizationGuru.Api.Model.Dto;
 using DomesticOrganizationGuru.Api.Repositories;
-using System;
 using System.Threading.Tasks;
 using static DomesticOrganizationGuru.Api.Helpers.SecurityService;
 
