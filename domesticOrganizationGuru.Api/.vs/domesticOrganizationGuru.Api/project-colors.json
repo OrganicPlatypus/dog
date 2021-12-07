@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "45af69ce-8b10-49b0-a23e-57ab76e264a4": {
+      "ProjectGuid": "45af69ce-8b10-49b0-a23e-57ab76e264a4",
+      "DisplayName": "DomesticOrganizationGuru.Api.Tests",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    },
+    "9548f690-2c20-4bcb-8d4b-959ca36a6fbe": {
+      "ProjectGuid": "9548f690-2c20-4bcb-8d4b-959ca36a6fbe",
+      "DisplayName": "DomesticOrganizationGuru.Api",
+      "ColorIndex": 1
+    },
+    "ae19b156-0ba7-4c21-bd2d-8c51d8fed147": {
+      "ProjectGuid": "ae19b156-0ba7-4c21-bd2d-8c51d8fed147",
+      "DisplayName": "domesticOrganizationGuru.Entities",
+      "ColorIndex": 2
+    },
+    "0d3445c6-cfac-41ea-95cd-78b636fa4369": {
+      "ProjectGuid": "0d3445c6-cfac-41ea-95cd-78b636fa4369",
+      "DisplayName": "domesticOrganizationGuru.Redis",
+      "ColorIndex": 3
+    },
+    "b68b1617-5d8c-431f-9057-f4ac5ec24ec0": {
+      "ProjectGuid": "b68b1617-5d8c-431f-9057-f4ac5ec24ec0",
+      "DisplayName": "domesticOrganizationGuru.Repository",
+      "ColorIndex": 4
+    },
+    "f77e00d2-c161-40ca-9230-17edf7bfb9e0": {
+      "ProjectGuid": "f77e00d2-c161-40ca-9230-17edf7bfb9e0",
+      "DisplayName": "domesticOrganizationGuru.Common",
+      "ColorIndex": 5
+    }
+  },
+  "NextColorIndex": 6
+}

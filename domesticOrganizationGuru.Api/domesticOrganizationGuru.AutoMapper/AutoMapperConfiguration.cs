@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using domesticOrganizationGuru.AutoMapper.MappingProfiles;
 
-namespace DomesticOrganizationGuru.Api.Kernel.RegisterMappers
+namespace domesticOrganizationGuru.AutoMapper
 {
     public static class AutoMapperConfiguration
     {
@@ -14,7 +14,7 @@ namespace DomesticOrganizationGuru.Api.Kernel.RegisterMappers
                     mc.AddProfile(new NotesPackMapperProfile());
                     mc.AddProfile(new NoteMapperProfile());
                 });
-               return profiles.CreateMapper();
+                return profiles.CreateMapper();
             }
         }
     }

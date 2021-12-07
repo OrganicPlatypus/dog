@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using domesticOrganizationGuru.AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DomesticOrganizationGuru.Api.Kernel.RegisterMappers

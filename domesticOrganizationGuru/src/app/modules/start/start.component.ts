@@ -53,7 +53,6 @@ export class StartComponent implements OnInit {
         .subscribe((noteName) => {
           this.store.dispatch(SettingsActions.setNoteNameAction({noteName : noteName}))
           this.signalrService.joinGroup(noteName);
-          console.log('createNotePack connectionId', this.signalrService.connection.connectionId)
           this.router.navigate(['/to-do']);
         });
   }

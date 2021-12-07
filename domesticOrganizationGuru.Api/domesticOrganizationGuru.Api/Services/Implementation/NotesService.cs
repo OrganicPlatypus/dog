@@ -34,12 +34,14 @@ namespace DomesticOrganizationGuru.Api.Services.Implementation
 
         public async Task SaveNote(UpdateNoteRequestDto updateNoteRequest)
         {
+            const string communicationChannel = "UpdateNotesState";
+
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
             rawNote.Password = StringSha256Hash(updateNoteRequest.NoteName);
 
             await _notesRepository.UpdateNote(rawNote);
             await _notesNotificationsService.UpdateGroupNotesAsync(
-                "UpdateNotesState", 
+                communicationChannel, 
                 updateNoteRequest.NoteName, 
                 updateNoteRequest.ConnectionId, 
                 updateNoteRequest.NotesPack);
