@@ -70,6 +70,42 @@ namespace domesticOrganizationGuru.Common.Resources.Validation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Note must have a name.
+        /// </summary>
+        public static string NameEmptyInformation {
+            get {
+                return ResourceManager.GetString("NameEmptyInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no note. Please orovide one!.
+        /// </summary>
+        public static string NoteEmptyInformation {
+            get {
+                return ResourceManager.GetString("NoteEmptyInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note lenght should stay within the boarders of sanity, which is in our case .
+        /// </summary>
+        public static string NoteMaxLengthPrefix {
+            get {
+                return ResourceManager.GetString("NoteMaxLengthPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  characters.
+        /// </summary>
+        public static string NoteMaxLengthSufix {
+            get {
+                return ResourceManager.GetString("NoteMaxLengthSufix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Every entity shall be named to exist in universe.
         /// </summary>
         public static string ProvideNameInformation {

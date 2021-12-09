@@ -120,6 +120,9 @@
   <data name="ExpiriationTimeMinimalValue" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="MaxNoteLength" xml:space="preserve">
+    <value>100</value>
+  </data>
   <data name="NoteNameLenth" xml:space="preserve">
     <value>100</value>
   </data>

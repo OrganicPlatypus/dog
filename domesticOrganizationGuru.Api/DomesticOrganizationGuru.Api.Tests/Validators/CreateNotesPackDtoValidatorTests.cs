@@ -15,7 +15,7 @@ namespace DomesticOrganizationGuru.Api.Tests
             _createNotesPackDtoValidator = new();
         }
         [Fact]
-          public void CreateNotesPackDtoValidatorTests_Test()
+          public void CreateNotesPackDtoValidatorTests_Success_Test()
         {
             // Arrange
             CreateNotesPackDto createNotesPackDto = new()
@@ -44,12 +44,12 @@ namespace DomesticOrganizationGuru.Api.Tests
             if (faultyExpiriation)
             {
             result.ShouldHaveValidationErrorFor(x => x.ExpirationMinutesRange)
-                    .WithErrorMessage(ValidationSettings.ExpiriationTimeMinimalValue);
+                    .WithErrorMessage(ValidationMessages.LifetimeInformation);
             }
             if (faultyName)
             {
             result.ShouldHaveValidationErrorFor(x => x.NoteName)
-                    .WithErrorMessage(ValidationSettings.NoteNameLenth);
+                    .WithErrorMessage(ValidationMessages.ProvideNameInformation);
             }
         }
     }

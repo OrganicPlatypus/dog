@@ -13,7 +13,7 @@ namespace DomesticOrganizationGuru.Api.Tests.TestData
                 new CreateNotesPackDto()
                     {
                         ExpirationMinutesRange = 1,
-                        NoteName = ""
+                        NoteName = string.Empty
                     },
                 false,
                 true

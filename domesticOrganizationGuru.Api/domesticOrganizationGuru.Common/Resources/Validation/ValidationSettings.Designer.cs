@@ -72,6 +72,15 @@ namespace domesticOrganizationGuru.Common.Resources.Validation {
         /// <summary>
         ///   Looks up a localized string similar to 100.
         /// </summary>
+        public static string MaxNoteLength {
+            get {
+                return ResourceManager.GetString("MaxNoteLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 100.
+        /// </summary>
         public static string NoteNameLenth {
             get {
                 return ResourceManager.GetString("NoteNameLenth", resourceCulture);

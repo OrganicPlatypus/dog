@@ -120,6 +120,18 @@
   <data name="LifetimeInformation" xml:space="preserve">
     <value>Note should last longer than 0 minutes for anyone to see it</value>
   </data>
+  <data name="NameEmptyInformation" xml:space="preserve">
+    <value>Note must have a name</value>
+  </data>
+  <data name="NoteEmptyInformation" xml:space="preserve">
+    <value>There is no note. Please orovide one!</value>
+  </data>
+  <data name="NoteMaxLengthPrefix" xml:space="preserve">
+    <value>Note lenght should stay within the boarders of sanity, which is in our case </value>
+  </data>
+  <data name="NoteMaxLengthSufix" xml:space="preserve">
+    <value> characters</value>
+  </data>
   <data name="ProvideNameInformation" xml:space="preserve">
     <value>Every entity shall be named to exist in universe</value>
   </data>
