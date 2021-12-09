@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GfgkKoVvyjhC806JxEeI79Cykc4mxjEJat6ex7RJq287oB4C91eF572bcolQkX2s5maBVIJ8Koj600yz8md6Ag==",
+  "dgSpecHash": "OeRQmxy34jeiAn2a2B8wiJLor1FfD3CxgB79HgVHgedzfq5b5pMYmcDB6J9HdTWhbS6f1g4aqCt0TS9vV0yJNA==",
   "success": true,
-  "projectFilePath": "D:\\domesticOrganizationGuru\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.csproj",
+  "projectFilePath": "D:\\dog\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Domek\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\Domek\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",

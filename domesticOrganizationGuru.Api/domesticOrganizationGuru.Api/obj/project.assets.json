@@ -3717,11 +3717,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\domesticOrganizationGuru\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.csproj",
+      "projectUniqueName": "D:\\dog\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.csproj",
       "projectName": "DomesticOrganizationGuru.Api",
-      "projectPath": "D:\\domesticOrganizationGuru\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.csproj",
+      "projectPath": "D:\\dog\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\DomesticOrganizationGuru.Api.csproj",
       "packagesPath": "C:\\Users\\Domek\\.nuget\\packages\\",
-      "outputPath": "D:\\domesticOrganizationGuru\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\obj\\",
+      "outputPath": "D:\\dog\\domesticOrganizationGuru.Api\\domesticOrganizationGuru.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Domek\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -3785,7 +3785,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
