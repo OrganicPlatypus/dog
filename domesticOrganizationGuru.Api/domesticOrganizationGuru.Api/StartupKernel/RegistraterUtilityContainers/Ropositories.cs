@@ -2,7 +2,7 @@
 using DomesticOrganizationGuru.Api.Repositories.Implementation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomesticOrganizationGuru.Api.StartupKernel.RegistrationContainers
+namespace DomesticOrganizationGuru.Api.StartupKernel.RegistraterUtilityContainers
 {
     public static class Ropositories
     {

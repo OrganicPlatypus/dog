@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 {
+    //TODO: Consider extracting to ex. ApplicationService project
     public class NotesNotificationsService : INotesNotificationsService
     {
         private readonly IHubContext<NotesHub> _hubContext;

@@ -1,6 +1,7 @@
 using domesticOrganizationGuru.SignalR;
+using domesticOrganizationGuru.Validation.Registration;
 using DomesticOrganizationGuru.Api.StartupKernel.RegisterMappers;
-using DomesticOrganizationGuru.Api.StartupKernel.RegistrationContainers;
+using DomesticOrganizationGuru.Api.StartupKernel.RegistraterUtilityContainers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,12 +34,16 @@ namespace domesticOrganizationGuru.Api
             services.RegisterMappers();
 
             services.AddSignalR();
-            services.AddControllers();
+
+            services
+                .AddControllers()
+                .RegisterValidators();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "domesticOrganizationGuru.Api", Version = "v1" });
             });
+
             services.AddCors(o => o.AddPolicy(PolicyName, builder =>
                 {
                     builder.WithOrigins("http://localhost:4200")

@@ -23,8 +23,6 @@ export class StartComponent implements OnInit {
   noteName = new FormControl('');
   joinSessionByName = new FormControl('');
 
-
-
   hubHelloMessage: string ="";
 
   constructor(
