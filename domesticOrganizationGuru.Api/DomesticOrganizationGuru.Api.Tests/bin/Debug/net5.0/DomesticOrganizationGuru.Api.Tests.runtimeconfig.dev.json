@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\Domek\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Domek\\.nuget\\packages"
-    ]
-  }
-}
