@@ -35,7 +35,22 @@
       "ProjectGuid": "f77e00d2-c161-40ca-9230-17edf7bfb9e0",
       "DisplayName": "domesticOrganizationGuru.Common",
       "ColorIndex": 5
+    },
+    "8f129c55-0995-4140-a074-4dcfe72bc8b1": {
+      "ProjectGuid": "8f129c55-0995-4140-a074-4dcfe72bc8b1",
+      "DisplayName": "domesticOrganizationGuru.AutoMapper",
+      "ColorIndex": 6
+    },
+    "939d2176-a096-4e44-8c9f-1ca633fda946": {
+      "ProjectGuid": "939d2176-a096-4e44-8c9f-1ca633fda946",
+      "DisplayName": "domesticOrganizationGuru.SignalR",
+      "ColorIndex": 7
+    },
+    "805ff994-1d36-4399-93d3-c32117d69af5": {
+      "ProjectGuid": "805ff994-1d36-4399-93d3-c32117d69af5",
+      "DisplayName": "domesticOrganizationGuru.Controllers",
+      "ColorIndex": 8
     }
   },
-  "NextColorIndex": 6
+  "NextColorIndex": 9
 }
