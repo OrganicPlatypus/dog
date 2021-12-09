@@ -1,0 +1,12 @@
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\bin\Debug\net5.0\domesticOrganizationGuru.Entities.deps.json
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\bin\Debug\net5.0\domesticOrganizationGuru.Entities.dll
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\bin\Debug\net5.0\ref\domesticOrganizationGuru.Entities.dll
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\bin\Debug\net5.0\domesticOrganizationGuru.Entities.pdb
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\obj\Debug\net5.0\domesticOrganizationGuru.Entities.csproj.AssemblyReference.cache
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\obj\Debug\net5.0\domesticOrganizationGuru.Entities.GeneratedMSBuildEditorConfig.editorconfig
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\obj\Debug\net5.0\domesticOrganizationGuru.Entities.AssemblyInfoInputs.cache
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\obj\Debug\net5.0\domesticOrganizationGuru.Entities.AssemblyInfo.cs
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\obj\Debug\net5.0\domesticOrganizationGuru.Entities.csproj.CoreCompileInputs.cache
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\obj\Debug\net5.0\domesticOrganizationGuru.Entities.dll
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\obj\Debug\net5.0\ref\domesticOrganizationGuru.Entities.dll
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Entities\obj\Debug\net5.0\domesticOrganizationGuru.Entities.pdb
