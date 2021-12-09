@@ -1,4 +1,5 @@
 ﻿using domesticOrganizationGuru.Entities;
+using domesticOrganizationGuru.Repository;
 using Microsoft.Extensions.Caching.Distributed;
 using StackExchange.Redis;
 using System;

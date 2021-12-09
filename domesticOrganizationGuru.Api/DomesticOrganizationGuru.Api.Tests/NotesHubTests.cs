@@ -1,5 +1,8 @@
-﻿
+﻿using domesticOrganizationGuru.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using Moq;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DomesticOrganizationGuru.Api.Tests
@@ -7,32 +10,30 @@ namespace DomesticOrganizationGuru.Api.Tests
     public class NotesHubTests
     {
         [Fact]
-        public void HubsAreMockableViaDynamic()
+          public async Task NotesHub_ConnectToDistributionGroup_Tests()
         {
-            //var groupName = "GroupName";
-            //var message = "notification";
-            //var connectionId = "connection Id";
-            //NoteDto[] notePack = new[] {
-            //    new NoteDto
-            //        {
-            //            IsComplete=true,
-            //            NoteText="note",
-            //        }
-            //};
-            //Mock<INotesNotificationsService> mockNotesNotificationsService = new();
-            //mockNotesNotificationsService.Setup(_ => _.UpdateGroupNotesAsync(message, groupName, connectionId, notePack));
+            // Arrange
+            const string GroupName = "Test group";
 
-            //////var mockGroups = new Mock<IClientContract>();
-            //////mockGroups.Setup(_ => _.BroadcastCustomerGreeting(message)).Verifiable();
+            var joinedGroup = "";
 
-            ////var mockClients = new Mock<IHubConnectionContext<dynamic>>();
-            ////mockClients.Setup(_ => _.Group(groupName)).Returns(mockNotesNotificationsService.Object).Verifiable();
+            var mockHubCallerContext = new Mock<HubCallerContext>();
+            var groupManagerMock = new Mock<IGroupManager>();
 
-            ////var mockHub = new Mock<IHubContext>();
-            ////mockHub.Setup(_ => _.Clients).Returns(mockClients.Object).Verifiable();
+            groupManagerMock.Setup(g => g.AddToGroupAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                            .Returns(Task.CompletedTask)
+                            .Callback<string, string, CancellationToken>((_, groupName, __) =>
+                                joinedGroup = groupName);
 
-            ////var mockHubProvider = new Mock<IHubContextProvider>();
-            ////mockHubProvider.Setup(_ => _.Hub).Returns(mockHub.Object);
+            var notesHub = new NotesHub();
+            notesHub.Groups = groupManagerMock.Object;
+            notesHub.Context = mockHubCallerContext.Object;
+
+            // Act
+            await notesHub.CreateGroup(GroupName);
+
+            // Assert
+            groupManagerMock.Verify(x=>x.AddToGroupAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

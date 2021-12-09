@@ -1,12 +1,12 @@
-using DomesticOrganizationGuru.Api.Kernel.RegistrationContainers;
-using DomesticOrganizationGuru.Api.Kernel.RegisterMappers;
+using domesticOrganizationGuru.SignalR;
+using DomesticOrganizationGuru.Api.StartupKernel.RegisterMappers;
+using DomesticOrganizationGuru.Api.StartupKernel.RegistrationContainers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using DomesticOrganizationGuru.Api.HubConfig;
 
 namespace domesticOrganizationGuru.Api
 {
@@ -42,7 +42,6 @@ namespace domesticOrganizationGuru.Api
             services.AddCors(o => o.AddPolicy(PolicyName, builder =>
                 {
                     builder.WithOrigins("http://localhost:4200")
-                    //builder.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                     builder.AllowCredentials();

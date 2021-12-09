@@ -56,7 +56,6 @@ export class NotesSignalService {
     this.connection
       .invoke('CreateGroup', noteName)
       .catch(error => {
-        console.log(`SignalrDemoHub.Hello() error: ${error}`);
         alert('SignalrDemoHub.Hello() error!, see console for details.');
       }
     );

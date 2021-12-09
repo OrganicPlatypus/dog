@@ -239,4 +239,5 @@ D:\dog\domesticOrganizationGuru.Api\DomesticOrganizationGuru.Api.Tests\obj\Debug
 D:\dog\domesticOrganizationGuru.Api\DomesticOrganizationGuru.Api.Tests\obj\Debug\net5.0\ref\DomesticOrganizationGuru.Api.Tests.dll
 D:\dog\domesticOrganizationGuru.Api\DomesticOrganizationGuru.Api.Tests\obj\Debug\net5.0\DomesticOrganizationGuru.Api.Tests.pdb
 D:\dog\domesticOrganizationGuru.Api\DomesticOrganizationGuru.Api.Tests\obj\Debug\net5.0\DomesticOrganizationGuru.Api.Tests.genruntimeconfig.cache
-D:\dog\domesticOrganizationGuru.Api\DomesticOrganizationGuru.Api.Tests\bin\Debug\net5.0\Microsoft.AspNet.SignalR.Core.dll
+D:\dog\domesticOrganizationGuru.Api\DomesticOrganizationGuru.Api.Tests\bin\Debug\net5.0\domesticOrganizationGuru.SignalR.dll
+D:\dog\domesticOrganizationGuru.Api\DomesticOrganizationGuru.Api.Tests\bin\Debug\net5.0\domesticOrganizationGuru.SignalR.pdb

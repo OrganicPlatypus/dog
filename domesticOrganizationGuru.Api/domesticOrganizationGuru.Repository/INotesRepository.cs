@@ -1,7 +1,7 @@
 ﻿using domesticOrganizationGuru.Entities;
 using System.Threading.Tasks;
 
-namespace DomesticOrganizationGuru.Api.Repositories
+namespace domesticOrganizationGuru.Repository
 {
     public interface INotesRepository
     {

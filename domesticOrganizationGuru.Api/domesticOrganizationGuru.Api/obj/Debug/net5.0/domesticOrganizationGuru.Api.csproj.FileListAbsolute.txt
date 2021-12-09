@@ -98,3 +98,5 @@ D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\obj\Debug\net5.
 D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\obj\Debug\net5.0\ref\DomesticOrganizationGuru.Api.dll
 D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\obj\Debug\net5.0\DomesticOrganizationGuru.Api.pdb
 D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\obj\Debug\net5.0\DomesticOrganizationGuru.Api.genruntimeconfig.cache
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\bin\Debug\net5.0\domesticOrganizationGuru.SignalR.dll
+D:\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\bin\Debug\net5.0\domesticOrganizationGuru.SignalR.pdb
