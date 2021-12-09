@@ -1,5 +1,6 @@
-using DomesticOrganizationGuru.Api.Kernel.RegistrationContainers;
-using DomesticOrganizationGuru.Api.Kernel.RegisterMappers;
+using domesticOrganizationGuru.SignalR;
+using DomesticOrganizationGuru.Api.StartupKernel.RegisterMappers;
+using DomesticOrganizationGuru.Api.StartupKernel.RegistrationContainers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +32,7 @@ namespace domesticOrganizationGuru.Api
             services.RegisterRopositories();
             services.RegisterMappers();
 
+            services.AddSignalR();
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -39,10 +41,10 @@ namespace domesticOrganizationGuru.Api
             });
             services.AddCors(o => o.AddPolicy(PolicyName, builder =>
                 {
-                    //WithOrigins("http://localhost:4200")
-                    builder.AllowAnyOrigin()
+                    builder.WithOrigins("http://localhost:4200")
                         .AllowAnyMethod()
                         .AllowAnyHeader();
+                    builder.AllowCredentials();
                 })
             );
         }
@@ -67,6 +69,7 @@ namespace domesticOrganizationGuru.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<NotesHub>(string.Format($"/{nameof(NotesHub).ToLowerInvariant()}"));
             });
         }
     }

@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { TodoItem } from '../models/to-do';
 import { Store } from '@ngrx/store';
 import { getExistingNotesSelector } from './../../../state/states/notes/notes.selector';
-import { clearNotesStateAction } from './../../../state/states/notes/notes.actions';
+import { clearNotesStateAction, setExistingNotesAction } from './../../../state/states/notes/notes.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,7 @@ export class ToDoService {
       this.store.select(getExistingNotesSelector)
       .subscribe( notes => {
         if(notes.length > 0){
+          this.todos.length = 0
           notes
             .map(note => {
               this.todos.push(note)
@@ -33,7 +34,7 @@ export class ToDoService {
 
     public addItem = (newItem: TodoItem) =>
       this.todos.unshift(newItem) && this.todoList.next(this.todos);
-  //TODO: dodać strategię
+
     public removeNoteItem(noteToRemove: TodoItem) {
         const noteToRemoveIndex = this.todos.findIndex(note => note === noteToRemove);
         if (noteToRemoveIndex > -1) {
@@ -41,7 +42,7 @@ export class ToDoService {
         this.todoList.next(this.todos);
         }
       }
-  //TODO: dodać strategię
+
     public completeItem(noteStatusToBeChanged: TodoItem, completionFlag: boolean) {
         const noteToRemoveIndex = this.todos.findIndex(note => note === noteStatusToBeChanged);
         this.todos[noteToRemoveIndex] = {
@@ -50,7 +51,7 @@ export class ToDoService {
           } as TodoItem;
         this.todoList.next(this.todos);
       }
-  //TODO: dodać strategię
+
     public editItem(editedItem: TodoItem, noteInput: string) {
       const noteToRemoveIndex = this.todos.findIndex(note => note === editedItem);
       this.todos[noteToRemoveIndex] = {
@@ -58,6 +59,10 @@ export class ToDoService {
           isComplete : editedItem.isComplete
         } as TodoItem;
       this.todoList.next(this.todos);
+    }
+
+    resetNotes() {
+      this.todoList = new BehaviorSubject<TodoItem[]>(this.todos);
     }
   }
 

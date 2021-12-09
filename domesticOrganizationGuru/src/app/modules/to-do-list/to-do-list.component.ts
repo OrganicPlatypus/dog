@@ -1,3 +1,4 @@
+import { NotesSignalService } from './../../services/signalR/notes.signal.service';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { UpdateNoteRequestDto } from 'src/app/services/service-proxy/service-proxy';
@@ -23,11 +24,17 @@ export class ToDoListComponent implements OnInit {
 
   notesPackName: string = "";
   notesLifespan: number = 0;
+
+
+  newNotesState!: UpdateNoteRequestDto;
+
   constructor(
     private toDoService: ToDoService,
     private organizerApiService: OrganizerApiService,
     private store: Store<NoteSettingsState>,
+    public signalrService: NotesSignalService
   ) {
+
   }
 
   ngOnInit() {
@@ -45,6 +52,8 @@ export class ToDoListComponent implements OnInit {
         this.notesLifespan = noteSettings[1]!
       }
     )
+
+    this.signalrService.subscribeOnCurrentlyUpdateNote();
   }
 
   updateNotesPack() {
@@ -102,8 +111,8 @@ export class ToDoListComponent implements OnInit {
     const updateNoteRequestDto = <UpdateNoteRequestDto>{
       noteName: this.notesPackName,
       expirationMinutesRange: this.notesLifespan,
-
-      notesPack: this.toDoList.value
+      notesPack: this.toDoList.value,
+      connectionId: this.signalrService.connection.connectionId
     };
     this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe(() => {
       this.noteInput = undefined;

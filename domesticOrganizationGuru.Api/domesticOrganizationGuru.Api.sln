@@ -1,11 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31702.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomesticOrganizationGuru.Api", "domesticOrganizationGuru.Api\DomesticOrganizationGuru.Api.csproj", "{9548F690-2C20-4BCB-8D4B-959CA36A6FBE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomesticOrganizationGuru.Api.Tests", "DomesticOrganizationGuru.Api.Tests\DomesticOrganizationGuru.Api.Tests.csproj", "{45AF69CE-8B10-49B0-A23E-57AB76E264A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedKernel", "SharedKernel", "{3B928228-054B-473F-AE6F-4F54B216424E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domesticOrganizationGuru.Repository", "domesticOrganizationGuru.Repository\domesticOrganizationGuru.Repository.csproj", "{B68B1617-5D8C-431F-9057-F4AC5EC24EC0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domesticOrganizationGuru.Entities", "domesticOrganizationGuru.Entities\domesticOrganizationGuru.Entities.csproj", "{AE19B156-0BA7-4C21-BD2D-8C51D8FED147}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domesticOrganizationGuru.Common", "domesticOrganizationGuru.Common\domesticOrganizationGuru.Common.csproj", "{F77E00D2-C161-40CA-9230-17EDF7BFB9E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D314255B-FE26-41C6-ABFC-86759558B97C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domesticOrganizationGuru.AutoMapper", "domesticOrganizationGuru.AutoMapper\domesticOrganizationGuru.AutoMapper.csproj", "{8F129C55-0995-4140-A074-4DCFE72BC8B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domesticOrganizationGuru.Redis", "domesticOrganizationGuru.Redis\domesticOrganizationGuru.Redis.csproj", "{0D3445C6-CFAC-41EA-95CD-78B636FA4369}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "domesticOrganizationGuru.SignalR", "domesticOrganizationGuru.SignalR\domesticOrganizationGuru.SignalR.csproj", "{939D2176-A096-4E44-8C9F-1CA633FDA946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +37,41 @@ Global
 		{45AF69CE-8B10-49B0-A23E-57AB76E264A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45AF69CE-8B10-49B0-A23E-57AB76E264A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45AF69CE-8B10-49B0-A23E-57AB76E264A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B68B1617-5D8C-431F-9057-F4AC5EC24EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68B1617-5D8C-431F-9057-F4AC5EC24EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68B1617-5D8C-431F-9057-F4AC5EC24EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68B1617-5D8C-431F-9057-F4AC5EC24EC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE19B156-0BA7-4C21-BD2D-8C51D8FED147}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE19B156-0BA7-4C21-BD2D-8C51D8FED147}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE19B156-0BA7-4C21-BD2D-8C51D8FED147}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE19B156-0BA7-4C21-BD2D-8C51D8FED147}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F77E00D2-C161-40CA-9230-17EDF7BFB9E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77E00D2-C161-40CA-9230-17EDF7BFB9E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77E00D2-C161-40CA-9230-17EDF7BFB9E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F77E00D2-C161-40CA-9230-17EDF7BFB9E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F129C55-0995-4140-A074-4DCFE72BC8B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F129C55-0995-4140-A074-4DCFE72BC8B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F129C55-0995-4140-A074-4DCFE72BC8B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F129C55-0995-4140-A074-4DCFE72BC8B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D3445C6-CFAC-41EA-95CD-78B636FA4369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D3445C6-CFAC-41EA-95CD-78B636FA4369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D3445C6-CFAC-41EA-95CD-78B636FA4369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D3445C6-CFAC-41EA-95CD-78B636FA4369}.Release|Any CPU.Build.0 = Release|Any CPU
+		{939D2176-A096-4E44-8C9F-1CA633FDA946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{939D2176-A096-4E44-8C9F-1CA633FDA946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{939D2176-A096-4E44-8C9F-1CA633FDA946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{939D2176-A096-4E44-8C9F-1CA633FDA946}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B68B1617-5D8C-431F-9057-F4AC5EC24EC0} = {3B928228-054B-473F-AE6F-4F54B216424E}
+		{AE19B156-0BA7-4C21-BD2D-8C51D8FED147} = {3B928228-054B-473F-AE6F-4F54B216424E}
+		{F77E00D2-C161-40CA-9230-17EDF7BFB9E0} = {3B928228-054B-473F-AE6F-4F54B216424E}
+		{8F129C55-0995-4140-A074-4DCFE72BC8B1} = {D314255B-FE26-41C6-ABFC-86759558B97C}
+		{0D3445C6-CFAC-41EA-95CD-78B636FA4369} = {D314255B-FE26-41C6-ABFC-86759558B97C}
+		{939D2176-A096-4E44-8C9F-1CA633FDA946} = {D314255B-FE26-41C6-ABFC-86759558B97C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2BC03865-2B43-4DF5-874C-34DD211890E3}

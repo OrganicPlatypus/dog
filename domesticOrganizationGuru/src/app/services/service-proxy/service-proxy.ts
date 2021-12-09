@@ -15,7 +15,7 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
-export class ConfigurationServiceProxy {
+export class Client {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -74,18 +74,6 @@ export class ConfigurationServiceProxy {
             }));
         }
         return _observableOf<number>(<any>null);
-    }
-}
-
-@Injectable()
-export class OrganizerServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
     /**
@@ -305,13 +293,13 @@ export class OrganizerServiceProxy {
     }
 
     /**
-     * @param keyInput (optional)
      * @return Success
      */
-    getNotes(keyInput: string | null | undefined): Observable<NotesSessionDto> {
-        let url_ = this.baseUrl + "/api/Organizer/GetNotes?";
-        if (keyInput !== undefined && keyInput !== null)
-            url_ += "keyInput=" + encodeURIComponent("" + keyInput) + "&";
+    join(keyInput: string | null): Observable<NotesSessionDto> {
+        let url_ = this.baseUrl + "/join/{keyInput}";
+        if (keyInput === undefined || keyInput === null)
+            throw new Error("The parameter 'keyInput' must be defined.");
+        url_ = url_.replace("{keyInput}", encodeURIComponent("" + keyInput));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -323,11 +311,11 @@ export class OrganizerServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetNotes(response_);
+            return this.processJoin(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetNotes(<any>response_);
+                    return this.processJoin(<any>response_);
                 } catch (e) {
                     return <Observable<NotesSessionDto>><any>_observableThrow(e);
                 }
@@ -336,7 +324,7 @@ export class OrganizerServiceProxy {
         }));
     }
 
-    protected processGetNotes(response: HttpResponseBase): Observable<NotesSessionDto> {
+    protected processJoin(response: HttpResponseBase): Observable<NotesSessionDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -414,8 +402,8 @@ export class OrganizerServiceProxy {
 }
 
 export class CreateNotesPackDto implements ICreateNotesPackDto {
-    noteName!: string | undefined;
-    expirationMinutesRange!: number;
+    noteName?: string | undefined;
+    expirationMinutesRange?: number;
 
     constructor(data?: ICreateNotesPackDto) {
         if (data) {
@@ -446,23 +434,16 @@ export class CreateNotesPackDto implements ICreateNotesPackDto {
         data["expirationMinutesRange"] = this.expirationMinutesRange;
         return data;
     }
-
-    clone(): CreateNotesPackDto {
-        const json = this.toJSON();
-        let result = new CreateNotesPackDto();
-        result.init(json);
-        return result;
-    }
 }
 
 export interface ICreateNotesPackDto {
-    noteName: string | undefined;
-    expirationMinutesRange: number;
+    noteName?: string | undefined;
+    expirationMinutesRange?: number;
 }
 
 export class NoteDto implements INoteDto {
-    noteText!: string | undefined;
-    isComplete!: boolean;
+    noteText?: string | undefined;
+    isComplete?: boolean;
 
     constructor(data?: INoteDto) {
         if (data) {
@@ -493,24 +474,18 @@ export class NoteDto implements INoteDto {
         data["isComplete"] = this.isComplete;
         return data;
     }
-
-    clone(): NoteDto {
-        const json = this.toJSON();
-        let result = new NoteDto();
-        result.init(json);
-        return result;
-    }
 }
 
 export interface INoteDto {
-    noteText: string | undefined;
-    isComplete: boolean;
+    noteText?: string | undefined;
+    isComplete?: boolean;
 }
 
 export class UpdateNoteRequestDto implements IUpdateNoteRequestDto {
-    noteName!: string | undefined;
-    notesPack!: NoteDto[] | undefined;
-    expirationMinutesRange!: number;
+    connectionId?: string | undefined;
+    noteName?: string | undefined;
+    notesPack?: NoteDto[] | undefined;
+    expirationMinutesRange?: number;
 
     constructor(data?: IUpdateNoteRequestDto) {
         if (data) {
@@ -523,6 +498,7 @@ export class UpdateNoteRequestDto implements IUpdateNoteRequestDto {
 
     init(_data?: any) {
         if (_data) {
+            this.connectionId = _data["connectionId"];
             this.noteName = _data["noteName"];
             if (Array.isArray(_data["notesPack"])) {
                 this.notesPack = [] as any;
@@ -542,6 +518,7 @@ export class UpdateNoteRequestDto implements IUpdateNoteRequestDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["connectionId"] = this.connectionId;
         data["noteName"] = this.noteName;
         if (Array.isArray(this.notesPack)) {
             data["notesPack"] = [];
@@ -551,24 +528,18 @@ export class UpdateNoteRequestDto implements IUpdateNoteRequestDto {
         data["expirationMinutesRange"] = this.expirationMinutesRange;
         return data;
     }
-
-    clone(): UpdateNoteRequestDto {
-        const json = this.toJSON();
-        let result = new UpdateNoteRequestDto();
-        result.init(json);
-        return result;
-    }
 }
 
 export interface IUpdateNoteRequestDto {
-    noteName: string | undefined;
-    notesPack: NoteDto[] | undefined;
-    expirationMinutesRange: number;
+    connectionId?: string | undefined;
+    noteName?: string | undefined;
+    notesPack?: NoteDto[] | undefined;
+    expirationMinutesRange?: number;
 }
 
 export class NotesSessionDto implements INotesSessionDto {
-    notes!: NoteDto[] | undefined;
-    expirationMinutesRange!: number;
+    notes?: NoteDto[] | undefined;
+    expirationMinutesRange?: number;
 
     constructor(data?: INotesSessionDto) {
         if (data) {
@@ -607,18 +578,11 @@ export class NotesSessionDto implements INotesSessionDto {
         data["expirationMinutesRange"] = this.expirationMinutesRange;
         return data;
     }
-
-    clone(): NotesSessionDto {
-        const json = this.toJSON();
-        let result = new NotesSessionDto();
-        result.init(json);
-        return result;
-    }
 }
 
 export interface INotesSessionDto {
-    notes: NoteDto[] | undefined;
-    expirationMinutesRange: number;
+    notes?: NoteDto[] | undefined;
+    expirationMinutesRange?: number;
 }
 
 export class ApiException extends Error {

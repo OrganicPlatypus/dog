@@ -1,5 +1,6 @@
+import { environment } from './../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +12,8 @@ import { ToDoListComponent } from './modules/to-do-list/to-do-list.component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers } from './state/app.state';
+import { API_SIGNALR_URL, NotesSignalService } from './services/signalR/notes.signal.service';
+import { API_BASE_URL, BaseApiService } from './services/api/baseApi/baseApi.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,18 @@ import { reducers } from './state/app.state';
       maxAge: 25
     })
   ],
-  providers: [],
+  providers: [
+    NotesSignalService,
+    BaseApiService,
+    {
+      provide: API_SIGNALR_URL,
+      useValue: environment.signalRUrl
+    },
+    {
+      provide: API_BASE_URL,
+      useValue: environment.apiBaseUrl
+    }
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })

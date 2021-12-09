@@ -5,8 +5,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 
-export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
-
 @Injectable({
   providedIn: 'root'
 })
@@ -17,15 +15,8 @@ export class OrganizerApiService extends BaseApiService {
 
   constructor(private http: HttpClient) {
     super();
-    //TODO: Przenieść do BaseApiService
     this.baseUrl = "https://localhost:44365";
    }
-
-  //TODO: Przenieść do BaseApiService
-  //  constructor(private http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-  //   this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-  //  }
-
 
   httpOptions = {
     headers: new HttpHeaders({
