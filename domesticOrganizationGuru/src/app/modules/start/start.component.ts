@@ -4,7 +4,7 @@ import { CreateNotesPackDto } from './../../services/service-proxy/service-proxy
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { ConfigurationApiService } from 'src/app/services/api/configuration-api.service';
 import { Store } from '@ngrx/store';
 
@@ -20,8 +20,8 @@ import { NoteSettingsState } from 'src/app/state/states/settings/settings.intefa
 export class StartComponent implements OnInit {
   initialExpirationSpan = 0;
 
-  noteName = new FormControl('');
-  joinSessionByName = new FormControl('');
+  noteName = new FormControl('', [Validators.minLength(1), Validators.maxLength(100)]);
+  joinSessionByName = new FormControl('', [Validators.minLength(1), Validators.maxLength(100)]);
 
   hubHelloMessage: string ="";
 

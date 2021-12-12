@@ -1,10 +1,9 @@
 <mat-card class="todocard">
   <mat-list role="list">
-
     <mat-toolbar *ngFor="let item of toDoList | async;" class="todoitem" color="primary">
       <mat-toolbar-row>
         <span [ngClass]="{'done-true': item.isComplete}">{{item.noteText}}</span>
-        <span class="example-spacer"></span>
+        <span class="todo-spacer"></span>
         <mat-icon (click)="markItemAsDone(item)" class="btn" *ngIf="!item.isComplete">check</mat-icon>
         <mat-icon (click)="markItemAsNotDone(item)" class="btn" *ngIf="item.isComplete">undo</mat-icon>
         <mat-icon (click)="editItem(item)" class="btn">edit</mat-icon>
@@ -13,12 +12,13 @@
     </mat-toolbar>
 
   </mat-list>
-  <form class="example-form">
-    <mat-form-field class="full-width">
-      <input matInput required placeholder="Enter To do" class="textareafull" [(ngModel)]="noteInput"
-        name="noteText">
+  <form class="todo-form">
+    <mat-form-field class="full-width" hintLabel="Max 100 characters">
+      <input matInput placeholder="Enter To do" class="textareafull" [(ngModel)]="noteInput" name="noteText"
+        maxlength="10">
+      <mat-hint align="end">{{countLength()}}/100</mat-hint>
     </mat-form-field>
-    <span class="example-spacer"></span>
+    <span class="todo-spacer"></span>
     <button mat-button (click)="addNewItem()" *ngIf="!editValue">Add</button>
     <button mat-button (click)="saveChangedItem()" *ngIf="editValue">Save</button>
   </form>
