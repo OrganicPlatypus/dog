@@ -5,12 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DomesticOrganizationGuru.Api.Tests
+namespace DomesticOrganizationGuru.Api.Tests.SignalRhub
 {
     public class NotesHubTests
     {
         [Fact]
-          public async Task NotesHub_ConnectToDistributionGroup_Tests()
+        public async Task NotesHub_ConnectToDistributionGroup_Tests()
         {
             // Arrange
             const string GroupName = "Test group";
@@ -33,7 +33,7 @@ namespace DomesticOrganizationGuru.Api.Tests
             await notesHub.CreateGroup(GroupName);
 
             // Assert
-            groupManagerMock.Verify(x=>x.AddToGroupAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
+            groupManagerMock.Verify(x => x.AddToGroupAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

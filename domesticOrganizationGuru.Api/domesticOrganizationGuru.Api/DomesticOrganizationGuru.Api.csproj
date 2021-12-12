@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -25,6 +25,7 @@
     <ProjectReference Include="..\domesticOrganizationGuru.Redis\domesticOrganizationGuru.Redis.csproj" />
     <ProjectReference Include="..\domesticOrganizationGuru.Repository\domesticOrganizationGuru.Repository.csproj" />
     <ProjectReference Include="..\domesticOrganizationGuru.SignalR\domesticOrganizationGuru.SignalR.csproj" />
+    <ProjectReference Include="..\domesticOrganizationGuru.Validation\domesticOrganizationGuru.Validation.csproj" />
   </ItemGroup>
 
 </Project>

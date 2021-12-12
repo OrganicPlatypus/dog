@@ -1,9 +1,9 @@
-.example-header-image {
+.todo-header-image {
   background-image: url("/assets/img/dog.jpg");
   background-size: cover;
 }
 
-.example-spacer {
+.todo-spacer {
   flex: 1 1 auto;
 }
 
@@ -12,4 +12,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.add-note .mat-form-field + .mat-form-field {
+  margin-left: 8px;
 }

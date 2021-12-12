@@ -106,6 +106,10 @@ export class ToDoListComponent implements OnInit {
       this.updateSource();
     }
   }
+  countLength(): string{
+    return this.noteInput ? this.noteInput?.length.toString() : "0";
+
+  }
 
   private updateSource() {
     const updateNoteRequestDto = <UpdateNoteRequestDto>{

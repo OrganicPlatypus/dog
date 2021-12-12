@@ -5,7 +5,7 @@ using domesticOrganizationGuru.Entities;
 using DomesticOrganizationGuru.Api.Tests.TestData;
 using Xunit;
 
-namespace DomesticOrganizationGuru.Api.Tests
+namespace DomesticOrganizationGuru.Api.Tests.Mappings
 {
     public class MapperConfigurationsTests
     {
@@ -24,7 +24,8 @@ namespace DomesticOrganizationGuru.Api.Tests
         public void NotesPackMapperProfile_Configuration_IsValid()
         {
             //Arrange
-            var config = new MapperConfiguration(cfg => {
+            var config = new MapperConfiguration(cfg =>
+            {
                 cfg.AddProfile<NotesPackMapperProfile>();
                 cfg.AddProfile<NoteMapperProfile>();
             });
@@ -39,7 +40,8 @@ namespace DomesticOrganizationGuru.Api.Tests
         public void NotesPackMapperProfile_UpdateNoteRequestDto_Example_Test(UpdateNoteRequestDto updateNoteRequestDto)
         {
             //Arrange
-            var config = new MapperConfiguration(cfg => {
+            var config = new MapperConfiguration(cfg =>
+            {
                 cfg.AddProfile<NotesPackMapperProfile>();
                 cfg.AddProfile<NoteMapperProfile>();
             });
@@ -62,7 +64,8 @@ namespace DomesticOrganizationGuru.Api.Tests
         public void NotesPackMapperProfile_NotesPack_Example_Test()
         {
             //Arrange
-            var config = new MapperConfiguration(cfg => {
+            var config = new MapperConfiguration(cfg =>
+            {
                 cfg.AddProfile<NotesPackMapperProfile>();
                 cfg.AddProfile<NoteMapperProfile>();
             });

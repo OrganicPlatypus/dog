@@ -9,7 +9,7 @@ using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DomesticOrganizationGuru.Api.Tests
+namespace DomesticOrganizationGuru.Api.Tests.Services
 {
 
     public class NotesServiceTests
@@ -48,7 +48,7 @@ namespace DomesticOrganizationGuru.Api.Tests
                     }
             };
 
-            _mockNotesRepository.Setup(x => 
+            _mockNotesRepository.Setup(x =>
                 x.GetNote(It.IsAny<string>()))
                 .ReturnsAsync(notesPack)
                 .Verifiable();
