@@ -17,7 +17,7 @@ namespace DomesticOrganizationGuru.Api.Tests.TestData
                         IsComplete = false,
                     },
                 ValidationMessages.NoteEmptyInformation
-        };
+            };
 
             yield return new object[]
             {
