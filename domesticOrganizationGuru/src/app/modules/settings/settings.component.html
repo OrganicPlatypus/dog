@@ -1,3 +1,29 @@
-<p>
-  settings works!
-</p>
+<div class="dialog-background-scrim" *ngIf="openMenu">
+</div>
+
+<circular-button (click)="clickMenu()" class="menu-button">
+  <div class="position-in-circular-button">
+    <mat-icon *ngIf="!openMenu">settings</mat-icon>
+    <mat-icon *ngIf="openMenu">close</mat-icon>
+  </div>
+</circular-button>
+
+<div *ngIf="openMenu" class="settings-card edit-settings mat-elevation-z5">
+  <p class="settings-title-text">d.o.g:: settings;</p>
+  <div class="container settings-container">
+    <span class="setting-label item">
+      <p class="settings-label-text">Notes expiriation time (minutes):</p>
+    </span>
+
+    <div class="divider"></div>
+    <div class="container item">
+      <form>
+        <input class="settings-input" [formControl]="expiriationMinutes" name="expiriationMinutes" #input max=60>
+      </form>
+      <div class="divider"></div>
+      <div class="mr-0">
+        <button class="button" (click)="updateExpiriationTime()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

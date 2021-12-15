@@ -1,29 +1,19 @@
-<div class="home-frame">
-  <mat-card class="todocard" class="mat-elevation-z5">
-    <mat-card-header>
-      <div mat-card-avatar class="todo-header-image"></div>
-      <mat-card-title>D.O.G.</mat-card-title>
-      <mat-card-subtitle>Domestic Organization Guru</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <form class="add-note">
-        <mat-form-field class="full-width" hintLabel="Max 100 characters">
-          <input matInput placeholder="Podaj nazwę notatki" class="textareafull" [formControl]="noteName" #input maxlength="100"
-            name="nameNote">
-            <mat-hint align="end">{{input.value?.length || 1}}/100</mat-hint>
-        </mat-form-field>
-        <span class="todo-spacer"></span>
-        <button mat-button type="submit" (click)="createNotePack()">Utwórz notatkę</button>
+<div class="main-box">
+  <p class="title-text">D.O.G:: domesticOrganizationGuru;</p>
+</div>
+
+<div class="main-box">
+  <form>
+    <div class="input-line-position">
+      <form>
+        <input placeholder="Note name" class="input-line" [formControl]="noteName" #input maxlength="100"
+          name="nameNote">
+        <button type="submit" class="button" (click)="createNotePack()">Create Note</button>
       </form>
-      <form class="add-note">
-        <mat-form-field class="full-width" hintLabel="Max 100 characters">
-          <input matInput placeholder="Dołącz do notatek o nazwie" class="textareafull"
-            [formControl]="joinSessionByName" name="joinSessionByName"  #input maxlength="100">
-            <mat-hint align="end">{{input.value?.length || 1}}/100</mat-hint>
-        </mat-form-field>
-        <span class="todo-spacer"></span>
-        <button mat-button type="submit" (click)="joinSession()">Dołącz do notowania</button>
-      </form>
-    </mat-card-content>
-  </mat-card>
+    </div>
+    <form>
+      <input placeholder="Existing session name" [formControl]="joinSessionByName" name="joinSessionByName" maxlength="100">
+      <button type="submit" class="button" (click)="joinSession()">Join session</button>
+    </form>
+  </form>
 </div>

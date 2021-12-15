@@ -73,6 +73,7 @@ export class ToDoListComponent implements OnInit {
     if (this.noteInput && this.noteInput !== ""){
       this.toDoService.addItem(new TodoItem(this.noteInput));
       this.updateSource();
+      this.noteInput = "";
     }
   }
 

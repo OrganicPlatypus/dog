@@ -1,8 +1,10 @@
+@import "./app/shared/style/colors.scss";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 html,
 body {
   height: 100%;
+  background-color: $mainBackgroundColor;
 }
 body {
   margin: 0;
@@ -14,7 +16,7 @@ body {
 }
 
 .full-width{
-  width: 80%;
+  //width: 80%;
   margin-top:20px;
 }
 
