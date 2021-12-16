@@ -1,5 +1,7 @@
-﻿using domesticOrganizationGuru.Common.Dto;
+﻿using domesticOrganizationGuru.Common.CustomExceptions;
+using domesticOrganizationGuru.Common.Dto;
 using DomesticOrganizationGuru.Api.Application.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net;
@@ -21,19 +23,19 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         }
 
         [HttpPost]
-
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        //[ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        //[ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult<string>> CreateNotesPack([FromBody] CreateNotesPackDto updateNoteRequest)
         {
-            string noteName = await _notesService.CreateNote(updateNoteRequest);
-            return Ok(noteName);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> SaveNoteVoid([FromBody] UpdateNoteRequestDto updateNoteRequest)
-        {
-            await _notesService.SaveNote(updateNoteRequest);
-            return Ok();
+            try
+            {
+                string noteName = await _notesService.CreateNote(updateNoteRequest);
+                return Ok(noteName);
+            }
+            catch (CreateNotesException ex)
+            {
+                return UnprocessableEntity(ex.Data);
+            }
         }
 
         [HttpPut]
@@ -41,13 +43,6 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         {
             await _notesService.SaveNote(updateNoteRequest);
             return Ok();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<string>> UpdateNotesPackPost([FromBody] UpdateNoteRequestDto updateNoteRequest)
-        {
-            await _notesService.SaveNote(updateNoteRequest);
-            return Ok("przeszlo");
         }
 
         [HttpGet]

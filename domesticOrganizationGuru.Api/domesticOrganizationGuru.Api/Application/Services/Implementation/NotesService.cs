@@ -3,6 +3,7 @@ using domesticOrganizationGuru.Common.CustomExceptions;
 using domesticOrganizationGuru.Common.Dto;
 using domesticOrganizationGuru.Entities;
 using domesticOrganizationGuru.Repository;
+using System;
 using System.Threading.Tasks;
 using static domesticOrganizationGuru.Common.Helpers.SecurityHelper;
 
@@ -64,7 +65,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 await _notesRepository.CreateNote(rawNote);
                 return noteName;
             }
-            catch
+            catch(Exception ex)
             {
                 throw new CreateNotesException(noteName);
             }

@@ -3,8 +3,7 @@ import * as ApiServiceProxies from './service-proxy'
 
 @NgModule({
   providers: [
-    ApiServiceProxies.OrganizerServiceProxy
-
+    ApiServiceProxies.Client
   ],
 })
 export class ServiceProxyModule { }
