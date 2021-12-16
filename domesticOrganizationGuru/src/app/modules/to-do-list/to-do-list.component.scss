@@ -1,24 +1,61 @@
-@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@import "../../shared/style/baseStyle.scss";
+@import "../../shared/style/lineOrganization.scss";
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
-.btn{
+.list-spacing{
+  margin-bottom: 10px;
+}
+.landing-row {
+  border: 1px solid black;
+
+  box-shadow: 2px 2px 1px #9d5aaac0, 2px 2px 1px 1px black;
+  background: $baseShadow;
+  display: inline-flex;
+}
+
+.finished-landing-row {
+  border: 1px solid black;
+  box-shadow: 2px 2px 1px #278f07c0, 2px 2px 1px 1px black;
+  background: #4467c9c0;
+  display: inline-flex;
+  opacity: 0.5;
+}
+
+.note-text{
+  width: auto;
+  margin-left: auto;
+  display: inline-block;
+}
+
+.mr-0{
+  width: 20%;
+  margin-right: 0;
+  display: inline-block;
+}
+
+.button-pointer{
   cursor: pointer;
 }
 .full-width{
-  width: 80%;
+  //width: 80%;
   margin-top:20px;
 }
 .todo-spacer {
   flex: 1 1 auto;
 }
-.todoitem{
+.todo-item-spacing{
   margin: 5px 0;
   color:#fff;
   text-overflow: ellipsis
 }
 .done-true{
-  text-decoration: line-through #d50000;
+  text-decoration: line-through #1c8f35;
 }
 .done-false{
   text-decoration: none;
+}
+
+.todo-card{
+  padding-right: 20%;
+  width: 1000px;
 }

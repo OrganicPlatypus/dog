@@ -9,6 +9,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 export class BaseApiService {
 
   handleError(error: any) {
+    console.log('error = ', error);
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {
       errorMessage = error.error.message;

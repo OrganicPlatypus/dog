@@ -14,12 +14,15 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers } from './state/app.state';
 import { API_SIGNALR_URL, NotesSignalService } from './services/signalR/notes.signal.service';
 import { API_BASE_URL, BaseApiService } from './services/api/baseApi/baseApi.service';
+import { SettingsComponent } from './modules/settings/settings.component';
+import { ServiceProxyModule } from './services/service-proxy/service-proxy.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     StartComponent,
-    ToDoListComponent
+    ToDoListComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +32,7 @@ import { API_BASE_URL, BaseApiService } from './services/api/baseApi/baseApi.ser
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    ServiceProxyModule,
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({
       name: 'Domestic Organization Guru',

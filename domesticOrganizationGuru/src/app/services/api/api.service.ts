@@ -31,15 +31,6 @@ export class OrganizerApiService extends BaseApiService {
     )
   }
 
-
-  saveNote(noteDto: UpdateNoteRequestDto): Observable<UpdateNoteRequestDto> {
-    return this.http.post<UpdateNoteRequestDto>(`${this.baseUrl}/api/Organizer/SaveNote`, JSON.stringify(noteDto), this.httpOptions)
-    .pipe(
-      retry(1),
-      catchError(this.handleError)
-  )}
-
-
   updateNotePack(noteDto: UpdateNoteRequestDto): Observable<void> {
     const options: Object = {
       headers: new HttpHeaders({

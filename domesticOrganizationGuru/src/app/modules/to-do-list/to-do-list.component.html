@@ -1,29 +1,30 @@
-<mat-card class="todocard">
-  <mat-list role="list">
-    <mat-toolbar *ngFor="let item of toDoList | async;" class="todoitem" color="primary">
-      <mat-toolbar-row>
-        <span [ngClass]="{'done-true': item.isComplete}">{{item.noteText}}</span>
-        <span class="todo-spacer"></span>
-        <mat-icon (click)="markItemAsDone(item)" class="btn" *ngIf="!item.isComplete">check</mat-icon>
-        <mat-icon (click)="markItemAsNotDone(item)" class="btn" *ngIf="item.isComplete">undo</mat-icon>
-        <mat-icon (click)="editItem(item)" class="btn">edit</mat-icon>
-        <mat-icon (click)="deleteNoteItem(item)" class="btn">delete</mat-icon>
+<div class="main-box">
+  <mat-list role="list" class="list-spacing">
+    <mat-toolbar *ngFor="let item of toDoList | async;" class="todo-item-spacing">
+      <mat-toolbar-row [ngClass]="{'finished-landing-row': item.isComplete}" class="landing-row container">
+        <span [ngClass]="{'done-true': item.isComplete}" class="item">{{item.noteText}}</span>
+        <div class=divider></div>
+        <div class="mr-0 item">
+          <mat-icon (click)="markItemAsDone(item)" class="button-pointer" *ngIf="!item.isComplete">check</mat-icon>
+          <mat-icon (click)="markItemAsNotDone(item)" class="button-pointer" *ngIf="item.isComplete">undo</mat-icon>
+          <mat-icon (click)="editItem(item)" class="button-pointer">edit</mat-icon>
+          <mat-icon (click)="deleteNoteItem(item)" class="button-pointer">delete</mat-icon>
+        </div>
       </mat-toolbar-row>
     </mat-toolbar>
-
   </mat-list>
-  <form class="todo-form">
-    <mat-form-field class="full-width" hintLabel="Max 100 characters">
+  <div class="input-line-position">
+    <form>
       <input matInput placeholder="Enter To do" class="textareafull" [(ngModel)]="noteInput" name="noteText"
-        maxlength="10">
-      <mat-hint align="end">{{countLength()}}/100</mat-hint>
-    </mat-form-field>
-    <span class="todo-spacer"></span>
-    <button mat-button (click)="addNewItem()" *ngIf="!editValue">Add</button>
-    <button mat-button (click)="saveChangedItem()" *ngIf="editValue">Save</button>
+        maxlength="100">
+    <button class="button" (click)="addNewItem()" *ngIf="!editValue">Add</button>
+    <button class="button" (click)="saveChangedItem()" *ngIf="editValue">Save</button>
+  <div class="input-line-position">
+    <p>{{countLength()}}/100 characters.</p>
+    </div>
   </form>
-
+  </div>
   <br>
-
-</mat-card>
+</div>
+<notes-settings></notes-settings>
 
