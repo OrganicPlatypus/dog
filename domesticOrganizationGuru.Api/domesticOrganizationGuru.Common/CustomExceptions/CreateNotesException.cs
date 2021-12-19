@@ -5,7 +5,7 @@ namespace domesticOrganizationGuru.Common.CustomExceptions
     [Serializable]
     public class CreateNotesException : Exception
     {
-        public string StudentName { get; }
+        public string NoteName { get; }
 
         public CreateNotesException() { }
 

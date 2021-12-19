@@ -1,6 +1,6 @@
 import { NotesSignalService } from './../../services/signalR/notes.signal.service';
 import { TodoItem } from './../to-do-list/models/to-do';
-import { Client, CreateNotesPackDto } from './../../services/service-proxy/service-proxy';
+import { Client, CreateNotesPackDto } from '../../services/api/service-proxy/service-proxy';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -53,20 +53,8 @@ export class StartComponent implements OnInit {
           this.signalrService.joinGroup(noteName);
           this.router.navigate(['/to-do']);
         });
+    this.noteName.setValue('');
   }
-
-  // public createNotePack() {
-  //   const notesPack: CreateNotesPackDto = <CreateNotesPackDto> {
-  //     expirationMinutesRange: this.initialExpirationSpan,
-  //     noteName: this.noteName.value
-  //   }
-  //   this.nswagServiceProxy.createNotesPack(notesPack)
-  //       .subscribe((noteName) => {
-  //         this.store.dispatch(SettingsActions.setNoteNameAction({noteName : noteName}))
-  //         this.signalrService.joinGroup(noteName);
-  //         this.router.navigate(['/to-do']);
-  //       });
-  // }
 
   public joinSession(){
     const sessionName = this.joinSessionByName.value;
@@ -86,5 +74,6 @@ export class StartComponent implements OnInit {
             this.router.navigate(['/to-do']);
           }
         });
+    this.joinSessionByName.setValue('');
   }
 }

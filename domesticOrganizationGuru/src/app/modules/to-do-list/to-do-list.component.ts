@@ -1,7 +1,7 @@
 import { NotesSignalService } from './../../services/signalR/notes.signal.service';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
-import { UpdateNoteRequestDto } from 'src/app/services/service-proxy/service-proxy';
+import { UpdateNoteRequestDto } from 'src/app/services/api/service-proxy/service-proxy';
 import { TodoItem } from './models/to-do';
 import { ToDoService } from './services/to-do-service.service';
 import { Store } from '@ngrx/store';
@@ -22,7 +22,7 @@ export class ToDoListComponent implements OnInit {
 
   editValue: boolean = false;
 
-  notesPackName: string = "";
+  notesPackName: string = '';
   notesLifespan: number = 0;
 
 
@@ -38,7 +38,6 @@ export class ToDoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.toDoList = this.toDoService.getToDoList();
     //TODO: dodać guarda z przekierowaniem na landing page jeżeli w storze nie ma dodanej nazwy notatek.
 
     zip(
@@ -47,7 +46,6 @@ export class ToDoListComponent implements OnInit {
     )
     .subscribe(
       noteSettings => {
-        console.log('ngOnInit ToDoListComponent')
         this.notesPackName = noteSettings[0]!
         this.notesLifespan = noteSettings[1]!
       }

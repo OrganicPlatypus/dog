@@ -1,20 +1,19 @@
-import { BaseApiService } from './baseApi/baseApi.service';
-import { CreateNotesPackDto, NotesSessionDto, UpdateNoteRequestDto } from '../service-proxy/service-proxy';
-import { Injectable, InjectionToken } from '@angular/core';
+import { CreateNotesPackDto, NotesSessionDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class OrganizerApiService extends BaseApiService {
+export class OrganizerApiService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpClient) {
-    super();
+  constructor(
+    private http: HttpClient
+    ) {
     this.baseUrl = "https://localhost:44365";
    }
 
@@ -25,10 +24,7 @@ export class OrganizerApiService extends BaseApiService {
   }
 
   joinTheNote(key: string): Observable<NotesSessionDto> {
-    return this.http.get<NotesSessionDto>(`${this.baseUrl}/join/${key}`)
-    .pipe(
-      catchError(this.handleError)
-    )
+    return this.http.get<NotesSessionDto>(`${this.baseUrl}/join/${key}`);
   }
 
   updateNotePack(noteDto: UpdateNoteRequestDto): Observable<void> {
@@ -38,9 +34,7 @@ export class OrganizerApiService extends BaseApiService {
       })
     }
 
-    return this.http.put<void>(`${this.baseUrl}/api/Organizer/UpdateNotesPack`, noteDto, options).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.put<void>(`${this.baseUrl}/api/Organizer/UpdateNotesPack`, noteDto, options);
   }
 
   createNote(noteDto: CreateNotesPackDto): Observable<string>  {
@@ -51,10 +45,6 @@ export class OrganizerApiService extends BaseApiService {
       }),
       responseType: 'text' as const
     }
-
-    return this.http.post<string>(`${this.baseUrl}/api/Organizer/CreateNotesPack`, noteDto, options)
-    .pipe(
-        catchError(this.handleError)
-    );
+    return this.http.post<string>(`${this.baseUrl}/api/Organizer/CreateNotesPack`, noteDto, options);
   }
 }

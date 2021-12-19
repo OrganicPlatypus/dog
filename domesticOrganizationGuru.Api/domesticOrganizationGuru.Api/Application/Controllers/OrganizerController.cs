@@ -23,19 +23,12 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         }
 
         [HttpPost]
-        //[ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-        //[ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult<string>> CreateNotesPack([FromBody] CreateNotesPackDto updateNoteRequest)
         {
-            try
-            {
-                string noteName = await _notesService.CreateNote(updateNoteRequest);
-                return Ok(noteName);
-            }
-            catch (CreateNotesException ex)
-            {
-                return UnprocessableEntity(ex.Data);
-            }
+            string noteName = await _notesService.CreateNote(updateNoteRequest);
+            return Ok(noteName);
         }
 
         [HttpPut]
