@@ -1,5 +1,5 @@
 import { environment } from './../environments/environment';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,7 +15,9 @@ import { reducers } from './state/app.state';
 import { API_SIGNALR_URL, NotesSignalService } from './services/signalR/notes.signal.service';
 import { API_BASE_URL, BaseApiService } from './services/api/baseApi/baseApi.service';
 import { SettingsComponent } from './modules/settings/settings.component';
-import { ServiceProxyModule } from './services/service-proxy/service-proxy.module';
+import { ServiceProxyModule } from './services/api/service-proxy/service-proxy.module';
+import { ToastrModule } from 'ngx-toastr';
+import { HandleErrorsInterceptor } from './services/error-handler/handle-errors-interceptor';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,9 @@ import { ServiceProxyModule } from './services/service-proxy/service-proxy.modul
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 5000
+    }),
     HttpClientModule,
     ServiceProxyModule,
     StoreModule.forRoot(reducers),
@@ -49,6 +54,11 @@ import { ServiceProxyModule } from './services/service-proxy/service-proxy.modul
     {
       provide: API_BASE_URL,
       useValue: environment.apiBaseUrl
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HandleErrorsInterceptor,
+      multi: true
     }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

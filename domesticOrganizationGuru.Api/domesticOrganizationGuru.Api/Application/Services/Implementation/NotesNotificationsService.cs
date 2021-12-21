@@ -1,4 +1,5 @@
-﻿using domesticOrganizationGuru.Common.Dto;
+﻿using domesticOrganizationGuru.Common.CustomExceptions;
+using domesticOrganizationGuru.Common.Dto;
 using domesticOrganizationGuru.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
@@ -16,7 +17,14 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
         public async Task UpdateGroupNotesAsync(string messageName, string groupeName, string connectionId, NoteDto[] notesPack)
         {
-            await _hubContext.Clients.GroupExcept(groupeName, connectionId).SendAsync(messageName, notesPack);
+            try
+            {
+                await _hubContext.Clients.GroupExcept(groupeName, connectionId).SendAsync(messageName, notesPack);
+            }
+            catch
+            {
+                throw new NotAbleToDistributeToGroupException(groupeName);
+            }
         }
     }
 }

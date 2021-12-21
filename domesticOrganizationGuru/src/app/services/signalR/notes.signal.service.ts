@@ -1,7 +1,7 @@
 import { setExistingNotesAction } from './../../state/states/notes/notes.actions';
 import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 import { TodoItem } from './../../modules/to-do-list/models/to-do';
-import { NoteDto, UpdateNoteRequestDto } from 'src/app/services/service-proxy/service-proxy';
+import { NoteDto, UpdateNoteRequestDto } from 'src/app/services/api/service-proxy/service-proxy';
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import * as signalR from "@microsoft/signalr";
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -27,13 +27,6 @@ export class NotesSignalService {
     this.hubHelloMessage = new BehaviorSubject<string>("");
     this.currentNotesState = new BehaviorSubject<UpdateNoteRequestDto>(new UpdateNoteRequestDto());
    }
-
-
-   private setSignalrClientMethods(): void {
-    this.connection.on('DisplayMessage', (message: string) => {
-      this.hubHelloMessage.next(message);
-    });
-    }
 
   public subscribeOnCurrentlyUpdateNote(): void {
     let notesDto: NoteDto[] | undefined = undefined;
@@ -71,7 +64,6 @@ export class NotesSignalService {
       this.connection
         .start()
         .then(() => {
-          console.log(`SignalR connection success! connectionId: ${this.connection.connectionId} `);
         })
         .catch((error) => {
           console.log(`Error while starting connection: ${error}`);

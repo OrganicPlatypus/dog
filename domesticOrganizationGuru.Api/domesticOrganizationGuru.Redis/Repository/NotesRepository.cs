@@ -43,19 +43,19 @@ namespace DomesticOrganizationGuru.Api.Repositories.Implementation
             return notesPack;
         }
 
-        public async Task UpdateNote(NotesPack notesPack)
+        public async Task<bool> UpdateNote(NotesPack notesPack)
         {
-
             RedisValue note = _redisCache.Get(notesPack.Password);
             if (!note.HasValue)
             {
-                throw new Exception();
+                return false;
             }
             var expiryTimeSpan = new DistributedCacheEntryOptions
             {
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(notesPack.ExpirationMinutesRange)
             };
             await _redisCache.SetStringAsync(notesPack.Password, JsonSerializer.Serialize(notesPack), expiryTimeSpan);
+            return true;
         }
 
         public async Task DeleteNote(string identifier)

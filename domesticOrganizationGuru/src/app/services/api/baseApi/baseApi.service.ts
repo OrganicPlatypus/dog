@@ -1,22 +1,13 @@
-import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
-import { throwError } from 'rxjs';
+import { Inject, Injectable, InjectionToken, Optional, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable({
   providedIn: 'root'
 })
-export class BaseApiService {
+export class BaseApiService{
 
-  handleError(error: any) {
-    console.log('error = ', error);
-    let errorMessage = '';
-    if(error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    window.alert(errorMessage);
-    return throwError(errorMessage);
- }
+  constructor(public toastr: ToastrService) {
+  }
 }

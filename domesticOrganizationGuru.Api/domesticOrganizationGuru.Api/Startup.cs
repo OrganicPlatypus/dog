@@ -1,5 +1,6 @@
 using domesticOrganizationGuru.SignalR;
 using domesticOrganizationGuru.Validation.Registration;
+using DomesticOrganizationGuru.Api.StartupKernel;
 using DomesticOrganizationGuru.Api.StartupKernel.RegisterMappers;
 using DomesticOrganizationGuru.Api.StartupKernel.RegistraterUtilityContainers;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using static DomesticOrganizationGuru.Api.StartupKernel.RegistraterUtilityContainers.ValidationErrorsHelper.ValidationErrorsCustomResponseHelper;
 
 namespace domesticOrganizationGuru.Api
 {
@@ -36,7 +38,17 @@ namespace domesticOrganizationGuru.Api
             services.AddSignalR();
 
             services
-                .AddControllers()
+                .AddControllers(options =>
+                {
+                    options.Filters.Add<HttpResponseExceptionFilter>();
+                })
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = actionContext =>
+                    {
+                        return ValidationErrorsResponse(actionContext);
+                    };
+                })
                 .RegisterValidators();
 
             services.AddSwaggerGen(c =>
@@ -58,7 +70,7 @@ namespace domesticOrganizationGuru.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "domesticOrganizationGuru.Api v1"));
             }
