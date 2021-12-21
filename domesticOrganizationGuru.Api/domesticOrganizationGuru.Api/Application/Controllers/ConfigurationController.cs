@@ -9,11 +9,11 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
     [Route("api/[controller]/[action]")]
     public class ConfigurationController : ControllerBase
     {
-        private readonly ILogger<OrganizerController> _logger;
+        private readonly ILogger _logger;
 
-        public ConfigurationController(ILogger<OrganizerController> logger)
+        public ConfigurationController(ILoggerFactory factory)
         {
-            _logger = logger;
+            _logger = factory.CreateLogger("Initial settings");
         }
 
         [HttpGet]
@@ -21,6 +21,8 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         public ActionResult<int> LandingConfiguration()
         {
             var initialExpirationSpan = ExpirationSpan.InitialNumberOfMinutes;
+
+            _logger.LogDebug(string.Format($"Initial settings were applied. {initialExpirationSpan} of expiriation span"));
 
             return Ok(initialExpirationSpan);
         }

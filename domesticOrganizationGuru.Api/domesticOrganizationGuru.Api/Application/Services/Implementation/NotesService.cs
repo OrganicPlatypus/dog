@@ -3,7 +3,7 @@ using domesticOrganizationGuru.Common.CustomExceptions;
 using domesticOrganizationGuru.Common.Dto;
 using domesticOrganizationGuru.Entities;
 using domesticOrganizationGuru.Repository;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using static domesticOrganizationGuru.Common.Helpers.SecurityHelper;
 
@@ -14,6 +14,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
         private readonly INotesRepository _notesRepository;
         private readonly INotesNotificationsService _notesNotificationsService;
         private readonly IMapper _mapper;
+        private readonly ILogger<NotesService> _logger;
 
         public NotesService(
             INotesRepository notesRepository,

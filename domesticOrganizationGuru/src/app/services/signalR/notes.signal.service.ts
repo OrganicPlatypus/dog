@@ -66,7 +66,7 @@ export class NotesSignalService {
         .then(() => {
         })
         .catch((error) => {
-          console.log(`Error while starting connection: ${error}`);
+          console.warn(`Error while starting connection: ${error}`);
           setTimeout(this.startConnection.bind(this), 5000);
         });
     }

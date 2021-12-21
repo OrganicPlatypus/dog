@@ -12,13 +12,11 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
     [Route("api/[controller]/[action]")]
     public class OrganizerController : ControllerBase
     {
-        private readonly ILogger<OrganizerController> _logger;
         private readonly INotesService _notesService;
 
-        public OrganizerController(INotesService notesService, ILogger<OrganizerController> logger)
+        public OrganizerController(INotesService notesService)
         {
             _notesService = notesService;
-            _logger = logger;
         }
 
         /// <summary>
