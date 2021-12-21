@@ -122,9 +122,14 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             };
 
+            //_mockNotesRepository
+            //    .Setup(x => x.UpdateNote(It.IsAny<NotesPack>()))
+            //    .Returns(Task.CompletedTask)
+            //    .Verifiable();
+
             _mockNotesRepository
                 .Setup(x => x.UpdateNote(It.IsAny<NotesPack>()))
-                .Returns(Task.CompletedTask)
+                .ReturnsAsync(true)
                 .Verifiable();
 
             string groupNameReturn = "";

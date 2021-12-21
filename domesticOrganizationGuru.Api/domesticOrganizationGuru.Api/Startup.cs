@@ -1,21 +1,15 @@
-using domesticOrganizationGuru.Common.CustomExceptions;
 using domesticOrganizationGuru.SignalR;
 using domesticOrganizationGuru.Validation.Registration;
 using DomesticOrganizationGuru.Api.StartupKernel;
 using DomesticOrganizationGuru.Api.StartupKernel.RegisterMappers;
 using DomesticOrganizationGuru.Api.StartupKernel.RegistraterUtilityContainers;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System.Linq;
-using static System.Net.Mime.MediaTypeNames;
+using static DomesticOrganizationGuru.Api.StartupKernel.RegistraterUtilityContainers.ValidationErrorsHelper.ValidationErrorsCustomResponseHelper;
 
 namespace domesticOrganizationGuru.Api
 {
@@ -47,21 +41,15 @@ namespace domesticOrganizationGuru.Api
                 .AddControllers(options =>
                 {
                     options.Filters.Add<HttpResponseExceptionFilter>();
-                }).ConfigureApiBehaviorOptions(options =>
-                {
-                    options.InvalidModelStateResponseFactory = context =>
-                        new BadRequestObjectResult(context.ModelState)
-                        {
-                            ContentTypes =
-                            {
-                                // using static System.Net.Mime.MediaTypeNames;
-                                Application.Json,
-                                Application.Xml
-                            }
-                        };
                 })
-                .RegisterValidators()
-                ;
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = actionContext =>
+                    {
+                        return ValidationErrorsResponse(actionContext);
+                    };
+                })
+                .RegisterValidators();
 
             services.AddSwaggerGen(c =>
             {

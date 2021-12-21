@@ -23,6 +23,39 @@ namespace DomesticOrganizationGuru.Api.StartupKernel
 
                 context.ExceptionHandled = true;
             }
+
+            if (context.Exception is NoteNotFoundException noteNotFoundException)
+            {
+                context.Result = new ObjectResult(noteNotFoundException.NoteName)
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Value = noteNotFoundException.Message
+                };
+
+                context.ExceptionHandled = true;
+            }
+
+            if (context.Exception is NotAbleToDistributeToGroupException notDistributedException)
+            {
+                context.Result = new ObjectResult(notDistributedException.NoteName)
+                {
+                    StatusCode = StatusCodes.Status503ServiceUnavailable,
+                    Value = notDistributedException.Message
+                };
+
+                context.ExceptionHandled = true;
+            }
+
+            if (context.Exception is UpdateNotesException updateException)
+            {
+                context.Result = new ObjectResult(updateException.NoteName)
+                {
+                    StatusCode = StatusCodes.Status422UnprocessableEntity,
+                    Value = updateException.Message
+                };
+
+                context.ExceptionHandled = true;
+            }
         }
     }
 }

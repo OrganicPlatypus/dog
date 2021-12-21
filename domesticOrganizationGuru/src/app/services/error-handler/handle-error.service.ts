@@ -11,6 +11,7 @@ constructor(private toaster: ToastrService) { }
 
   public handleError(error: HttpErrorResponse) {
     let errorMessage = '';
+    console.log(error)
     if(error.error instanceof ErrorEvent) {
       errorMessage = error.error.message;
     } else {

@@ -25,11 +25,19 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             _notesNotificationsService = notesNotificationsService;
         }
 
-        public async Task<NotesSessionDto> GetNotes(string key)
+        public async Task<NotesSessionDto> GetNotes(string noteName)
         {
-            string hashedPassword = StringSha256Hash(key);
-            NotesPack rawNootePack = await _notesRepository.GetNote(hashedPassword);
-
+            string hashedPassword = StringSha256Hash(noteName);
+            NotesPack rawNootePack;
+            //TODO: consider returning null
+            try
+            {
+                 rawNootePack = await _notesRepository.GetNote(hashedPassword);
+            }
+            catch(Exception)
+            {
+                throw new NoteNotFoundException(noteName);
+            }
             return _mapper.Map<NotesSessionDto>(rawNootePack);
         }
 
@@ -39,8 +47,13 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
             rawNote.Password = StringSha256Hash(updateNoteRequest.NoteName);
+            var isUpdated = await _notesRepository.UpdateNote(rawNote);
+            
+            if (!isUpdated)
+            {
+                throw new UpdateNotesException();
+            }
 
-            await _notesRepository.UpdateNote(rawNote);
             await _notesNotificationsService.UpdateGroupNotesAsync(
                 communicationChannel,
                 updateNoteRequest.NoteName,
@@ -65,7 +78,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 await _notesRepository.CreateNote(rawNote);
                 return noteName;
             }
-            catch(Exception ex)
+            catch
             {
                 throw new CreateNotesException(noteName);
             }

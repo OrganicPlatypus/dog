@@ -1,5 +1,4 @@
-﻿using domesticOrganizationGuru.Common.CustomExceptions;
-using domesticOrganizationGuru.Common.Dto;
+﻿using domesticOrganizationGuru.Common.Dto;
 using DomesticOrganizationGuru.Api.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +21,15 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Creates new note.
+        /// </summary>
+        /// <param name="updateNoteRequest"></param>
+        /// <returns>New note's name if successfuly created</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> CreateNotesPack([FromBody] CreateNotesPackDto updateNoteRequest)
         {
             string noteName = await _notesService.CreateNote(updateNoteRequest);
@@ -40,7 +45,8 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
 
         [HttpGet]
         [Route("/join/{keyInput}")]
-        [ProducesResponseType(typeof(NotesSessionDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(NotesSessionDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<NotesSessionDto>> GetNotes(string keyInput)
         {
             var note = await _notesService.GetNotes(keyInput);
