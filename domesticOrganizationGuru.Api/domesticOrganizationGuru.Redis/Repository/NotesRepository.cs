@@ -37,7 +37,7 @@ namespace DomesticOrganizationGuru.Api.Repositories.Implementation
             RedisValue note = await _redisCache.GetStringAsync(password);
 
             if (!note.HasValue)
-                throw new Exception();
+                return null;
 
             NotesPack notesPack = JsonSerializer.Deserialize<NotesPack>(note);
             return notesPack;

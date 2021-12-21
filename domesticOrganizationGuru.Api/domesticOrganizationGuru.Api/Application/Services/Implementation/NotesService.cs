@@ -28,16 +28,12 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
         public async Task<NotesSessionDto> GetNotes(string noteName)
         {
             string hashedPassword = StringSha256Hash(noteName);
-            NotesPack rawNootePack;
-            //TODO: consider returning null
-            try
-            {
-                 rawNootePack = await _notesRepository.GetNote(hashedPassword);
-            }
-            catch(Exception)
+            NotesPack rawNootePack = await _notesRepository.GetNote(hashedPassword);
+            if (rawNootePack == null)
             {
                 throw new NoteNotFoundException(noteName);
             }
+
             return _mapper.Map<NotesSessionDto>(rawNootePack);
         }
 
@@ -48,7 +44,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
             rawNote.Password = StringSha256Hash(updateNoteRequest.NoteName);
             var isUpdated = await _notesRepository.UpdateNote(rawNote);
-            
+
             if (!isUpdated)
             {
                 throw new UpdateNotesException();

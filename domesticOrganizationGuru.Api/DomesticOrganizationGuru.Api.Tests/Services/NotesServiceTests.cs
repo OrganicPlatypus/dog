@@ -1,11 +1,13 @@
 using AutoMapper;
 using domesticOrganizationGuru.AutoMapper.MappingProfiles;
+using domesticOrganizationGuru.Common.CustomExceptions;
 using domesticOrganizationGuru.Common.Dto;
 using domesticOrganizationGuru.Entities;
 using domesticOrganizationGuru.Repository;
 using DomesticOrganizationGuru.Api.Application.Services;
 using DomesticOrganizationGuru.Api.Application.Services.Implementation;
 using Moq;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -14,6 +16,8 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
     public class NotesServiceTests
     {
+        private const string NoteName = "CreateNewNote";
+
         private readonly Mock<INotesRepository> _mockNotesRepository;
         private readonly Mock<INotesNotificationsService> _mockNotesNotificationsService;
         private readonly IMapper _mapper;
@@ -40,13 +44,6 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 },
                 Password = "new name"
             };
-            NoteDto[] notesDto = new[] {
-                new NoteDto
-                    {
-                        IsComplete=true,
-                        NoteText="note",
-                    }
-            };
 
             _mockNotesRepository.Setup(x =>
                 x.GetNote(It.IsAny<string>()))
@@ -66,6 +63,40 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             Assert.Equal(notesPack.ExpirationMinutesRange, notesSessionDto.ExpirationMinutesRange);
             Assert.Equal(notesPack.Notes.Length, notesSessionDto.Notes.Length);
             Assert.True(notesPack.Notes.Length + notesSessionDto.Notes.Length >= 2);
+        }
+
+        [Fact]
+        public async Task GetNotes_NoNote_Test()
+        {
+            //Arrange
+            NotesPack notesPack = new()
+            {
+                ExpirationMinutesRange = 59,
+                Notes = new[] { new Note()
+                    {
+                        IsComplete = true,
+                        NoteText = string.Empty,
+                    }
+                },
+                Password = "new name"
+            };
+
+            _mockNotesRepository.Setup(x =>
+                x.GetNote(It.IsAny<string>()))
+                .ReturnsAsync(default(NotesPack))
+                .Verifiable();
+
+            _mockNotesNotificationsService.Setup(_ =>
+                _.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()));
+
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object);
+            Func<Task<NotesSessionDto>> getNote = () => notesService.GetNotes("anyName");
+
+            //Act
+
+            //Assert
+            await Assert.ThrowsAsync<NoteNotFoundException>(getNote);
+            _mockNotesRepository.Verify(m => m.GetNote(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -95,44 +126,43 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
         }
 
         [Fact]
-        public async Task UpdateNote_HappyPath_Test()
+        public async Task CreateNote_NotCreated_Test()
         {
-            //Arrange
-            const string noteName = "CreateNewNote";
-
-            CreateNotesPackDto createNotesPackDto = new()
+            CreateNotesPackDto createNotesPackDto = new CreateNotesPackDto()
             {
-                NoteName = noteName,
+                NoteName = "CreateNewNote",
                 ExpirationMinutesRange = 1
             };
 
-            UpdateNoteRequestDto updateNoteRequest = new()
-            {
-                NoteName = noteName,
-                NotesPack = new[]
-                {
-                    new NoteDto
-                    {
-                        IsComplete = true,
-                        NoteText = "Updated note"
-                    }
-                },
-                ExpirationMinutesRange = 999,
-                ConnectionId = "someConnectionId"
+            _mockNotesRepository
+                .Setup(x => x.CreateNote(It.IsAny<NotesPack>()))
+                .ThrowsAsync(new Exception())
+                .Verifiable();
 
-            };
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object);
 
-            //_mockNotesRepository
-            //    .Setup(x => x.UpdateNote(It.IsAny<NotesPack>()))
-            //    .Returns(Task.CompletedTask)
-            //    .Verifiable();
+            Func<Task<string>> createNote = () => notesService.CreateNote(createNotesPackDto);
+
+            //Act
+            
+            //Assert
+            await Assert.ThrowsAsync<CreateNotesException>(createNote);
+
+            _mockNotesRepository.Verify(c => c.CreateNote(It.IsAny<NotesPack>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task UpdateNote_HappyPath_Test()
+        {
+            //Arrange
+            UpdateNoteRequestDto updateNoteRequest = CreateUpdateRequestDto();
 
             _mockNotesRepository
                 .Setup(x => x.UpdateNote(It.IsAny<NotesPack>()))
                 .ReturnsAsync(true)
                 .Verifiable();
 
-            string groupNameReturn = "";
+            string groupNameReturn = string.Empty;
 
             _mockNotesNotificationsService
                 .Setup(x => x.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()))
@@ -140,7 +170,8 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 {
                     groupNameReturn = groupName;
                 })
-                .Returns(Task.CompletedTask).Verifiable();
+                .Returns(Task.CompletedTask)
+                .Verifiable();
 
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object);
 
@@ -156,6 +187,78 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .Verify(c => c.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()), Times.Once());
         }
 
+        [Fact]
+        public async Task UpdateNote_UnableToFindNotes_Test()
+        {
+            //Arrange
+            UpdateNoteRequestDto updateNoteRequest = CreateUpdateRequestDto();
+
+            _mockNotesRepository
+                .Setup(x => x.UpdateNote(It.IsAny<NotesPack>()))
+                .ReturnsAsync(false)
+                .Verifiable();
+
+            string groupNameReturn = string.Empty;
+
+            _mockNotesNotificationsService
+                .Setup(x => x.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()))
+                .Callback<string, string, string, NoteDto[]>((_, groupName, __, ___) =>
+                {
+                    groupNameReturn = groupName;
+                })
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object);
+
+            Func<Task> seveNote = () => notesService.SaveNote(updateNoteRequest);
+
+            //Act
+
+            //Assert
+            await Assert.ThrowsAsync<UpdateNotesException>(seveNote);
+            _mockNotesRepository
+                .Verify(c => c.UpdateNote(It.IsAny<NotesPack>()), Times.Once());
+            _mockNotesNotificationsService
+                .Verify(c => c.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()), Times.Never());
+        }
+
+        [Fact]
+        public async Task UpdateNote_Distribution_Test()
+        {
+            //Arrange
+            UpdateNoteRequestDto updateNoteRequest = CreateUpdateRequestDto();
+
+            _mockNotesRepository
+                .Setup(x => x.UpdateNote(It.IsAny<NotesPack>()))
+                .ReturnsAsync(false)
+                .Verifiable();
+
+            string groupNameReturn = string.Empty;
+
+            _mockNotesNotificationsService
+                .Setup(x => x.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()))
+                .Callback<string, string, string, NoteDto[]>((_, groupName, __, ___) =>
+                {
+                    groupNameReturn = groupName;
+                })
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object);
+
+            Func<Task> seveNote = () => notesService.SaveNote(updateNoteRequest);
+
+            //Act
+
+            //Assert
+            await Assert.ThrowsAsync<UpdateNotesException>(seveNote);
+            _mockNotesRepository
+                .Verify(c => c.UpdateNote(It.IsAny<NotesPack>()), Times.Once());
+            _mockNotesNotificationsService
+                .Verify(c => c.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()), Times.Never());
+        }
+
         private static IMapper CreateMapper()
         {
             MapperConfiguration mapperConfiguration = new(configuration =>
@@ -166,5 +269,21 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             var mapper = mapperConfiguration.CreateMapper();
             return mapper;
         }
+
+        private static UpdateNoteRequestDto CreateUpdateRequestDto() => new()
+            {
+                NoteName = NoteName,
+                NotesPack = new[]
+                            {
+                    new NoteDto
+                    {
+                        IsComplete = true,
+                        NoteText = "Updated note"
+                    }
+                },
+                ExpirationMinutesRange = 999,
+                ConnectionId = "someConnectionId"
+
+            };
     }
 }
