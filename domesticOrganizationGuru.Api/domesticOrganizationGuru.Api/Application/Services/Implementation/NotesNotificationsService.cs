@@ -2,6 +2,7 @@
 using domesticOrganizationGuru.Common.Dto;
 using domesticOrganizationGuru.SignalR;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
@@ -10,9 +11,12 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
     public class NotesNotificationsService : INotesNotificationsService
     {
         private readonly IHubContext<NotesHub> _hubContext;
-        public NotesNotificationsService(IHubContext<NotesHub> hubContext)
+        private readonly ILogger _logger;
+        public NotesNotificationsService(IHubContext<NotesHub> hubContext,
+            ILogger<NotesNotificationsService> logger)
         {
             _hubContext = hubContext;
+            _logger = logger;
         }
 
         public async Task UpdateGroupNotesAsync(string messageName, string groupeName, string connectionId, NoteDto[] notesPack)
@@ -23,6 +27,8 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             }
             catch
             {
+
+                _logger.LogError(string.Format($"Unable to distribute message {messageName} to group {groupeName}"));
                 throw new NotAbleToDistributeToGroupException(groupeName);
             }
         }

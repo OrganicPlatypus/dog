@@ -19,11 +19,13 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
         public NotesService(
             INotesRepository notesRepository,
             IMapper mapper,
-            INotesNotificationsService notesNotificationsService)
+            INotesNotificationsService notesNotificationsService,
+            ILogger<NotesService> logger)
         {
             _notesRepository = notesRepository;
             _mapper = mapper;
             _notesNotificationsService = notesNotificationsService;
+            _logger = logger;
         }
 
         public async Task<NotesSessionDto> GetNotes(string noteName)
@@ -32,9 +34,9 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             NotesPack rawNootePack = await _notesRepository.GetNote(hashedPassword);
             if (rawNootePack == null)
             {
+                _logger.LogError(string.Format($"Unable to get {noteName} notes pack"));
                 throw new NoteNotFoundException(noteName);
             }
-
             return _mapper.Map<NotesSessionDto>(rawNootePack);
         }
 
@@ -48,6 +50,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
             if (!isUpdated)
             {
+                _logger.LogError(string.Format($"Unable to update {updateNoteRequest.NoteName} note pack"));
                 throw new UpdateNotesException();
             }
 
@@ -77,6 +80,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             }
             catch
             {
+                _logger.LogError(string.Format($"Unable to create {noteName} note"));
                 throw new CreateNotesException(noteName);
             }
         }
