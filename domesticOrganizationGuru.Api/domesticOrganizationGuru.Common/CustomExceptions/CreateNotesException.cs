@@ -7,9 +7,7 @@ namespace domesticOrganizationGuru.Common.CustomExceptions
     {
         public string NoteName { get; }
 
-        public CreateNotesException() { }
-
-        public CreateNotesException(string key)
-            : base($"Name {key} already exists") { }
+        public CreateNotesException()
+            : base($"Note name is not acceptable") { }
     }
 }

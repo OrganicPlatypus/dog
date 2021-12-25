@@ -69,7 +69,7 @@ export class StartComponent implements OnInit {
               todoItems.push(todoItem)
             })
             this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}))
-            this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : this.joinSessionByName.value}))
+            this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName}))
             this.signalrService.joinGroup(sessionName);
             this.router.navigate(['/to-do']);
           }
