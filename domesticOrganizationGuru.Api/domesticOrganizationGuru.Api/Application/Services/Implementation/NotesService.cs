@@ -14,7 +14,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
         private readonly INotesRepository _notesRepository;
         private readonly INotesNotificationsService _notesNotificationsService;
         private readonly IMapper _mapper;
-        private readonly ILogger<NotesService> _logger;
+        private readonly ILogger _logger;
 
         public NotesService(
             INotesRepository notesRepository,
@@ -81,7 +81,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             catch
             {
                 _logger.LogError(string.Format($"Unable to create {noteName} note"));
-                throw new CreateNotesException(noteName);
+                throw new CreateNotesException();
             }
         }
     }
