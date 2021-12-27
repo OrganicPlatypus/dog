@@ -2,13 +2,22 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { StartComponent } from './modules/start/start.component';
 import { ToDoListComponent } from './modules/to-do-list/to-do-list.component';
+import { NoteNameGuard } from './services/guard/note-name.guard';
 
 const routes: Routes = [
-  { path: '', component: StartComponent },
-  { path: 'to-do', component: ToDoListComponent },
+  { path: '',
+    component: StartComponent
+  },
+  { path: 'to-do',
+    component: ToDoListComponent,
+    canActivate: [NoteNameGuard],
+    data: {
+      noteNameGuardRedirect: '',
+    }
+   },
   { path: '**',
   redirectTo: '',
-  //TODO: canActivate: [NoteNameGuard]
+  canActivate: [NoteNameGuard],
   pathMatch: 'full' }
 ];
 

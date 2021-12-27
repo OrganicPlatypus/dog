@@ -1,10 +1,10 @@
 import { setExistingNotesAction } from './../../state/states/notes/notes.actions';
 import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 import { TodoItem } from './../../modules/to-do-list/models/to-do';
-import { NoteDto, UpdateNoteRequestDto } from 'src/app/services/api/service-proxy/service-proxy';
+import { NoteDto } from 'src/app/services/api/service-proxy/service-proxy';
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import * as signalR from "@microsoft/signalr";
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import * as SignalMethods from './signal-methods';
 import { Store } from '@ngrx/store';
 
 export const API_SIGNALR_URL = new InjectionToken<string>('API_SIGNALR_URL')
@@ -14,9 +14,6 @@ export const API_SIGNALR_URL = new InjectionToken<string>('API_SIGNALR_URL')
 })
 export class NotesSignalService {
   connection!: signalR.HubConnection;
-
-  hubHelloMessage: BehaviorSubject<string>;
-  currentNotesState: BehaviorSubject<UpdateNoteRequestDto>;
   signalRUrl: string;
 
   constructor(
@@ -24,13 +21,11 @@ export class NotesSignalService {
     @Optional() @Inject(API_SIGNALR_URL) signalRUrl? : string
   ) {
     this.signalRUrl = signalRUrl!;
-    this.hubHelloMessage = new BehaviorSubject<string>("");
-    this.currentNotesState = new BehaviorSubject<UpdateNoteRequestDto>(new UpdateNoteRequestDto());
    }
 
   public subscribeOnCurrentlyUpdateNote(): void {
     let notesDto: NoteDto[] | undefined = undefined;
-      this.connection.on('UpdateNotesState', (data: NoteDto[]) => {
+      this.connection.on(SignalMethods.UpdateNotesState, (data: NoteDto[]) => {
         notesDto = data
         if(notesDto){
           let todoItems : TodoItem[] = []
@@ -45,14 +40,31 @@ export class NotesSignalService {
       return notesDto
     }
 
-  public joinGroup(noteName: string) {
+  public joinGroup(noteName: string): void {
     this.connection
-      .invoke('CreateGroup', noteName)
-      .catch(error => {
-        alert('SignalrDemoHub.Hello() error!, see console for details.');
+      .invoke(SignalMethods.CreateGroup, noteName)
+      .catch((error) => {
+        alert(`Error!, see logs for details.${error}`);
       }
     );
   }
+
+  public isEditingMarker(noteName: string, isEditing: boolean): void {
+    this.connection
+      .invoke(SignalMethods.MarkIsEditing, noteName, isEditing)
+      .catch((error) => {
+        alert(`Error!, see logs for details.${error}`);
+      }
+    );
+  }
+
+  public isEditingListener(): boolean | undefined {
+    let isEditing: boolean | undefined = undefined;
+      this.connection.on(SignalMethods.MarkIsEditing, (isEditingResponse: boolean) => {
+        isEditing = isEditingResponse;
+      })
+    return isEditing;
+    }
 
   public startConnection(): void {
     this.connection = new signalR.HubConnectionBuilder()

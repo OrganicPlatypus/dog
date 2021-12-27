@@ -3,6 +3,7 @@ using domesticOrganizationGuru.Common.CustomExceptions;
 using domesticOrganizationGuru.Common.Dto;
 using domesticOrganizationGuru.Entities;
 using domesticOrganizationGuru.Repository;
+using domesticOrganizationGuru.SignalR.Services;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using static domesticOrganizationGuru.Common.Helpers.SecurityHelper;

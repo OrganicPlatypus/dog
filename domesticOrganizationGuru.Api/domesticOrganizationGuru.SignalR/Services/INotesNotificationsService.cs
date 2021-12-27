@@ -1,7 +1,7 @@
 ﻿using domesticOrganizationGuru.Common.Dto;
 using System.Threading.Tasks;
 
-namespace DomesticOrganizationGuru.Api.Application.Services
+namespace domesticOrganizationGuru.SignalR.Services
 {
     public interface INotesNotificationsService
     {

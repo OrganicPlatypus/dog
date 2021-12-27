@@ -17,8 +17,8 @@
     <form>
       <input matInput placeholder="Enter To do" class="textareafull" [(ngModel)]="noteInput" name="noteText"
         maxlength="100">
-    <button class="button" (click)="addNewItem()" *ngIf="!editValue">Add</button>
-    <button class="button" (click)="saveChangedItem()" *ngIf="editValue">Save</button>
+          <button [ngClass]="{'button-opacity': isEdited() }" (click)="addNewItem()" *ngIf="!editValue">Add</button>
+          <button [ngClass]="{'button-opacity': isEdited() }" (click)="saveChangedItem()" *ngIf="editValue">Save</button>
   <div class="input-line-position">
     <p>{{countLength()}}/100 characters.</p>
     </div>

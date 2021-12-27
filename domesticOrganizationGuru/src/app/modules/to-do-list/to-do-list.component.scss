@@ -51,8 +51,14 @@
 .done-true{
   text-decoration: line-through #1c8f35;
 }
+
 .done-false{
   text-decoration: none;
+}
+
+.button-opacity{
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .todo-card{
