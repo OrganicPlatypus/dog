@@ -15,6 +15,7 @@ export const API_SIGNALR_URL = new InjectionToken<string>('API_SIGNALR_URL')
 export class NotesSignalService {
   connection!: signalR.HubConnection;
   signalRUrl: string;
+  isBeingEdited = false;
 
   constructor(
     private store: Store<NoteSettingsState>,
@@ -58,12 +59,10 @@ export class NotesSignalService {
     );
   }
 
-  public isEditingListener(): boolean | undefined {
-    let isEditing: boolean | undefined = undefined;
+  public isEditingListener() {
       this.connection.on(SignalMethods.MarkIsEditing, (isEditingResponse: boolean) => {
-        isEditing = isEditingResponse;
+        this.isBeingEdited = isEditingResponse;
       })
-    return isEditing;
     }
 
   public startConnection(): void {

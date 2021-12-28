@@ -1,4 +1,5 @@
 @import "./colors.scss";
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined");
 @import url("https://fonts.googleapis.com/css?family=Fjalla+One&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles&family=Gloria+Hallelujah&display=swap');
 * {
@@ -7,7 +8,7 @@
 }
 
 body {
-  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg") center center no-repeat;
+  background: center center no-repeat;
   background-size: cover;
   width: 100vw;
   height: 100vh;
@@ -20,9 +21,9 @@ body {
   margin-top: 10%;
   margin-left: auto;
   margin-right: auto;
-  width: fit-content;
+  width: 50%;
   background: $backgroundCard;
-  padding: 10px 100px;
+  padding: 10px 20px;
   border: 2px solid black;
   box-shadow: 15px 15px 1px $baseShadow, 15px 15px 1px 2px black;
 }
@@ -67,7 +68,8 @@ border: 1px solid black;
 
 button {
   position: relative;
-  margin: 0 auto;
+  margin-left: 2%;
+  //margin: 0 auto;
   line-height: 28pt;
   padding: 0 20px;
   background: $baseShadow;
@@ -91,7 +93,7 @@ button:hover {
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
-  border-bottom: 5px solid #95a4ff;
+  border-bottom: 5px solid $buttonShadow;
   -webkit-text-fill-color: #2A293E;
   -webkit-box-shadow: 0 0 0px 1000px $backgroundCard inset;
   transition: background-color 5000s ease-in-out 0s;

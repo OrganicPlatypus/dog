@@ -19,14 +19,19 @@ export class ToDoService {
     public getToDoList = () => {
       this.store.select(getExistingNotesSelector)
       .subscribe( notes => {
+        if(notes.length === 0){
+          this.todos.length = 0
+          this.todoList.next(this.todos);
+        }
         if(notes.length > 0){
+          console.log('inside', notes)
           this.todos.length = 0
           notes
             .map(note => {
               this.todos.push(note)
               this.todoList.next(this.todos);
           })
-          this.store.dispatch(clearNotesStateAction())
+          //this.store.dispatch(clearNotesStateAction())
         }
       })
       return this.todoList;

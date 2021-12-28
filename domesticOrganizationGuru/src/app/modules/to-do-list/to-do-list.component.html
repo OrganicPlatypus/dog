@@ -1,27 +1,47 @@
 <div class="main-box">
   <mat-list role="list" class="list-spacing">
     <mat-toolbar *ngFor="let item of toDoList | async;" class="todo-item-spacing">
-      <mat-toolbar-row [ngClass]="{'finished-landing-row': item.isComplete}" class="landing-row container">
-        <span [ngClass]="{'done-true': item.isComplete}" class="item">{{item.noteText}}</span>
+      <mat-toolbar-row [ngClass]="{'finished-note-row': item.isComplete}" class="note-row ">
+        <div class="accept-area item">
+          <i (click)="markItemAsDone(item)" class="button-pointer" *ngIf="!item.isComplete">
+            <span class="material-icons">check_box_outline_blank</span>
+          </i>
+          <i (click)="markItemAsNotDone(item)" class="button-pointer" *ngIf="item.isComplete">
+            <span class="material-icons">check_box</span>
+          </i>
+        </div>
+        <span [ngClass]="{'done-true': item.isComplete}" class="note-text">{{item.noteText}}</span>
         <div class=divider></div>
-        <div class="mr-0 item">
-          <mat-icon (click)="markItemAsDone(item)" class="button-pointer" *ngIf="!item.isComplete">check</mat-icon>
-          <mat-icon (click)="markItemAsNotDone(item)" class="button-pointer" *ngIf="item.isComplete">undo</mat-icon>
-          <mat-icon (click)="editItem(item)" class="button-pointer">edit</mat-icon>
-          <mat-icon (click)="deleteNoteItem(item)" class="button-pointer">delete</mat-icon>
+        <div class="item edit-area">
+          <div *ngIf=!item.isComplete>
+            <i (click)="editItem(item)" class="button-pointer">
+              <span class="material-icons">edit</span>
+            </i>
+            <i (click)="deleteNoteItem(item)" class="button-pointer">
+              <span class="material-icons">delete_outline</span>
+            </i>
+          </div>
         </div>
       </mat-toolbar-row>
     </mat-toolbar>
   </mat-list>
-  <div class="input-line-position">
+    <div class="input-line-position">
     <form>
-      <input matInput placeholder="Enter To do" class="textareafull" [(ngModel)]="noteInput" name="noteText"
-        maxlength="100">
-          <button [ngClass]="{'button-opacity': isEdited() }" (click)="addNewItem()" *ngIf="!editValue">Add</button>
-          <button [ngClass]="{'button-opacity': isEdited() }" (click)="saveChangedItem()" *ngIf="editValue">Save</button>
-  <div class="input-line-position">
-    <p>{{countLength()}}/100 characters.</p>
+      <label>
+        <input matInput placeholder="Enter To do" [ngClass]="{'input-disabled': signalrService.isBeingEdited}"
+          [(ngModel)]="noteInput" name="noteText" maxlength="50">
+        <button [ngClass]="{'button-disabled': signalrService.isBeingEdited}" (click)="addNewItem()"
+          *ngIf="!editValue">Add</button>
+        <button (click)="saveChangedItem()" *ngIf="editValue">Save</button>
+        <div class="input-line-position">
+        <p *ngIf="!signalrService.isBeingEdited" class="char-count-label-text">{{countLength()}}/50 characters</p>
+        <div *ngIf="signalrService.isBeingEdited" class="loading">
+          <span>
+            <p class="currently-editing-label-text">Someone is updating the list</p>
+          </span>
+        </div>
     </div>
+    </label>
   </form>
   </div>
   <br>

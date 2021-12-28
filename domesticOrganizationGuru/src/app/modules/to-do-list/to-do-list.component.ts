@@ -19,8 +19,6 @@ export class ToDoListComponent implements OnInit {
   public todoItem = new TodoItem('');
 
   noteInput: string | undefined = undefined;
-  //isListExternallyEdited: boolean | undefined;
-  isListExternallyEdited: BehaviorSubject<boolean | undefined>;
 
   editValue: boolean = false;
 
@@ -36,9 +34,6 @@ export class ToDoListComponent implements OnInit {
     private store: Store<NoteSettingsState>,
     public signalrService: NotesSignalService
   ) {
-    this.isListExternallyEdited = new BehaviorSubject<boolean | undefined>(undefined);
-    let aaa = this.signalrService.isEditingListener();
-    this.isListExternallyEdited.next(aaa);
   }
 
   ngOnInit() {
@@ -56,7 +51,7 @@ export class ToDoListComponent implements OnInit {
     )
 
     this.signalrService.subscribeOnCurrentlyUpdateNote();
-
+    this.signalrService.isEditingListener();
   }
 
   updateNotesPack() {
@@ -118,7 +113,7 @@ export class ToDoListComponent implements OnInit {
   }
 
   isEdited() : boolean {
-    return this.isListExternallyEdited.value == true;
+    return this.signalrService.isBeingEdited == true;
   }
 
   private updateSource() {

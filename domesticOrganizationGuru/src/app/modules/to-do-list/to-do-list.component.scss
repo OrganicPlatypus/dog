@@ -1,64 +1,78 @@
 @import "../../shared/style/baseStyle.scss";
 @import "../../shared/style/lineOrganization.scss";
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "../../shared/style/textStyles.scss";
+@import "../../shared/style/editing.scss";
 
 .list-spacing{
   margin-bottom: 10px;
 }
-.landing-row {
+.note-row {
   border: 1px solid black;
-
   box-shadow: 2px 2px 1px #9d5aaac0, 2px 2px 1px 1px black;
   background: $baseShadow;
   display: inline-flex;
 }
 
-.finished-landing-row {
+.finished-note-row {
   border: 1px solid black;
-  box-shadow: 2px 2px 1px #278f07c0, 2px 2px 1px 1px black;
-  background: #4467c9c0;
+  box-shadow: 2px 2px 1px $finishedTaskNote, 2px 2px 1px 1px black;
+  background: $completedShadowNotesRow;
   display: inline-flex;
-  opacity: 0.5;
+  opacity: 0.75;
 }
 
 .note-text{
-  width: auto;
-  margin-left: auto;
+  display: block;
+  text-align: left;
+  font-size: clamp(10px, 1.75vw, 20px);
+}
+
+.accept-area{
+  width: 30px;
+  margin-left: 0;
   display: inline-block;
 }
 
-.mr-0{
-  width: 20%;
+.edit-area{
+  width: 60px;
   margin-right: 0;
   display: inline-block;
 }
 
 .button-pointer{
+  vertical-align: middle;
   cursor: pointer;
+  transition: 0.2s all ease-in-out;
 }
+
+.button-pointer:hover {
+  color: black !important;
+}
+
 .full-width{
-  //width: 80%;
   margin-top:20px;
 }
 .todo-spacer {
   flex: 1 1 auto;
 }
 .todo-item-spacing{
-  margin: 5px 0;
+  margin: 10px 0;
   color:#fff;
-  text-overflow: ellipsis
 }
+
 .done-true{
-  text-decoration: line-through #1c8f35;
+  text-decoration: $finishedTaskNote;
 }
-
-.done-false{
-  text-decoration: none;
-}
-
-.button-opacity{
+.button-disabled{
   opacity: 0.5;
   pointer-events: none;
+}
+
+.input-disabled{
+  opacity: 0.5;
+  pointer-events: none;
+
 }
 
 .todo-card{
