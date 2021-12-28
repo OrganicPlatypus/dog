@@ -42,7 +42,7 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         }
 
         [HttpGet]
-        [Route("/join/{keyInput}")]
+        [Route("/api/joinSession/{keyInput}")]
         [ProducesResponseType(typeof(NotesSessionDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<NotesSessionDto>> GetNotes(string keyInput)
@@ -50,13 +50,6 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
             var note = await _notesService.GetNotes(keyInput);
 
             return Ok(note);
-        }
-
-        [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteNote([FromQuery] string key)
-        {
-            await _notesService.DeleteEntry(key);
-            return Ok();
         }
     }
 }

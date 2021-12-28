@@ -7,7 +7,7 @@
             <span class="material-icons">check_box_outline_blank</span>
           </i>
           <i (click)="markItemAsNotDone(item)" class="button-pointer" *ngIf="item.isComplete">
-            <span class="material-icons">check_box</span>
+            <span [ngClass]="{'disabled': signalrService.isBeingEdited}" class="material-icons">check_box</span>
           </i>
         </div>
         <span [ngClass]="{'done-true': item.isComplete}" class="note-text">{{item.noteText}}</span>
@@ -27,7 +27,6 @@
   </mat-list>
     <div class="input-line-position">
     <form>
-      <label>
         <input matInput placeholder="Enter To do" [ngClass]="{'input-disabled': signalrService.isBeingEdited}"
           [(ngModel)]="noteInput" name="noteText" maxlength="50">
         <button [ngClass]="{'button-disabled': signalrService.isBeingEdited}" (click)="addNewItem()"
@@ -41,7 +40,6 @@
           </span>
         </div>
     </div>
-    </label>
   </form>
   </div>
   <br>

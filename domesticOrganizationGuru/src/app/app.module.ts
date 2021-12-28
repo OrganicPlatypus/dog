@@ -19,6 +19,7 @@ import { ServiceProxyModule } from './services/api/service-proxy/service-proxy.m
 import { ToastrModule } from 'ngx-toastr';
 import { HandleErrorsInterceptor } from './services/error-handler/handle-errors-interceptor';
 import { NoteNameGuard } from './services/guard/note-name.guard';
+import { JoinLandingGuard } from './services/guard/join-landing.guard';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { NoteNameGuard } from './services/guard/note-name.guard';
       useClass: HandleErrorsInterceptor,
       multi: true
     },
-    NoteNameGuard
+    NoteNameGuard,
+    JoinLandingGuard
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
