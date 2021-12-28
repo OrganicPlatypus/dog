@@ -37,8 +37,6 @@ export class ToDoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    //TODO: dodać guarda z przekierowaniem na landing page jeżeli w storze nie ma dodanej nazwy notatek.
-
     zip(
       this.store.select(SettingsSelectors.getNoteNameSelector),
       this.store.select(SettingsSelectors.getMinutesTillExpireSelector)

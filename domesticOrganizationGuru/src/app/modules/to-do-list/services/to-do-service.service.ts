@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs';
 import { TodoItem } from '../models/to-do';
 import { Store } from '@ngrx/store';
 import { getExistingNotesSelector } from './../../../state/states/notes/notes.selector';
-import { clearNotesStateAction, setExistingNotesAction } from './../../../state/states/notes/notes.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -24,14 +23,12 @@ export class ToDoService {
           this.todoList.next(this.todos);
         }
         if(notes.length > 0){
-          console.log('inside', notes)
           this.todos.length = 0
           notes
             .map(note => {
               this.todos.push(note)
               this.todoList.next(this.todos);
           })
-          //this.store.dispatch(clearNotesStateAction())
         }
       })
       return this.todoList;
