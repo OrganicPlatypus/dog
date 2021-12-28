@@ -1,4 +1,6 @@
-﻿using DomesticOrganizationGuru.Api.Application.Services;
+﻿using domesticOrganizationGuru.SignalR.Services;
+using domesticOrganizationGuru.SignalR.Services.Impelentation;
+using DomesticOrganizationGuru.Api.Application.Services;
 using DomesticOrganizationGuru.Api.Application.Services.Implementation;
 using Microsoft.Extensions.DependencyInjection;
 

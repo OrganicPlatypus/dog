@@ -5,7 +5,7 @@ import { UpdateNoteRequestDto } from 'src/app/services/api/service-proxy/service
 import { TodoItem } from './models/to-do';
 import { ToDoService } from './services/to-do-service.service';
 import { Store } from '@ngrx/store';
-import { zip } from 'rxjs';
+import { BehaviorSubject, zip } from 'rxjs';
 import * as SettingsSelectors from '../../state/states/settings/settings.selector'
 import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 
@@ -34,12 +34,9 @@ export class ToDoListComponent implements OnInit {
     private store: Store<NoteSettingsState>,
     public signalrService: NotesSignalService
   ) {
-
   }
 
   ngOnInit() {
-    //TODO: dodać guarda z przekierowaniem na landing page jeżeli w storze nie ma dodanej nazwy notatek.
-
     zip(
       this.store.select(SettingsSelectors.getNoteNameSelector),
       this.store.select(SettingsSelectors.getMinutesTillExpireSelector)
@@ -52,6 +49,7 @@ export class ToDoListComponent implements OnInit {
     )
 
     this.signalrService.subscribeOnCurrentlyUpdateNote();
+    this.signalrService.isEditingListener();
   }
 
   updateNotesPack() {
@@ -81,6 +79,7 @@ export class ToDoListComponent implements OnInit {
   }
 
   editItem(editedItem: TodoItem) {
+    this.signalrService.isEditingMarker(this.notesPackName, true);
     this.todoItem = editedItem;
     this.noteInput = editedItem.noteText;
     this.editValue = true;
@@ -103,11 +102,16 @@ export class ToDoListComponent implements OnInit {
       this.noteInput = undefined;
       this.todoItem = new TodoItem('');
       this.updateSource();
+      this.signalrService.isEditingMarker(this.notesPackName, false);
     }
   }
-  countLength(): string{
-    return this.noteInput ? this.noteInput?.length.toString() : "0";
 
+  countLength(): string {
+    return this.noteInput ? this.noteInput?.length.toString() : "0";
+  }
+
+  isEdited() : boolean {
+    return this.signalrService.isBeingEdited == true;
   }
 
   private updateSource() {

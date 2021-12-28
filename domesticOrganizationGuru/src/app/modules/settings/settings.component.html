@@ -2,10 +2,12 @@
 </div>
 
 <circular-button (click)="clickMenu()" class="menu-button">
-  <div class="position-in-circular-button">
-    <mat-icon *ngIf="!openMenu">settings</mat-icon>
-    <mat-icon *ngIf="openMenu">close</mat-icon>
-  </div>
+    <i *ngIf="!openMenu" class="position-in-circular-button">
+      <span class="material-icons">settings</span>
+    </i>
+    <i *ngIf="openMenu" class="position-in-circular-button">
+      <span class="material-icons">close</span>
+    </i>
 </circular-button>
 
 <div *ngIf="openMenu" class="settings-card edit-settings mat-elevation-z5">

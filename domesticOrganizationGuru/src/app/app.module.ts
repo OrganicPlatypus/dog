@@ -18,6 +18,7 @@ import { SettingsComponent } from './modules/settings/settings.component';
 import { ServiceProxyModule } from './services/api/service-proxy/service-proxy.module';
 import { ToastrModule } from 'ngx-toastr';
 import { HandleErrorsInterceptor } from './services/error-handler/handle-errors-interceptor';
+import { NoteNameGuard } from './services/guard/note-name.guard';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { HandleErrorsInterceptor } from './services/error-handler/handle-errors-
       provide: HTTP_INTERCEPTORS,
       useClass: HandleErrorsInterceptor,
       multi: true
-    }
+    },
+    NoteNameGuard
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
