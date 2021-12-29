@@ -3,7 +3,7 @@
 .loading {
   font-family: "Gloria Hallelujah";
 
-  width:150px;text-align:center;
+  text-align:center;
   line-height:50px;
   left:0;right:0;top:50%;
   margin:auto;
@@ -18,7 +18,7 @@
 .loading:before {
   content:'';
   background:$loadingBackgroundColor;
-  width:128px;
+  width:170px;
   height:36px;
   display:block;
   position:absolute;

@@ -45,7 +45,7 @@ export class NotesSignalService {
     this.connection
       .invoke(SignalMethods.CreateGroup, noteName)
       .catch((error) => {
-        alert(`Error!, see logs for details.${error}`);
+        alert(`joinGroup Error!, see logs for details.${error}`);
       }
     );
   }
@@ -74,8 +74,6 @@ export class NotesSignalService {
 
       this.connection
         .start()
-        .then(() => {
-        })
         .catch((error) => {
           console.warn(`Error while starting connection: ${error}`);
           setTimeout(this.startConnection.bind(this), 5000);

@@ -24,7 +24,7 @@ export class OrganizerApiService {
   }
 
   joinTheNote(key: string): Observable<NotesSessionDto> {
-    return this.http.get<NotesSessionDto>(`${this.baseUrl}/join/${key}`);
+    return this.http.get<NotesSessionDto>(`${this.baseUrl}/api/joinSession/${key}`);
   }
 
   updateNotePack(noteDto: UpdateNoteRequestDto): Observable<void> {
