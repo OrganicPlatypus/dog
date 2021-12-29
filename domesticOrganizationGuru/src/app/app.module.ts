@@ -20,13 +20,15 @@ import { ToastrModule } from 'ngx-toastr';
 import { HandleErrorsInterceptor } from './services/error-handler/handle-errors-interceptor';
 import { NoteNameGuard } from './services/guard/note-name.guard';
 import { JoinLandingGuard } from './services/guard/join-landing.guard';
+import { NoteInformationComponent } from './modules/note-information/note-information.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StartComponent,
     ToDoListComponent,
-    SettingsComponent
+    SettingsComponent,
+    NoteInformationComponent
   ],
   imports: [
     BrowserModule,

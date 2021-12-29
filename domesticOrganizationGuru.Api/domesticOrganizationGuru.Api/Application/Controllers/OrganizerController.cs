@@ -2,8 +2,6 @@
 using DomesticOrganizationGuru.Api.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace DomesticOrganizationGuru.Api.Application.Controllers

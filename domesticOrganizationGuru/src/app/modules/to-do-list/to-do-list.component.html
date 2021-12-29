@@ -1,4 +1,6 @@
-<div class="main-box">
+<note-information></note-information>
+
+<div class="main-box--notes-box">
   <mat-list role="list" class="list-spacing">
     <mat-toolbar *ngFor="let item of toDoList | async;" class="todo-item-spacing">
       <mat-toolbar-row [ngClass]="{'finished-note-row': item.isComplete}" class="note-row ">
@@ -44,5 +46,6 @@
   </div>
   <br>
 </div>
+
 <notes-settings></notes-settings>
 

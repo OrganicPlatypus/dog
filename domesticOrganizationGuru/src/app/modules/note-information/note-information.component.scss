@@ -1,0 +1,26 @@
+@import "../../shared/style/baseStyle.scss";
+@import "../../shared/style/textStyles.scss";
+
+.settings-label-text{
+  font-family: "Fjalla One";
+  font-size: 100%;
+}
+
+.information-box-name {
+  width: 50%;
+}
+.information-box-space {
+  width: 15px;
+}
+.information-box-expiration {
+  width: 35%;
+}
+
+.information-boxes-row {
+  margin-left: 20%;
+  margin-right: 20%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: center;
+}

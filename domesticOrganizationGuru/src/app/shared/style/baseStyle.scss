@@ -27,6 +27,16 @@ body {
   padding: 10px 20px;
   border: 2px solid black;
   box-shadow: 15px 15px 1px $baseShadow, 15px 15px 1px 2px black;
+
+  &--information-box {
+    @extend .main-box;
+    box-shadow: 5px 5px 0.75px $baseShadow, 5px 5px 0.75px 1.5px black;
+  }
+
+  &--notes-box {
+    @extend .main-box;
+    margin-top: 0%;
+  }
 }
 
 input {
