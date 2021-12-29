@@ -30,6 +30,7 @@ body {
 
   &--information-box {
     @extend .main-box;
+    width: fit-content;
     box-shadow: 5px 5px 0.75px $baseShadow, 5px 5px 0.75px 1.5px black;
   }
 

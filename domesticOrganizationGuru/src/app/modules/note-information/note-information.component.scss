@@ -6,8 +6,15 @@
   font-size: 100%;
 }
 
+.settings-label-variables{
+  font-family: "Gloria Hallelujah";
+  font-size: 100%;
+}
+
 .information-box-name {
-  width: 50%;
+  max-width: 50%;
+  display: flex;
+  justify-content: space-between;
 }
 .information-box-space {
   width: 15px;
@@ -17,8 +24,8 @@
 }
 
 .information-boxes-row {
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-left: 25%;
+  margin-right: 25%;
   display: flex;
   align-items: flex-start;
   flex-direction: row;
