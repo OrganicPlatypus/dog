@@ -32,37 +32,43 @@ Project was created with:
   * Angular: 12.2
 
 * Frameworks:
-  * redux
-  * signalR
-  * automapper
-  * fluentValidation
-  * serilog
-  * xunit
-  * moq
-  * fluentAssertion
-  * nswag
+  * [redux](https://ngrx.io/)
+  * [signalR](https://docs.microsoft.com/en-us/aspnet/core/signalr/introduction?view=aspnetcore-5.0)
+  * [toastr](https://www.npmjs.com/package/ngx-toastr)
+  * [automapper](https://docs.automapper.org/en/stable/)
+  * [fluentValidation](https://docs.fluentvalidation.net/en/latest/aspnet.html)
+  * [serilog](https://serilog.net/)
+  * [xunit](https://xunit.net/)
+  * [mock]
+  * [nswag](https://github.com/RicoSuter/NSwag)
+
+[Redis](https://redis.io/) was chosen as a database provider for this project due to following reasons:
+  * always wanted to give it a try (I am aware of variety of alternatives however I found key-value stores sufficient enough for this task)
+  * does not require any additional infrastructure - cost efficiency.
+  * will be faster than heavy engines
 
 
 ## Setup
 ##### Database
-[Redis](https://redis.io/) was chosen as a database provider for this project due to following reasons:
-* always wanted to give it a try (I am aware of variety of alternatives however I found key-value stores sufficient enough)
-* does not require any additional infrastructure - is cost efficient.
-* will be faster than heavy engines
-
-Database setup:
+In docker container
 ```
 docker run --name dog_redisDB -d -p 6379:6379 redis redis-server
 ```
 
-
-
-
-
+##### Frontend
 To run this project, install it locally using npm:
-
 ```
-$ cd ../lorem
+$ cd.. domesticOrganizationGuru
 $ npm install
-$ npm start
+$ npm serve -o
 ```
+
+##### Backend
+TODO!
+At this moment run the .sln and fire up DomesticOrganizationGuru.Api project.
+
+## Acknowledgments
+
+My inspirations:
+* [Loading animation](https://codepen.io/Sirop)
+* [Colours and layout](https://codepen.io/rickyeckhardt)
