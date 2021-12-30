@@ -40,9 +40,9 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateNoteExpiriationTime([FromBody] UpdateNoteRequestDto updateNoteRequest)
+        public async Task<IActionResult> UpdateNoteExpiriationTime([FromBody] UpdateNoteExpiriationTimeDto updateExpiriationTimeDto)
         {
-            await _notesService.UpdateNote(updateNoteRequest);
+            //await _notesService.UpdateNoteExpiriationTime(updateExpiriationTimeDto);
             return Ok();
         }
 
