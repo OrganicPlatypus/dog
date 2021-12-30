@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 })
 
 export class OrganizerApiService {
-
   private baseUrl: string;
 
   constructor(
@@ -35,6 +34,10 @@ export class OrganizerApiService {
     }
 
     return this.http.put<void>(`${this.baseUrl}/api/Organizer/UpdateNotesPack`, noteDto, options);
+  }
+
+  updateNoteExpiriationTime(updateExpiriationTimeDto: any): Observable<void> {
+    throw new Error('Method not implemented.');
   }
 
   createNote(noteDto: CreateNotesPackDto): Observable<string>  {

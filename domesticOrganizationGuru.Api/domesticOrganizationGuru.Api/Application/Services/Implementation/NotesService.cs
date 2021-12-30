@@ -41,7 +41,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             return _mapper.Map<NotesSessionDto>(rawNootePack);
         }
 
-        public async Task SaveNote(UpdateNoteRequestDto updateNoteRequest)
+        public async Task UpdateNote(UpdateNoteRequestDto updateNoteRequest)
         {
             const string communicationChannel = "UpdateNotesState";
 

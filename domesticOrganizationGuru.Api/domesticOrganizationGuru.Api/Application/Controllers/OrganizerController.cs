@@ -35,7 +35,14 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateNotesPack([FromBody] UpdateNoteRequestDto updateNoteRequest)
         {
-            await _notesService.SaveNote(updateNoteRequest);
+            await _notesService.UpdateNote(updateNoteRequest);
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateNoteExpiriationTime([FromBody] UpdateNoteRequestDto updateNoteRequest)
+        {
+            await _notesService.UpdateNote(updateNoteRequest);
             return Ok();
         }
 

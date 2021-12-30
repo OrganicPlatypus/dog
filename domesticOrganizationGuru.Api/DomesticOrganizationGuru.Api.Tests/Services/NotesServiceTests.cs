@@ -181,7 +181,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             //Act
             NotesPack notePack = _mapper.Map<NotesPack>(updateNoteRequest);
-            await notesService.SaveNote(updateNoteRequest);
+            await notesService.UpdateNote(updateNoteRequest);
 
             //Assert
             Assert.Equal(updateNoteRequest.NoteName, groupNameReturn);
@@ -215,7 +215,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
 
-            Func<Task> seveNote = () => notesService.SaveNote(updateNoteRequest);
+            Func<Task> seveNote = () => notesService.UpdateNote(updateNoteRequest);
 
             //Act
 
@@ -251,7 +251,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
 
-            Func<Task> seveNote = () => notesService.SaveNote(updateNoteRequest);
+            Func<Task> seveNote = () => notesService.UpdateNote(updateNoteRequest);
 
             //Act
 

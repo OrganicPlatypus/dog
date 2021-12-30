@@ -7,7 +7,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services
     {
         Task<string> CreateNote(CreateNotesPackDto updateNoteRequest);
         Task<NotesSessionDto> GetNotes(string key);
-        Task SaveNote(UpdateNoteRequestDto updateNoteRequest);
+        Task UpdateNote(UpdateNoteRequestDto updateNoteRequest);
         Task DeleteEntry(string key);
     }
 }
