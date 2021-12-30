@@ -4,11 +4,25 @@
 .settings-label-text{
   font-family: "Fjalla One";
   font-size: 100%;
+  &--with-right-padding{
+    @extend .settings-label-text;
+    padding-right: 10px;
+  }
 }
 
 .settings-label-variables{
   font-family: "Gloria Hallelujah";
   font-size: 100%;
+}
+
+.keep-them-in-line {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  &--with-bottom-padding{
+    @extend .keep-them-in-line;
+    padding-bottom: 5px;
+  }
 }
 
 .information-box-name {

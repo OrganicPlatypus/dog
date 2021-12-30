@@ -12,7 +12,7 @@ import { getMinutesTillExpireSelector, getNoteNameSelector } from 'src/app/state
 export class NoteInformationComponent implements OnInit {
   noteName: string = '';
   expirationSpan: number = 0;
-  expirationDate: Date = new Date();
+  expirationDate: string ="";
 
   constructor(
     private store: Store<NoteSettingsState>,
@@ -25,9 +25,13 @@ export class NoteInformationComponent implements OnInit {
     )
     .subscribe( results => {
       this.noteName = results[0]!
-      this.expirationSpan = results[1]!
-      this.expirationDate = new Date( Date.now() + results[1]!*6000 )
+      this.formExpiriationPointDate(results[1]!);
     })
   }
 
+  private formExpiriationPointDate(expirationSpan: number) {
+    this.expirationSpan = expirationSpan;
+    let expirationDate = new Date(Date.now() + expirationSpan! * 6000);
+    this.expirationDate = `${expirationDate.toLocaleDateString()} ${expirationDate.toLocaleTimeString()}`
+  }
 }
