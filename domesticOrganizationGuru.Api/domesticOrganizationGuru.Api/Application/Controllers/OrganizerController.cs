@@ -32,6 +32,11 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
             return Ok(noteName);
         }
 
+        /// <summary>
+        /// Update note state and distribute to connected/asociated to the noteing session users
+        /// </summary>
+        /// <param name="updateNoteRequest"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> UpdateNotesPack([FromBody] UpdateNoteRequestDto updateNoteRequest)
         {
@@ -39,13 +44,24 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Update notes expiriation timer and distribute to connected/asociated to the noteing session users
+        /// </summary>
+        /// <param name="updateExpiriationTimeDto"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> UpdateNoteExpiriationTime([FromBody] UpdateNoteExpiriationTimeDto updateExpiriationTimeDto)
         {
-            //await _notesService.UpdateNoteExpiriationTime(updateExpiriationTimeDto);
+            await _notesService.UpdateNoteExpiriationTimeAsync(updateExpiriationTimeDto);
             return Ok();
         }
 
+
+        /// <summary>
+        /// Join session both from landing page and as a landing page
+        /// </summary>
+        /// <param name="keyInput"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("/api/joinSession/{keyInput}")]
         [ProducesResponseType(typeof(NotesSessionDto), StatusCodes.Status200OK)]

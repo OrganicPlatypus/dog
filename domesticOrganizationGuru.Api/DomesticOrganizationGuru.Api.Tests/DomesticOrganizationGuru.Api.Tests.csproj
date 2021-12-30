@@ -24,4 +24,8 @@
     <ProjectReference Include="..\domesticOrganizationGuru.Api\DomesticOrganizationGuru.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\NotesService\" />
+  </ItemGroup>
+
 </Project>

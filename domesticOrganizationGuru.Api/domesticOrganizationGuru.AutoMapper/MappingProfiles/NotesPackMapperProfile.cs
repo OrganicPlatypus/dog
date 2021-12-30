@@ -13,6 +13,10 @@ namespace domesticOrganizationGuru.AutoMapper.MappingProfiles
                 .ForMember(d => d.Notes, opt => opt.MapFrom(src => src.NotesPack))
                 .ReverseMap();
 
+            CreateMap<UpdateNoteExpiriationTimeDto, NotesPack>()
+                .ForMember(d => d.Password, opt => opt.MapFrom(src => src.NoteName))
+                .ReverseMap();
+
             CreateMap<NotesSessionDto, NotesPack>()
                 .ForMember(d => d.Password, opt => opt.Ignore())
                 .ReverseMap();

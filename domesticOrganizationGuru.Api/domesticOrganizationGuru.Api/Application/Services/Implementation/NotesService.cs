@@ -62,12 +62,6 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 updateNoteRequest.NotesPack);
         }
 
-        public async Task DeleteEntry(string key)
-        {
-            var keyToDelete = StringSha256Hash(key);
-            await _notesRepository.DeleteNote(keyToDelete);
-        }
-
         public async Task<string> CreateNote(CreateNotesPackDto updateNoteRequest)
         {
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
@@ -84,6 +78,11 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 _logger.LogError(string.Format($"Unable to create {noteName} note"));
                 throw new CreateNotesException();
             }
+        }
+
+        public async Task UpdateNoteExpiriationTimeAsync(UpdateNoteExpiriationTimeDto updateExpiriationTimeDto)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

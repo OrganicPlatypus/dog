@@ -263,6 +263,48 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .Verify(c => c.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()), Times.Never());
         }
 
+
+        [Fact]
+        public async Task UpdateNoteExpiriationTime_HappyPath_Test()
+        {
+            //Arrange
+            UpdateNoteExpiriationTimeDto updateNoteRequest = new()
+            {
+                ConnectionId = "Some Coonnection Id",
+                ExpirationMinutesRange = 2,
+                NoteName = "Valid note name"
+            };
+
+            _mockNotesRepository
+                .Setup(x => x.UpdateNote(It.IsAny<NotesPack>()))
+                .ReturnsAsync(true)
+                .Verifiable();
+
+            string groupNameReturn = string.Empty;
+
+            _mockNotesNotificationsService
+                .Setup(x => x.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()))
+                .Callback<string, string, string, NoteDto[]>((_, groupName, __, ___) =>
+                {
+                    groupNameReturn = groupName;
+                })
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
+
+            //Act
+            NotesPack notePack = _mapper.Map<NotesPack>(updateNoteRequest);
+            await notesService.UpdateNoteExpiriationTimeAsync(updateNoteRequest);
+
+            //Assert
+            Assert.Equal(updateNoteRequest.NoteName, groupNameReturn);
+            _mockNotesRepository
+                .Verify(c => c.UpdateNote(It.IsAny<NotesPack>()), Times.Once());
+            _mockNotesNotificationsService
+                .Verify(c => c.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()), Times.Once());
+        }
+
         private static IMapper CreateMapper()
         {
             MapperConfiguration mapperConfiguration = new(configuration =>
