@@ -45,7 +45,7 @@ export class StartComponent implements OnInit {
     const notesPack: CreateNotesPackDto = <CreateNotesPackDto> {
       expirationMinutesRange: this.initialExpirationSpan,
       noteName: this.noteName.value
-    }
+    };
     this.organizerApiService
       .createNote(notesPack)
         .subscribe((noteName) => {
@@ -64,12 +64,13 @@ export class StartComponent implements OnInit {
           if(notesPack){
             let todoItems : TodoItem[] = []
             notesPack.notes?.map((note) => {
-              let todoItem = new TodoItem(note.noteText)
+              let todoItem = new TodoItem(note.noteText);
               todoItem.isComplete = note.isComplete;
-              todoItems.push(todoItem)
+              todoItems.push(todoItem);
             })
-            this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}))
-            this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName}))
+            this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}));
+            this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName}));
+            this.store.dispatch(SettingsActions.setExpirationTimerAction({expirationTimer : notesPack.expirationMinutesRange!}));
             this.signalrService.joinGroup(sessionName);
             this.router.navigate(['/to-do']);
           }

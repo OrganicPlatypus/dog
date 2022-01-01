@@ -1,4 +1,4 @@
-import { CreateNotesPackDto, NotesSessionDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
+import { CreateNotesPackDto, NotesSessionDto, UpdateNoteExpiriationTimeDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -36,8 +36,13 @@ export class OrganizerApiService {
     return this.http.put<void>(`${this.baseUrl}/api/Organizer/UpdateNotesPack`, noteDto, options);
   }
 
-  updateNoteExpiriationTime(updateExpiriationTimeDto: any): Observable<void> {
-    throw new Error('Method not implemented.');
+  updateNoteExpiriationTime(updateExpiriationTimeDto: UpdateNoteExpiriationTimeDto): Observable<void> {
+    const options: Object = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+    return this.http.put<void>(`${this.baseUrl}/api/Organizer/UpdateNoteExpiriationTime`, updateExpiriationTimeDto, options);
   }
 
   createNote(noteDto: CreateNotesPackDto): Observable<string>  {

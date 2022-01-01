@@ -4,14 +4,20 @@ import { BehaviorSubject } from 'rxjs';
 import { TodoItem } from '../models/to-do';
 import { Store } from '@ngrx/store';
 import { getExistingNotesSelector } from './../../../state/states/notes/notes.selector';
+import { getMinutesTillExpireSelector } from 'src/app/state/states/settings/settings.selector';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ToDoService {
+
     todos: TodoItem[] = []
+    expiriationTime: number = 0;
+    expirationDate: string = '';
     private todoList = new BehaviorSubject<TodoItem[]>(this.todos);
+    private expiriationTimeSpan = new BehaviorSubject<number>(this.expiriationTime);
+    private expirationDateFormed = new BehaviorSubject<string>(this.expirationDate);
 
     constructor(private store: Store<NotePointsState>) { }
 
@@ -32,6 +38,24 @@ export class ToDoService {
         }
       })
       return this.todoList;
+    }
+
+    public getExpirationTime = () => {
+      this.store.select(getMinutesTillExpireSelector)
+        .subscribe(minutes => {
+          if(minutes){
+            this.expiriationTime = minutes!;
+            this.expiriationTimeSpan.next(this.expiriationTime);
+          }
+        })
+      return this.expiriationTimeSpan;
+    }
+
+    public getExpirationDate = () => {
+      let expirationDate = new Date(Date.now() + this.expiriationTimeSpan.value! * 60000);
+      this.expirationDate = `${expirationDate.toLocaleDateString()} ${expirationDate.toLocaleTimeString()}`;
+      this.expirationDateFormed.next(this.expirationDate);
+      return this.expirationDateFormed;
     }
 
     public addItem = (newItem: TodoItem) =>

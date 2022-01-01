@@ -32,13 +32,8 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
         public async Task<NotesSessionDto> GetNotes(string noteName)
         {
             string hashedPassword = StringSha256Hash(noteName);
-            NotesPack rawNootePack = await _notesRepository.GetNote(hashedPassword);
-            if (rawNootePack == null)
-            {
-                _logger.LogError(string.Format($"Unable to get {noteName} notes pack"));
-                throw new NoteNotFoundException(noteName);
-            }
-            return _mapper.Map<NotesSessionDto>(rawNootePack);
+            NotesPack rawNotePack = await GetNote(noteName, hashedPassword);
+            return _mapper.Map<NotesSessionDto>(rawNotePack);
         }
 
         public async Task UpdateNote(UpdateNoteRequestDto updateNoteRequest)
@@ -62,6 +57,30 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 updateNoteRequest.NotesPack);
         }
 
+        public async Task UpdateNoteExpiriationTimeAsync(UpdateNoteExpiriationTimeDto updateExpiriationTimeDto)
+        {
+            //TODO: dystrybucja po kanale nowej wartości wygaśnięcia
+
+            string noteName = updateExpiriationTimeDto.NoteName;
+            var hashedPassword = StringSha256Hash(noteName);
+            var rawNote = await GetNote(updateExpiriationTimeDto.NoteName, hashedPassword);
+
+            rawNote.ExpirationMinutesRange = updateExpiriationTimeDto.ExpirationMinutesRange;
+            var isUpdated = await _notesRepository.UpdateNote(rawNote);
+
+            if (!isUpdated)
+            {
+                _logger.LogError(string.Format($"Unable to update {updateExpiriationTimeDto.NoteName} note pack"));
+                throw new UpdateNotesException();
+            }
+
+            //await _notesNotificationsService.UpdateGroupNotesAsync(
+            //    communicationChannel,
+            //    updateNoteRequest.NoteName,
+            //    updateNoteRequest.ConnectionId,
+            //    updateNoteRequest.NotesPack);
+        }
+
         public async Task<string> CreateNote(CreateNotesPackDto updateNoteRequest)
         {
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
@@ -80,9 +99,16 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             }
         }
 
-        public async Task UpdateNoteExpiriationTimeAsync(UpdateNoteExpiriationTimeDto updateExpiriationTimeDto)
+        private async Task<NotesPack> GetNote(string noteName, string hashedPassword)
         {
-            throw new System.NotImplementedException();
+            NotesPack rawNotePack = await _notesRepository.GetNote(hashedPassword);
+            if (rawNotePack == null)
+            {
+                _logger.LogError(string.Format($"Unable to get {noteName} notes pack"));
+                throw new NoteNotFoundException(noteName);
+            }
+
+            return rawNotePack;
         }
     }
 }

@@ -33,12 +33,12 @@ export class JoinLandingGuard implements CanActivate {
     let sessionName = routeSnapshot.params['name'];
     this.configurationApiService.landingHomeConfiguration()
       .subscribe(minutes => {
-        this.bindSessionValues(minutes, sessionName);
+        this.bindSessionValues(sessionName);
       })
       return isThereAName;
     }
 
-    private bindSessionValues(minutes: number, sessionName: string){
+    private bindSessionValues(sessionName: string){
       this.organizerApiService
       .joinTheNote(sessionName)
         .subscribe((notesPack) => {
@@ -50,7 +50,7 @@ export class JoinLandingGuard implements CanActivate {
                 todoItems.push(todoItem)
               })
             }
-            this.store.dispatch(SettingsActions.setExpirationTimerAction({expirationTimer : minutes}))
+            this.store.dispatch(SettingsActions.setExpirationTimerAction({expirationTimer : notesPack.expirationMinutesRange!}))
             this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}))
             this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName}))
             this.signalrService.joinGroup(sessionName);

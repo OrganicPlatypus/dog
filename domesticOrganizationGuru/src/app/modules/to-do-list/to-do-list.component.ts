@@ -17,13 +17,14 @@ import { NoteSettingsState } from 'src/app/state/states/settings/settings.intefa
 export class ToDoListComponent implements OnInit {
   public toDoList = this.toDoService.getToDoList();
   public todoItem = new TodoItem('');
+  public expiriationTimeSpan = this.toDoService.getExpirationTime();
 
   noteInput: string | undefined = undefined;
 
   editValue: boolean = false;
 
   notesPackName: string = '';
-  notesLifespan: number = 0;
+  //notesLifespan: number = 0;
 
 
   newNotesState!: UpdateNoteRequestDto;
@@ -39,12 +40,12 @@ export class ToDoListComponent implements OnInit {
   ngOnInit() {
     zip(
       this.store.select(SettingsSelectors.getNoteNameSelector),
-      this.store.select(SettingsSelectors.getMinutesTillExpireSelector)
+      //this.store.select(SettingsSelectors.getMinutesTillExpireSelector)
     )
     .subscribe(
       noteSettings => {
         this.notesPackName = noteSettings[0]!
-        this.notesLifespan = noteSettings[1]!
+        //this.notesLifespan = noteSettings[1]!
       }
     )
 
@@ -55,7 +56,8 @@ export class ToDoListComponent implements OnInit {
   updateNotesPack() {
     const updateNoteRequestDto = <UpdateNoteRequestDto> {
       noteName: this.notesPackName,
-      expirationMinutesRange: this.notesLifespan,
+      expirationMinutesRange: this.expiriationTimeSpan.value,
+      //expirationMinutesRange: this.notesLifespan,
 
       notesPack: this.toDoList.value
     }
@@ -117,7 +119,7 @@ export class ToDoListComponent implements OnInit {
   private updateSource() {
     const updateNoteRequestDto = <UpdateNoteRequestDto>{
       noteName: this.notesPackName,
-      expirationMinutesRange: this.notesLifespan,
+      expirationMinutesRange: this.expiriationTimeSpan.value,
       notesPack: this.toDoList.value,
       connectionId: this.signalrService.connection.connectionId
     };
