@@ -49,7 +49,8 @@ export class ToDoListComponent implements OnInit {
       }
     )
 
-    this.signalrService.subscribeOnCurrentlyUpdateNote();
+    this.signalrService.subscribeOnUpdatedNotesState();
+    this.signalrService.subscribeOnUpdatedExpirationSpan();
     this.signalrService.isEditingListener();
   }
 

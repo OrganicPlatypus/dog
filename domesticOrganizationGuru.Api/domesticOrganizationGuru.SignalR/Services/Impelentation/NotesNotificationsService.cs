@@ -2,7 +2,6 @@
 using domesticOrganizationGuru.Common.Dto;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace domesticOrganizationGuru.SignalR.Services.Impelentation
@@ -18,15 +17,40 @@ namespace domesticOrganizationGuru.SignalR.Services.Impelentation
             _logger = logger;
         }
 
-        public async Task UpdateGroupNotesAsync(string messageName, string groupName, string connectionId, NoteDto[] notesPack)
+        public async Task UpdateGroupNotesAsync(
+            string communicationChannel,
+            string groupName,
+            string connectionId,
+            NoteDto[] notesPack)
         {
             try
             {
-                await _hubContext.Clients.GroupExcept(groupName, connectionId).SendAsync(messageName, notesPack);
+                await _hubContext.Clients
+                    .GroupExcept(groupName, connectionId)
+                    .SendAsync(communicationChannel, notesPack);
             }
             catch
             {
-                _logger.LogError(string.Format($"Unable to distribute message {messageName} to group {groupName}"));
+                _logger.LogError(string.Format($"Unable to distribute message {communicationChannel} to group {groupName}"));
+                throw new NotAbleToDistributeToGroupException(groupName);
+            }
+        }
+
+        public async Task UpdateGroupExpiriationTimeAsync(
+            string communicationChannel,
+            string groupName,
+            string connectionId,
+            int expirationMinutesRange)
+        {
+            try
+            {
+                await _hubContext.Clients
+                    .GroupExcept(groupName, connectionId)
+                    .SendAsync(communicationChannel, expirationMinutesRange);
+            }
+            catch
+            {
+                _logger.LogError(string.Format($"Unable to distribute message {communicationChannel} to group {groupName}"));
                 throw new NotAbleToDistributeToGroupException(groupName);
             }
         }

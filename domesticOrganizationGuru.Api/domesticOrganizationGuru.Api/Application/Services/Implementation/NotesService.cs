@@ -59,7 +59,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
         public async Task UpdateNoteExpiriationTimeAsync(UpdateNoteExpiriationTimeDto updateExpiriationTimeDto)
         {
-            //TODO: dystrybucja po kanale nowej wartości wygaśnięcia
+            const string communicationChannel = "UpdateExpiriationTimeState";
 
             string noteName = updateExpiriationTimeDto.NoteName;
             var hashedPassword = StringSha256Hash(noteName);
@@ -74,11 +74,11 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 throw new UpdateNotesException();
             }
 
-            //await _notesNotificationsService.UpdateGroupNotesAsync(
-            //    communicationChannel,
-            //    updateNoteRequest.NoteName,
-            //    updateNoteRequest.ConnectionId,
-            //    updateNoteRequest.NotesPack);
+            await _notesNotificationsService.UpdateGroupExpiriationTimeAsync(
+                communicationChannel,
+                noteName,
+                updateExpiriationTimeDto.ConnectionId,
+                updateExpiriationTimeDto.ExpirationMinutesRange);
         }
 
         public async Task<string> CreateNote(CreateNotesPackDto updateNoteRequest)
