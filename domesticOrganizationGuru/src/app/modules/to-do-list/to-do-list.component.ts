@@ -3,11 +3,12 @@ import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { UpdateNoteRequestDto } from 'src/app/services/api/service-proxy/service-proxy';
 import { TodoItem } from './models/to-do';
-import { ToDoService } from './services/to-do-service.service';
+import { ToDoService } from '../../services/domain/services/to-do-service.service';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, zip } from 'rxjs';
 import * as SettingsSelectors from '../../state/states/settings/settings.selector'
 import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
+import { NoteInformationService } from 'src/app/services/domain/note-information/note-information.service';
 
 @Component({
   selector: 'to-do-list',
@@ -17,7 +18,7 @@ import { NoteSettingsState } from 'src/app/state/states/settings/settings.intefa
 export class ToDoListComponent implements OnInit {
   public toDoList = this.toDoService.getToDoList();
   public todoItem = new TodoItem('');
-  public expiriationTimeSpan = this.toDoService.getExpirationTime();
+  public expiriationTimeSpan = this.noteInformationService.getExpirationTime();
 
   noteInput: string | undefined = undefined;
 
@@ -31,6 +32,7 @@ export class ToDoListComponent implements OnInit {
 
   constructor(
     private toDoService: ToDoService,
+    private noteInformationService: NoteInformationService,
     private organizerApiService: OrganizerApiService,
     private store: Store<NoteSettingsState>,
     public signalrService: NotesSignalService

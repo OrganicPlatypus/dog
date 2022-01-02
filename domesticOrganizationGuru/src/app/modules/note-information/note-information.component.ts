@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { zip } from 'rxjs';
+import { NoteInformationService } from 'src/app/services/domain/note-information/note-information.service';
 import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 import { getMinutesTillExpireSelector, getNoteNameSelector } from 'src/app/state/states/settings/settings.selector';
-import { ToDoService } from '../to-do-list/services/to-do-service.service';
+import { ToDoService } from '../../services/domain/services/to-do-service.service';
 
 @Component({
   selector: 'note-information',
@@ -17,21 +18,18 @@ export class NoteInformationComponent implements OnInit {
 
 
   //TODO: extract note information service
-  public expiriationTimeSpan = this.toDoService.getExpirationTime();
-  public expirationDate = this.toDoService.getExpirationDate();
+  public expiriationTimeSpan = this.noteInformationService.getExpirationTime();
+  public expirationDate = this.noteInformationService.getExpirationDate();
 
   constructor(
     private store: Store<NoteSettingsState>,
-    private toDoService: ToDoService,
+    private noteInformationService: NoteInformationService,
   ) { }
 
   ngOnInit() {
-    zip(
-    this.store.select(getNoteNameSelector),
-    this.store.select(getMinutesTillExpireSelector)
-    )
+    this.store.select(getNoteNameSelector)
     .subscribe( results => {
-      this.noteName = results[0]!
+      this.noteName = results!
       // this.formExpiriationPointDate(results[1]!);
       //this.formExpiriationPointDate(this.expiriationTimeSpan.value);
     })

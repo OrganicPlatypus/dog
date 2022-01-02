@@ -3,6 +3,7 @@ using domesticOrganizationGuru.Common.CustomExceptions;
 using domesticOrganizationGuru.Common.Dto;
 using domesticOrganizationGuru.Entities;
 using domesticOrganizationGuru.Repository;
+using domesticOrganizationGuru.SignalR.Resources;
 using domesticOrganizationGuru.SignalR.Services;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -38,8 +39,6 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
         public async Task UpdateNote(UpdateNoteRequestDto updateNoteRequest)
         {
-            const string communicationChannel = "UpdateNotesState";
-
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
             rawNote.Password = StringSha256Hash(updateNoteRequest.NoteName);
             var isUpdated = await _notesRepository.UpdateNote(rawNote);
@@ -51,7 +50,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             }
 
             await _notesNotificationsService.UpdateGroupNotesAsync(
-                communicationChannel,
+                ChannelsNames.UpdateNotesState,
                 updateNoteRequest.NoteName,
                 updateNoteRequest.ConnectionId,
                 updateNoteRequest.NotesPack);
@@ -59,8 +58,6 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
         public async Task UpdateNoteExpiriationTimeAsync(UpdateNoteExpiriationTimeDto updateExpiriationTimeDto)
         {
-            const string communicationChannel = "UpdateExpiriationTimeState";
-
             string noteName = updateExpiriationTimeDto.NoteName;
             var hashedPassword = StringSha256Hash(noteName);
             var rawNote = await GetNote(updateExpiriationTimeDto.NoteName, hashedPassword);
@@ -75,7 +72,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             }
 
             await _notesNotificationsService.UpdateGroupExpiriationTimeAsync(
-                communicationChannel,
+                ChannelsNames.UpdateExpiriationTimeState,
                 noteName,
                 updateExpiriationTimeDto.ConnectionId,
                 updateExpiriationTimeDto.ExpirationMinutesRange);

@@ -12,4 +12,19 @@
     <ProjectReference Include="..\domesticOrganizationGuru.Common\domesticOrganizationGuru.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\ChannelsNames.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChannelsNames.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ChannelsNames.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChannelsNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

@@ -5,11 +5,11 @@ import { NoteSettingsState } from 'src/app/state/states/settings/settings.intefa
 import { setExpirationTimerAction } from '../../state/states/settings/settings.actions';
 import { ToastrService } from 'ngx-toastr';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
-
-import * as SettingsSelectors from '../../state/states/settings/settings.selector'
 import { UpdateNoteExpiriationTimeDto } from 'src/app/services/api/service-proxy/service-proxy';
 import { NotesSignalService } from 'src/app/services/signalR/notes.signal.service';
-import { ToDoService } from '../to-do-list/services/to-do-service.service';
+import { NoteInformationService } from 'src/app/services/domain/note-information/note-information.service';
+
+import * as SettingsSelectors from '../../state/states/settings/settings.selector'
 
 @Component({
   selector: 'notes-settings',
@@ -18,7 +18,7 @@ import { ToDoService } from '../to-do-list/services/to-do-service.service';
 })
 export class SettingsComponent implements OnInit {
   public openMenu: boolean = false;
-  public expiriationTimeSpan = this.toDoService.getExpirationTime();
+  public expiriationTimeSpan = this.noteInformationService.getExpirationTime();
   expiriationMinutes = new FormControl(0, Validators.max(60));
 
   constructor(
@@ -26,7 +26,7 @@ export class SettingsComponent implements OnInit {
     private toaster: ToastrService,
     private organizerApiService: OrganizerApiService,
     public signalrService: NotesSignalService,
-    private toDoService: ToDoService,
+    private noteInformationService: NoteInformationService,
   ) { }
 
   ngOnInit() {
