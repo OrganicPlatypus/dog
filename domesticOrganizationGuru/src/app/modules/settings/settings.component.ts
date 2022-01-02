@@ -21,6 +21,8 @@ export class SettingsComponent implements OnInit {
   public expiriationTimeSpan = this.noteInformationService.getExpirationTime();
   expiriationMinutes = new FormControl(0, Validators.max(60));
 
+  isValueChanged: boolean = false;
+
   constructor(
     private store: Store<NoteSettingsState>,
     private toaster: ToastrService,
@@ -31,6 +33,8 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.store.select(SettingsSelectors.getMinutesTillExpireSelector).subscribe(minutes => this.expiriationMinutes.setValue(minutes));
+
+    this.isValueChangedDetection();
   }
 
   clickMenu(){
@@ -42,7 +46,6 @@ export class SettingsComponent implements OnInit {
     this.store.select(SettingsSelectors.getNoteNameSelector).subscribe(name=>{
       noteName = name!;
     })
-    // const newExpiriationTimeMinutes = this.expiriationTimeSpan.value;
     const newExpiriationTimeMinutes = this.expiriationMinutes.value;
     const connectionId = this.signalrService.connection.connectionId;
     const updateExpiriationTimeDto = <UpdateNoteExpiriationTimeDto>{
@@ -52,8 +55,17 @@ export class SettingsComponent implements OnInit {
     }
     this.organizerApiService.updateNoteExpiriationTime(updateExpiriationTimeDto).subscribe();
     this.store.dispatch(setExpirationTimerAction({expirationTimer : this.expiriationMinutes.value}))
-    // this.store.dispatch(setExpirationTimerAction({expirationTimer : this.expiriationTimeSpan.value}))
 
     this.toaster.info('Notes expiration timer has been changed');
   }
+
+  isValueChangedDetection() {
+    const initialValue = this.expiriationMinutes.value;
+    console.log(initialValue)
+    this.expiriationMinutes.valueChanges.subscribe(value => {
+      this.isValueChanged = Object.keys(initialValue).some(key => this.expiriationMinutes.value[key] !=
+                        initialValue[key])
+    });
+  }
+
 }
