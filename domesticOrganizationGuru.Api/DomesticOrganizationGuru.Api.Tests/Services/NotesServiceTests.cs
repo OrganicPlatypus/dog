@@ -166,12 +166,14 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .ReturnsAsync(true)
                 .Verifiable();
 
+            string channelNameReturn = string.Empty;
             string groupNameReturn = string.Empty;
 
             _mockNotesNotificationsService
                 .Setup(x => x.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()))
-                .Callback<string, string, string, NoteDto[]>((_, groupName, __, ___) =>
+                .Callback<string, string, string, NoteDto[]>((channelName, groupName, _, __) =>
                 {
+                    channelNameReturn = channelName;
                     groupNameReturn = groupName;
                 })
                 .Returns(Task.CompletedTask)
@@ -184,6 +186,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             await notesService.UpdateNote(updateNoteRequest);
 
             //Assert
+            Assert.Equal("UpdateNotesState", channelNameReturn);
             Assert.Equal(updateNoteRequest.NoteName, groupNameReturn);
             _mockNotesRepository
                 .Verify(c => c.UpdateNote(It.IsAny<NotesPack>()), Times.Once());
@@ -297,12 +300,14 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .ReturnsAsync(true)
                 .Verifiable();
 
+            string channelNameReturn = string.Empty;
             string groupNameReturn = string.Empty;
 
             _mockNotesNotificationsService
-                .Setup(x => x.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()))
-                .Callback<string, string, string, NoteDto[]>((_, groupName, __, ___) =>
+                .Setup(x => x.UpdateGroupExpiriationTimeAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Callback<string, string, string, int>((channelName, groupName, _, __) =>
                 {
+                    channelNameReturn = channelName;
                     groupNameReturn = groupName;
                 })
                 .Returns(Task.CompletedTask)
@@ -315,11 +320,12 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             await notesService.UpdateNoteExpiriationTimeAsync(updateNoteRequest);
 
             //Assert
-            //Assert.Equal(updateNoteRequest.NoteName, groupNameReturn);
+            Assert.Equal("UpdateExpiriationTimeState", channelNameReturn);
+            Assert.Equal(updateNoteRequest.NoteName, groupNameReturn);
             _mockNotesRepository
                 .Verify(c => c.UpdateNote(It.IsAny<NotesPack>()), Times.Once());
-            //_mockNotesNotificationsService
-            //    .Verify(c => c.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()), Times.Once());
+            _mockNotesNotificationsService
+                .Verify(c => c.UpdateGroupExpiriationTimeAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Once());
         }
 
         private static IMapper CreateMapper()
