@@ -37,14 +37,13 @@ public getExpirationTime = () => {
 public getExpirationDate = () => {
     this.store.select(getMinutesTillExpireSelector)
     .subscribe(minutes => {
-      console.log('bump')
       if(minutes){
-        this.expiriationTime = minutes!;
-        this.expiriationTimeSpan.next(this.expiriationTime);
-        let expirationDate = new Date(Date.now() + this.expiriationTimeSpan.value! * 60000);
+        const confirmedMinutes = minutes!
+        this.expiriationTime = confirmedMinutes;
+        this.expiriationTimeSpan.next(confirmedMinutes);
+        let expirationDate = new Date(Date.now() + confirmedMinutes * 60000);
         this.expirationDate = `${expirationDate.toLocaleDateString()} ${expirationDate.toLocaleTimeString()}`;
         this.expirationDateFormed.next(this.expirationDate);
-        console.log(this.expirationDateFormed.value)
       }
     })
     return this.expirationDateFormed;

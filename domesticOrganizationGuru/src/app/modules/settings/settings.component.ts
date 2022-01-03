@@ -54,17 +54,16 @@ export class SettingsComponent implements OnInit {
       expirationMinutesRange: newExpiriationTimeMinutes,
     }
     this.organizerApiService.updateNoteExpiriationTime(updateExpiriationTimeDto).subscribe();
-    this.store.dispatch(setExpirationTimerAction({expirationTimer : this.expiriationMinutes.value}))
+    this.store.dispatch(setExpirationTimerAction({expirationTimer : this.expiriationMinutes.value}));
 
     this.toaster.info('Notes expiration timer has been changed');
   }
 
   isValueChangedDetection() {
     const initialValue = this.expiriationMinutes.value;
-    console.log(initialValue)
-    this.expiriationMinutes.valueChanges.subscribe(value => {
-      this.isValueChanged = Object.keys(initialValue).some(key => this.expiriationMinutes.value[key] !=
-                        initialValue[key])
+    this.expiriationMinutes.valueChanges.subscribe(() => {
+      this.isValueChanged = Object.keys(initialValue)
+        .some(key => this.expiriationMinutes.value[key] != initialValue[key]);
     });
   }
 
