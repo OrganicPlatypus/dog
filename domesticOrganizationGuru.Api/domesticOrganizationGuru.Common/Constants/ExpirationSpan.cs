@@ -1,7 +1,7 @@
 ﻿namespace domesticOrganizationGuru.Common.Constants
 {
-    public class ExpirationSpan
+    public static class ExpirationSpan
     {
-        public const int InitialNumberOfMinutes = 59;
+        public const int InitialNumberOfMinutes = 60;
     }
 }

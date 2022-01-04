@@ -202,6 +202,10 @@ export class Client {
         return _observableOf<void>(<any>null);
     }
 
+    /**
+     * @param body (optional)
+     * @return Success
+     */
     updateNoteExpiriationTime(body: UpdateNoteExpiriationTimeDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Organizer/UpdateNoteExpiriationTime";
         url_ = url_.replace(/[?&]$/, "");
@@ -238,12 +242,9 @@ export class Client {
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 422) {
+        if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result422: any = null;
-            let resultData422 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result422 = ProblemDetails.fromJS(resultData422);
-            return throwException("Client Error", status, _responseText, _headers, result422);
+            return _observableOf<void>(<any>null);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
@@ -496,61 +497,10 @@ export interface IUpdateNoteExpiriationTimeDto {
     expirationMinutesRange?: number;
 }
 
-export class ProblemDetails implements IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-
-    constructor(data?: IProblemDetails) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.type = _data["type"];
-            this.title = _data["title"];
-            this.status = _data["status"];
-            this.detail = _data["detail"];
-            this.instance = _data["instance"];
-        }
-    }
-
-    static fromJS(data: any): ProblemDetails {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProblemDetails();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["type"] = this.type;
-        data["title"] = this.title;
-        data["status"] = this.status;
-        data["detail"] = this.detail;
-        data["instance"] = this.instance;
-        return data;
-    }
-}
-
-export interface IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-}
-
 export class NotesSessionDto implements INotesSessionDto {
     notes?: NoteDto[] | undefined;
     expirationMinutesRange?: number;
+    expirationDate?: Date;
 
     constructor(data?: INotesSessionDto) {
         if (data) {
@@ -569,6 +519,7 @@ export class NotesSessionDto implements INotesSessionDto {
                     this.notes!.push(NoteDto.fromJS(item));
             }
             this.expirationMinutesRange = _data["expirationMinutesRange"];
+            this.expirationDate = _data["expirationDate"] ? new Date(_data["expirationDate"].toString()) : <any>undefined;
         }
     }
 
@@ -587,6 +538,7 @@ export class NotesSessionDto implements INotesSessionDto {
                 data["notes"].push(item.toJSON());
         }
         data["expirationMinutesRange"] = this.expirationMinutesRange;
+        data["expirationDate"] = this.expirationDate ? this.expirationDate.toISOString() : <any>undefined;
         return data;
     }
 }
@@ -594,6 +546,7 @@ export class NotesSessionDto implements INotesSessionDto {
 export interface INotesSessionDto {
     notes?: NoteDto[] | undefined;
     expirationMinutesRange?: number;
+    expirationDate?: Date;
 }
 
 export class ApiException extends Error {

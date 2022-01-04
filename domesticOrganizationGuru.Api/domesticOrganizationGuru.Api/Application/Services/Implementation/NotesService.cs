@@ -6,6 +6,7 @@ using domesticOrganizationGuru.Repository;
 using domesticOrganizationGuru.SignalR.Resources;
 using domesticOrganizationGuru.SignalR.Services;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 using static domesticOrganizationGuru.Common.Helpers.SecurityHelper;
 
@@ -41,6 +42,8 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
         {
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
             rawNote.Password = StringSha256Hash(updateNoteRequest.NoteName);
+            var expiriationDate = DateTimeOffset.UtcNow.AddMinutes(updateNoteRequest.ExpirationMinutesRange);
+            rawNote.ExpirationDate = expiriationDate;
             var isUpdated = await _notesRepository.UpdateNote(rawNote);
 
             if (!isUpdated)
@@ -62,7 +65,11 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             var hashedPassword = StringSha256Hash(noteName);
             var rawNote = await GetNote(updateExpiriationTimeDto.NoteName, hashedPassword);
 
-            rawNote.ExpirationMinutesRange = updateExpiriationTimeDto.ExpirationMinutesRange;
+            int expirationMinutesRange = updateExpiriationTimeDto.ExpirationMinutesRange;
+            rawNote.ExpirationMinutesRange = expirationMinutesRange; 
+            var expiriationDate = DateTimeOffset.UtcNow.AddMinutes(updateExpiriationTimeDto.ExpirationMinutesRange);
+            rawNote.ExpirationDate = expiriationDate;
+
             var isUpdated = await _notesRepository.UpdateNote(rawNote);
 
             if (!isUpdated)
@@ -83,6 +90,8 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
             var noteName = updateNoteRequest.NoteName;
             rawNote.Password = StringSha256Hash(noteName);
+            var expiriationDate = DateTimeOffset.UtcNow.AddMinutes(updateNoteRequest.ExpirationMinutesRange);
+            rawNote.ExpirationDate = expiriationDate;
 
             try
             {
