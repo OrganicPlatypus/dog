@@ -1,6 +1,5 @@
 ﻿using domesticOrganizationGuru.Entities;
 using domesticOrganizationGuru.Repository;
-using Microsoft.Extensions.Caching.Distributed;
 using StackExchange.Redis;
 using System;
 using System.Text.Json;
@@ -10,57 +9,52 @@ namespace DomesticOrganizationGuru.Api.Repositories.Implementation
 {
     public class NotesRepository : INotesRepository
     {
-        private readonly IDistributedCache _storage;
+        private readonly IDatabase _database;
 
-        public NotesRepository(IDistributedCache cache)
+        public NotesRepository(IConnectionMultiplexer connectionMultiplexer)
         {
-            _storage = cache ?? throw new ArgumentNullException(nameof(cache));
-        }
-
-        public async Task CreateNote(NotesPack rawNote)
-        {
-            RedisValue note = await _storage.GetStringAsync(rawNote.Password);
-
-            if (note.HasValue)
-                throw new Exception();
-
-            var expiryTimeSpan = new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(rawNote.ExpirationMinutesRange)
-            };
-            await _storage.SetStringAsync(rawNote.Password, JsonSerializer.Serialize(rawNote), expiryTimeSpan);
-
+            _database = connectionMultiplexer.GetDatabase();
         }
 
         public async Task<NotesPack> GetNote(string password)
         {
-            RedisValue note = await _storage.GetStringAsync(password);
+            RedisValue cachedUsers = await _database.StringGetAsync(password);
 
-            if (!note.HasValue)
+            bool hasValue = cachedUsers.HasValue;
+            if (!hasValue)
+            {
                 return null;
-
-            NotesPack notesPack = JsonSerializer.Deserialize<NotesPack>(note);
+            }
+            NotesPack notesPack = JsonSerializer.Deserialize<NotesPack>(cachedUsers);
             return notesPack;
+        }
+
+        public async Task CreateNote(NotesPack rawNote)
+        {
+            NotesPack note = await GetNote(rawNote.Password);
+            if (note is not null)
+                throw new Exception();
+
+            var expirationTimeSpan = TimeSpan.FromMinutes(rawNote.ExpirationMinutesRange);
+            var jsonData = JsonSerializer.Serialize(rawNote);
+
+            await _database.StringSetAsync(rawNote.Password, jsonData, expirationTimeSpan);
         }
 
         public async Task<bool> UpdateNote(NotesPack notesPack)
         {
-            RedisValue note = _storage.Get(notesPack.Password);
-            if (!note.HasValue)
+            var note = await GetNote(notesPack.Password);
+            if (note is null)
             {
                 return false;
             }
-            var expiryTimeSpan = new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(notesPack.ExpirationMinutesRange)
-            };
-            await _storage.SetStringAsync(notesPack.Password, JsonSerializer.Serialize(notesPack), expiryTimeSpan);
-            return true;
-        }
 
-        public async Task DeleteNote(string identifier)
-        {
-            await _storage.RemoveAsync(identifier);
+            var expirationTimeSpan = TimeSpan.FromMinutes(notesPack.ExpirationMinutesRange);
+            var jsonData = JsonSerializer.Serialize(notesPack);
+
+            await _database.StringSetAsync(notesPack.Password, jsonData, expirationTimeSpan);
+
+            return true;
         }
     }
 }

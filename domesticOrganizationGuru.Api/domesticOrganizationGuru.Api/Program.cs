@@ -6,6 +6,8 @@ namespace domesticOrganizationGuru.Api
 {
     public class Program
     {
+        //private static Lazy<ConnectionMultiplexer> lazyConnection = CreateConnection();
+
         public static void Main(string[] args)
         {
             ConfigureLogger();
@@ -20,5 +22,23 @@ namespace domesticOrganizationGuru.Api
             {
                 webBuilder.UseStartup<Startup>();
             });
+
+
+        //public static ConnectionMultiplexer Connection
+        //{
+        //    get
+        //    {
+        //        return lazyConnection.Value;
+        //    }
+        //}
+
+        //private static Lazy<ConnectionMultiplexer> CreateConnection()
+        //{
+        //    return new Lazy<ConnectionMultiplexer>(() =>
+        //    {
+        //        string cacheConnection = Configuration[SecretName];
+        //        return ConnectionMultiplexer.Connect(cacheConnection);
+        //    });
+        //}
     }
 }

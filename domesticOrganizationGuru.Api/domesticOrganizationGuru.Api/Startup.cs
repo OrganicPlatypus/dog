@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 using static DomesticOrganizationGuru.Api.StartupKernel.RegistraterUtilityContainers.ValidationErrorsHelper.ValidationErrorsCustomResponseHelper;
 
 namespace domesticOrganizationGuru.Api
@@ -26,10 +27,13 @@ namespace domesticOrganizationGuru.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = Configuration.GetValue<string>("CacheSettings:ConnectionString");
-            });
+            //services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.Configuration = Configuration.GetValue<string>("RedisConnection:ConnectionString");
+            //});
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer
+                .Connect(Configuration.GetValue<string>("RedisConnection:ConnectionString"))
+                );
 
             services.RegisterServices();
             services.RegisterRopositories();

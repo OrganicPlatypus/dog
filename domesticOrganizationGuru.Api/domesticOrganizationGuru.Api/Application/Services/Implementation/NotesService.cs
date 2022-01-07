@@ -2,6 +2,7 @@
 using domesticOrganizationGuru.Common.CustomExceptions;
 using domesticOrganizationGuru.Common.Dto;
 using domesticOrganizationGuru.Entities;
+using domesticOrganizationGuru.Redis.Proxy;
 using domesticOrganizationGuru.Repository;
 using domesticOrganizationGuru.SignalR.Resources;
 using domesticOrganizationGuru.SignalR.Services;
@@ -18,6 +19,8 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
         private readonly INotesNotificationsService _notesNotificationsService;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
+
+        private readonly IDatabaseProxy _database;
 
         public NotesService(
             INotesRepository notesRepository,
