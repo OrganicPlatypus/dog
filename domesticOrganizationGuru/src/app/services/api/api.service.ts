@@ -45,17 +45,6 @@ export class OrganizerApiService {
     return this.http.put<void>(`${this.baseUrl}/api/Organizer/UpdateNoteExpiriationTime`, updateExpiriationTimeDto, options);
   }
 
-  // createNote(noteDto: CreateNotesPackDto): Observable<Date>  {
-  //   const options: Object = {
-  //     headers: new HttpHeaders({
-  //       'Content-Type': 'application/json; charset=utf-8',
-  //       'Accept': 'text/plain'
-  //     }),
-  //     responseType: 'text' as const
-  //   }
-  //   return this.http.post<Date>(`${this.baseUrl}/api/Organizer/CreateNotesPack`, noteDto, options);
-  // }
-
   createNote(noteDto: CreateNotesPackDto): Observable<NoteSettingsDto>  {
     const options: Object = {
       headers: new HttpHeaders({

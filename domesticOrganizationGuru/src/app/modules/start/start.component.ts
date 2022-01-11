@@ -41,19 +41,6 @@ export class StartComponent implements OnInit {
     })
   }
 
-
-
-
-
-
-//TODO: spróbuj zwracać model z datą a nie samą datę
-
-
-
-
-
-
-
   public createNotePack() {
     const noteName = this.noteName.value;
     const notesPack: CreateNotesPackDto = <CreateNotesPackDto> {
@@ -63,15 +50,12 @@ export class StartComponent implements OnInit {
     this.organizerApiService
       .createNote(notesPack)
         .subscribe((expirationDateDto) => {
-          console.log('new Date', new Date())
-          console.log('createNotePack expirationDate', expirationDateDto)
-          const aaaa: NoteSettingsDto = expirationDateDto;
-          console.log('aaaa', aaaa)
-          const bbbb : Date = new Date(aaaa.expirationDate!);
-          console.log('date parse', bbbb)
-          this.store.dispatch(SettingsActions.setNoteNameAction({noteName : noteName}))
-          this.store.dispatch(SettingsActions.setExpirationDateAction({expirationDate : bbbb!}))
-          this.signalrService.joinGroup(noteName);
+          this.store.dispatch( SettingsActions.setNoteNameAction({noteName : noteName}))
+          this.store.dispatch( SettingsActions
+            .setExpirationDateAction({ expirationDate : new Date( expirationDateDto.expirationDate! ) }
+            )
+          )
+          this.signalrService.joinGroup( noteName );
           this.router.navigate(['/to-do']);
         });
     this.noteName.setValue('');
@@ -91,7 +75,7 @@ export class StartComponent implements OnInit {
             })
             this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}));
             this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName}));
-            this.store.dispatch(SettingsActions.setExpirationDateAction({expirationDate : notesPack.expirationDate!}))
+            this.store.dispatch(SettingsActions.setExpirationDateAction({expirationDate : new Date( notesPack.expirationDate! )}))
             this.store.dispatch(SettingsActions.setExpirationTimerAction({expirationTimer : notesPack.expirationMinutesRange!}));
             this.signalrService.joinGroup(sessionName);
             this.router.navigate(['/to-do']);

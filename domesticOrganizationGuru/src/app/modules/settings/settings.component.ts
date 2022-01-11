@@ -32,10 +32,10 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.select(SettingsSelectors.getExpirationDateSelector).subscribe(date => {
-      this.expirationDate.setValue(date)
-    });
-    this.store.select(SettingsSelectors.getMinutesTillExpireSelector).subscribe(minutes => this.expiriationMinutes.setValue(minutes));
+    // this.store.select(SettingsSelectors.getExpirationDateSelector).subscribe(date => {
+    //   this.expirationDate.setValue(date)
+    // });
+    this.expiriationMinutes.setValue(this.expiriationTimeSpan.value);
 
     this.isValueChangedDetection();
   }
