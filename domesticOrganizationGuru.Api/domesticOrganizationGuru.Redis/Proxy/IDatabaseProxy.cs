@@ -2,7 +2,7 @@
 
 namespace domesticOrganizationGuru.Redis.Proxy
 {
-    public interface IDatabaseProxy: IDatabase
+    public interface IDatabaseProxy: IDatabase, IConnectionMultiplexer, ITransaction
     {
     }
 }

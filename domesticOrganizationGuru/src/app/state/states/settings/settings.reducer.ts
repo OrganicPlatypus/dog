@@ -14,6 +14,11 @@ export const settingsReducer = createReducer(
       noteName: action.noteName
     })
   ),
+  on( RootActions.setExpirationDateAction, (state: NoteSettingsState, action) => ({
+    ...state,
+    expirationDate: action.expirationDate
+  })
+),
   on(RootActions.clearStateAction, () => ({
       ...initialSettingsState
     })

@@ -81,7 +81,7 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    createNotesPack(body: CreateNotesPackDto | undefined): Observable<string> {
+    createNotesPack(body: CreateNotesPackDto | undefined): Observable<NoteSettingsDto> {
         let url_ = this.baseUrl + "/api/Organizer/CreateNotesPack";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -104,14 +104,14 @@ export class Client {
                 try {
                     return this.processCreateNotesPack(<any>response_);
                 } catch (e) {
-                    return <Observable<string>><any>_observableThrow(e);
+                    return <Observable<NoteSettingsDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<string>><any>_observableThrow(response_);
+                return <Observable<NoteSettingsDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateNotesPack(response: HttpResponseBase): Observable<string> {
+    protected processCreateNotesPack(response: HttpResponseBase): Observable<NoteSettingsDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -122,24 +122,21 @@ export class Client {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-
+            result200 = NoteSettingsDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 422) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result422: any = null;
             let resultData422 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result422 = resultData422 !== undefined ? resultData422 : <any>null;
-
+            result422 = NoteSettingsDto.fromJS(resultData422);
             return throwException("Client Error", status, _responseText, _headers, result422);
             }));
         } else if (status === 400) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result400: any = null;
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result400 = resultData400 !== undefined ? resultData400 : <any>null;
-
+            result400 = NoteSettingsDto.fromJS(resultData400);
             return throwException("Bad Request", status, _responseText, _headers, result400);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -147,7 +144,7 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<string>(<any>null);
+        return _observableOf<NoteSettingsDto>(<any>null);
     }
 
     /**
@@ -355,6 +352,42 @@ export class CreateNotesPackDto implements ICreateNotesPackDto {
 export interface ICreateNotesPackDto {
     noteName?: string | undefined;
     expirationMinutesRange?: number;
+}
+
+export class NoteSettingsDto implements INoteSettingsDto {
+    expirationDate?: Date;
+
+    constructor(data?: INoteSettingsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.expirationDate = _data["expirationDate"] ? new Date(_data["expirationDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): NoteSettingsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NoteSettingsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["expirationDate"] = this.expirationDate ? this.expirationDate.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface INoteSettingsDto {
+    expirationDate?: Date;
 }
 
 export class NoteDto implements INoteDto {

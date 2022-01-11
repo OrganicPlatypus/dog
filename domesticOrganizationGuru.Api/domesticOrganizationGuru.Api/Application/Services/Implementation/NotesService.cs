@@ -20,7 +20,6 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        private readonly IDatabaseProxy _database;
 
         public NotesService(
             INotesRepository notesRepository,
@@ -88,18 +87,19 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 updateExpiriationTimeDto.ExpirationMinutesRange);
         }
 
-        public async Task<string> CreateNote(CreateNotesPackDto updateNoteRequest)
+        public async Task<DateTime> CreateNote(CreateNotesPackDto updateNoteRequest)
         {
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
             var noteName = updateNoteRequest.NoteName;
             rawNote.Password = StringSha256Hash(noteName);
             var expiriationDate = DateTimeOffset.UtcNow.AddMinutes(updateNoteRequest.ExpirationMinutesRange);
+            var expiration = expiriationDate.UtcDateTime;
             rawNote.ExpirationDate = expiriationDate;
 
             try
             {
                 await _notesRepository.CreateNote(rawNote);
-                return noteName;
+                return expiration;
             }
             catch
             {

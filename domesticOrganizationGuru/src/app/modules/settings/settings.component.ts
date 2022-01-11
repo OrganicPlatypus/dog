@@ -18,9 +18,9 @@ import * as SettingsSelectors from '../../state/states/settings/settings.selecto
 })
 export class SettingsComponent implements OnInit {
   public openMenu: boolean = false;
-  public expiriationTimeSpan = this.noteInformationService.getExpirationTime();
+  public expiriationTimeSpan = this.noteInformationService.getExpirationTimeMinutes();
   expiriationMinutes = new FormControl(0, Validators.max(60));
-
+  expirationDate = new FormControl(new Date());
   isValueChanged: boolean = false;
 
   constructor(
@@ -32,6 +32,9 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.store.select(SettingsSelectors.getExpirationDateSelector).subscribe(date => {
+      this.expirationDate.setValue(date)
+    });
     this.store.select(SettingsSelectors.getMinutesTillExpireSelector).subscribe(minutes => this.expiriationMinutes.setValue(minutes));
 
     this.isValueChangedDetection();

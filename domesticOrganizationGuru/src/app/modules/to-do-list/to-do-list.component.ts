@@ -18,7 +18,7 @@ import { NoteInformationService } from 'src/app/services/domain/note-information
 export class ToDoListComponent implements OnInit {
   public toDoList = this.toDoService.getToDoList();
   public todoItem = new TodoItem('');
-  public expiriationTimeSpan = this.noteInformationService.getExpirationTime();
+  public expiriationTimeSpan = this.noteInformationService.getExpirationTimeMinutes();
 
   noteInput: string | undefined = undefined;
 

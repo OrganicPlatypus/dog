@@ -1,18 +1,14 @@
-import { NotesSessionDto } from './../api/service-proxy/service-proxy';
 import { TodoItem } from './../../modules/to-do-list/models/to-do';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
-import { getNoteNameSelector } from 'src/app/state/states/settings/settings.selector';
 import { ConfigurationApiService } from '../api/configuration-api.service';
 import { OrganizerApiService } from '../api/api.service';
 import { NotesSignalService } from '../signalR/notes.signal.service';
 
 import * as SettingsActions from '../../state/states/settings/settings.actions';
 import * as NotesActions from '../../state/states/notes/notes.actions';
-import { catchError } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class JoinLandingGuard implements CanActivate {
@@ -51,6 +47,7 @@ export class JoinLandingGuard implements CanActivate {
               })
             }
             this.store.dispatch(SettingsActions.setExpirationTimerAction({expirationTimer : notesPack.expirationMinutesRange!}))
+            this.store.dispatch(SettingsActions.setExpirationDateAction({expirationDate : notesPack.expirationDate!}))
             this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}))
             this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName}))
             this.signalrService.joinGroup(sessionName);
