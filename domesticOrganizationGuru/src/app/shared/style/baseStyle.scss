@@ -7,6 +7,11 @@
   padding: 0;
 }
 
+$baseShadow: 15px 15px 1px $baseShadowColor, 15px 15px 1px 2px black;
+$minorShadow: 5px 5px 0.75px $baseShadowColor, 5px 5px 0.75px 1.5px black;
+$buttonsShadow: 3px 3px 1px $buttonShadowColor, 3px 3px 1px 1px black;
+
+
 body {
   background: center center no-repeat;
   background-size: cover;
@@ -26,11 +31,18 @@ body {
   background: $backgroundCard;
   padding: 10px 20px;
   border: 2px solid black;
-  box-shadow: 15px 15px 1px $baseShadow, 15px 15px 1px 2px black;
+  box-shadow: $baseShadow;
 
   &--information-box {
     @extend .main-box;
-    box-shadow: 5px 5px 0.75px $baseShadow, 5px 5px 0.75px 1.5px black;
+    width: fit-content;
+    box-shadow: $minorShadow;
+  }
+
+  &--settings-box {
+    @extend .main-box;
+    width: fit-content;
+    box-shadow: $minorShadow;
   }
 
   &--notes-box {
@@ -55,13 +67,13 @@ input {
 }
 
 input:focus {
-  border-bottom: 5px solid $baseShadow;
+  border-bottom: 5px solid $baseShadowColor;
 }
 
 circular-button{
-  background-color: $baseShadow;
+  background-color: $baseShadowColor;
   border: 1px solid black;
-  box-shadow: 3px 3px 1px $buttonShadow, 3px 3px 1px 1px black;
+  box-shadow: $buttonsShadow;
   color: white;
   padding: 20px;
   text-align: center;
@@ -82,12 +94,12 @@ button {
   margin-left: 2%;
   line-height: 28pt;
   padding: 0 20px;
-  background: $baseShadow;
+  background: $baseShadowColor;
   letter-spacing: 2px;
   transition: 0.2s all ease-in-out;
   outline: none;
   border: 1px solid black;
-  box-shadow: 3px 3px 1px $buttonShadow, 3px 3px 1px 1px black;
+  box-shadow: $buttonsShadow;
   font-family: "Gloria Hallelujah";
 }
 button:hover {
@@ -103,7 +115,7 @@ button:hover {
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
-  border-bottom: 5px solid $buttonShadow;
+  border-bottom: 5px solid $buttonShadowColor;
   -webkit-text-fill-color: #2A293E;
   -webkit-box-shadow: 0 0 0px 1000px $backgroundCard inset;
   transition: background-color 5000s ease-in-out 0s;

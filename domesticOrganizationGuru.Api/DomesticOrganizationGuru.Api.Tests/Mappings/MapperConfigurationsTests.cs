@@ -60,6 +60,34 @@ namespace DomesticOrganizationGuru.Api.Tests.Mappings
             Assert.Equal(mappedInto.Notes[0].IsComplete, updateNoteRequestDto.NotesPack[0].IsComplete);
         }
 
+
+        [Fact]
+        public void NotesPackMapperProfile_UpdateNoteExpiriationTimeDto_Example_Test()
+        {
+            //Arrange
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<NotesPackMapperProfile>();
+                cfg.AddProfile<NoteMapperProfile>();
+            });
+
+            UpdateNoteExpiriationTimeDto updateNoteExpiriationTimeDto = new()
+            {
+                ExpirationMinutesRange = 2,
+                NoteName = "Valid note name"
+            };
+            var mapper = config.CreateMapper();
+
+            //Act
+            var mappedInto = mapper.Map<NotesPack>(updateNoteExpiriationTimeDto);
+
+            //Assert
+            Assert.IsType<NotesPack>(mappedInto);
+            Assert.Equal(mappedInto.ExpirationMinutesRange, updateNoteExpiriationTimeDto.ExpirationMinutesRange);
+            Assert.Equal(mappedInto.Password, updateNoteExpiriationTimeDto.NoteName);
+            Assert.Null(mappedInto.Notes);
+        }
+
         [Fact]
         public void NotesPackMapperProfile_NotesPack_Example_Test()
         {

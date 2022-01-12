@@ -6,6 +6,7 @@ import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import * as signalR from "@microsoft/signalr";
 import * as SignalMethods from './signal-methods';
 import { Store } from '@ngrx/store';
+import { setExpirationDateAction, setExpirationTimerAction } from 'src/app/state/states/settings/settings.actions';
 
 export const API_SIGNALR_URL = new InjectionToken<string>('API_SIGNALR_URL')
 
@@ -24,7 +25,7 @@ export class NotesSignalService {
     this.signalRUrl = signalRUrl!;
    }
 
-  public subscribeOnCurrentlyUpdateNote(): void {
+  public subscribeOnUpdatedNotesState(): void {
     let notesDto: NoteDto[] | undefined = undefined;
       this.connection.on(SignalMethods.UpdateNotesState, (data: NoteDto[]) => {
         notesDto = data
@@ -40,6 +41,28 @@ export class NotesSignalService {
       })
       return notesDto
     }
+
+  public subscribeOnUpdatedExpirationDate(): void {
+      let expiriationDate: Date | undefined = undefined;
+        this.connection.on(SignalMethods.UpdateExpiriationTimeState, (data: Date) => {
+          expiriationDate = new Date( data )
+          if(expiriationDate){
+            this.store.dispatch(setExpirationDateAction({ expirationDate : expiriationDate}))
+          }
+        })
+        return expiriationDate
+      }
+
+      // public subscribeOnUpdatedExpirationSpan(): void {
+      //   let expirationSpan: number | undefined = undefined;
+      //     this.connection.on(SignalMethods.UpdateExpiriationTimeState, (data: number) => {
+      //       expirationSpan = data
+      //       if(expirationSpan){
+      //         this.store.dispatch(setExpirationTimerAction({ expirationTimer : expirationSpan}))
+      //       }
+      //     })
+      //     return expirationSpan
+      //   }
 
   public joinGroup(noteName: string): void {
     this.connection
@@ -75,7 +98,7 @@ export class NotesSignalService {
       this.connection
         .start()
         .catch((error) => {
-          console.warn(`Error while starting connection: ${error}`);
+          console.warn(`Error while starting group communication: ${error}`);
           setTimeout(this.startConnection.bind(this), 5000);
         });
     }

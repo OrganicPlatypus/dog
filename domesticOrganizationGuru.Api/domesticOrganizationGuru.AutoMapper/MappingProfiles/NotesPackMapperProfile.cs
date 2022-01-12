@@ -11,6 +11,13 @@ namespace domesticOrganizationGuru.AutoMapper.MappingProfiles
             CreateMap<UpdateNoteRequestDto, NotesPack>()
                 .ForMember(d => d.Password, opt => opt.MapFrom(src => src.NoteName))
                 .ForMember(d => d.Notes, opt => opt.MapFrom(src => src.NotesPack))
+                .ForMember(d => d.ExpirationDate, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<UpdateNoteExpiriationTimeDto, NotesPack>()
+                .ForMember(d => d.Password, opt => opt.MapFrom(src => src.NoteName))
+                .ForMember(d => d.Notes, opt => opt.Ignore())
+                .ForMember(d => d.ExpirationDate, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<NotesSessionDto, NotesPack>()
@@ -20,6 +27,7 @@ namespace domesticOrganizationGuru.AutoMapper.MappingProfiles
             CreateMap<CreateNotesPackDto, NotesPack>()
                 .ForMember(d => d.Password, opt => opt.MapFrom(src => src.NoteName))
                 .ForMember(d => d.Notes, opt => opt.Ignore())
+                .ForMember(d => d.ExpirationDate, opt => opt.Ignore())
                 .ReverseMap();
         }
     }

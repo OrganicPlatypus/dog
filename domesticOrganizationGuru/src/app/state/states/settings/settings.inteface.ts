@@ -6,10 +6,12 @@ export interface SettingsState extends State{
 
 export const initialSettingsState: NoteSettingsState = {
   minutesUntilExpire: 0,
-  noteName: ""
+  noteName: "",
+  expirationDate: undefined
 }
 
 export interface NoteSettingsState {
   minutesUntilExpire: number | undefined;
   noteName: string | undefined;
+  expirationDate: Date | undefined;
 }

@@ -1,6 +1,6 @@
 import { NotesSignalService } from './../../services/signalR/notes.signal.service';
 import { TodoItem } from './../to-do-list/models/to-do';
-import { Client, CreateNotesPackDto } from '../../services/api/service-proxy/service-proxy';
+import { Client, CreateNotesPackDto, NoteSettingsDto } from '../../services/api/service-proxy/service-proxy';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -42,15 +42,20 @@ export class StartComponent implements OnInit {
   }
 
   public createNotePack() {
+    const noteName = this.noteName.value;
     const notesPack: CreateNotesPackDto = <CreateNotesPackDto> {
       expirationMinutesRange: this.initialExpirationSpan,
-      noteName: this.noteName.value
-    }
+      noteName: noteName
+    };
     this.organizerApiService
       .createNote(notesPack)
-        .subscribe((noteName) => {
-          this.store.dispatch(SettingsActions.setNoteNameAction({noteName : noteName}))
-          this.signalrService.joinGroup(noteName);
+        .subscribe((expirationDateDto) => {
+          this.store.dispatch( SettingsActions.setNoteNameAction({noteName : noteName}))
+          this.store.dispatch( SettingsActions
+            .setExpirationDateAction({ expirationDate : new Date( expirationDateDto.expirationDate! ) }
+            )
+          )
+          this.signalrService.joinGroup( noteName );
           this.router.navigate(['/to-do']);
         });
     this.noteName.setValue('');
@@ -64,12 +69,14 @@ export class StartComponent implements OnInit {
           if(notesPack){
             let todoItems : TodoItem[] = []
             notesPack.notes?.map((note) => {
-              let todoItem = new TodoItem(note.noteText)
+              let todoItem = new TodoItem(note.noteText);
               todoItem.isComplete = note.isComplete;
-              todoItems.push(todoItem)
+              todoItems.push(todoItem);
             })
-            this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}))
-            this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName}))
+            this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}));
+            this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName}));
+            this.store.dispatch(SettingsActions.setExpirationDateAction({expirationDate : new Date( notesPack.expirationDate! )}))
+            this.store.dispatch(SettingsActions.setExpirationTimerAction({expirationTimer : notesPack.expirationMinutesRange!}));
             this.signalrService.joinGroup(sessionName);
             this.router.navigate(['/to-do']);
           }

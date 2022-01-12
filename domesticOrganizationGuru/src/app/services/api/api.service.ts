@@ -1,4 +1,4 @@
-import { CreateNotesPackDto, NotesSessionDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
+import { CreateNotesPackDto, NoteSettingsDto, NotesSessionDto, UpdateNoteExpiriationTimeDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 })
 
 export class OrganizerApiService {
-
   private baseUrl: string;
 
   constructor(
@@ -37,14 +36,22 @@ export class OrganizerApiService {
     return this.http.put<void>(`${this.baseUrl}/api/Organizer/UpdateNotesPack`, noteDto, options);
   }
 
-  createNote(noteDto: CreateNotesPackDto): Observable<string>  {
+  updateNoteExpiriationTime(updateExpiriationTimeDto: UpdateNoteExpiriationTimeDto): Observable<void> {
+    const options: Object = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+    return this.http.put<void>(`${this.baseUrl}/api/Organizer/UpdateNoteExpiriationTime`, updateExpiriationTimeDto, options);
+  }
+
+  createNote(noteDto: CreateNotesPackDto): Observable<NoteSettingsDto>  {
     const options: Object = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'text/plain'
-      }),
-      responseType: 'text' as const
+      })
     }
-    return this.http.post<string>(`${this.baseUrl}/api/Organizer/CreateNotesPack`, noteDto, options);
+    return this.http.post<NoteSettingsDto>(`${this.baseUrl}/api/Organizer/CreateNotesPack`, noteDto, options);
   }
 }

@@ -1,9 +1,19 @@
 <div class="information-boxes-row">
-  <div class="main-box--information-box information-box-name">
-    <p class="settings-label-text">NOTE NAME: </p>
+  <div class="main-box--information-box">
+    <p class="settings-label-text">NOTE NAME:</p>
+    <p class="settings-label-variables">{{noteName}}</p>
   </div>
   <div class="information-box-space"></div>
-  <div class="main-box--information-box information-box-expiration">
-    <p class="settings-label-text">Minutes until expiration</p>
+  <div class="main-box--information-box">
+    <div class="keep-them-in-line--with-bottom-padding">
+      <p class="settings-label-text--with-right-padding">Expires at:</p>
+      <p class="settings-label-variables">{{expiriationDateValue()}}</p>
+    </div>
+    <div class="keep-them-in-line">
+      <p class="settings-label-text">Until expiration:</p>
+      <p class="settings-label-variables">{{expiriationTimeSpanMinutesValue()}}</p>
+      <p class="settings-label-variables">:</p>
+      <p class="settings-label-variables">{{expiriationTimeSpanSecondsValue()}}</p>
+    </div>
   </div>
 </div>

@@ -120,12 +120,12 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
 
             //Act
-            string createdNoteName = await notesService.CreateNote(createNotesPackDto);
+            DateTime noteExpirationDate = await notesService.CreateNote(createNotesPackDto);
             NotesPack notePack = _mapper.Map<NotesPack>(createNotesPackDto);
 
             //Assert
-            Assert.Equal(createNotesPackDto.NoteName, createdNoteName);
-
+            Assert.NotNull(notePack);
+            Assert.True(noteExpirationDate > DateTimeOffset.Now);
             _mockNotesRepository.Verify(c => c.CreateNote(It.IsAny<NotesPack>()), Times.Once());
         }
 
@@ -145,7 +145,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
 
-            Func<Task<string>> createNote = () => notesService.CreateNote(createNotesPackDto);
+            Func<Task<DateTime>> createNote = () => notesService.CreateNote(createNotesPackDto);
 
             //Act
             
@@ -166,12 +166,14 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .ReturnsAsync(true)
                 .Verifiable();
 
+            string channelNameReturn = string.Empty;
             string groupNameReturn = string.Empty;
 
             _mockNotesNotificationsService
                 .Setup(x => x.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()))
-                .Callback<string, string, string, NoteDto[]>((_, groupName, __, ___) =>
+                .Callback<string, string, string, NoteDto[]>((channelName, groupName, _, __) =>
                 {
+                    channelNameReturn = channelName;
                     groupNameReturn = groupName;
                 })
                 .Returns(Task.CompletedTask)
@@ -181,9 +183,10 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             //Act
             NotesPack notePack = _mapper.Map<NotesPack>(updateNoteRequest);
-            await notesService.SaveNote(updateNoteRequest);
+            await notesService.UpdateNote(updateNoteRequest);
 
             //Assert
+            Assert.Equal("UpdateNotesState", channelNameReturn);
             Assert.Equal(updateNoteRequest.NoteName, groupNameReturn);
             _mockNotesRepository
                 .Verify(c => c.UpdateNote(It.IsAny<NotesPack>()), Times.Once());
@@ -215,7 +218,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
 
-            Func<Task> seveNote = () => notesService.SaveNote(updateNoteRequest);
+            Func<Task> seveNote = () => notesService.UpdateNote(updateNoteRequest);
 
             //Act
 
@@ -251,7 +254,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
 
-            Func<Task> seveNote = () => notesService.SaveNote(updateNoteRequest);
+            Func<Task> seveNote = () => notesService.UpdateNote(updateNoteRequest);
 
             //Act
 
@@ -261,6 +264,67 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .Verify(c => c.UpdateNote(It.IsAny<NotesPack>()), Times.Once());
             _mockNotesNotificationsService
                 .Verify(c => c.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()), Times.Never());
+        }
+
+
+        [Fact]
+        public async Task UpdateNoteExpiriationTime_HappyPath_Test()
+        {
+            //Arrange
+            NotesPack notesPack = new()
+            {
+                ExpirationMinutesRange = 59,
+                Notes = new[] { new Note()
+                    {
+                        IsComplete = true,
+                        NoteText = string.Empty,
+                    }
+                },
+                Password = "new name"
+            };
+
+            _mockNotesRepository.Setup(x =>
+                x.GetNote(It.IsAny<string>()))
+                .ReturnsAsync(notesPack)
+                .Verifiable();
+
+            UpdateNoteExpiriationTimeDto updateNoteRequest = new()
+            {
+                ExpirationMinutesRange = 2,
+                NoteName = "Valid note name"
+            };
+
+            _mockNotesRepository
+                .Setup(x => x.UpdateNote(It.IsAny<NotesPack>()))
+                .ReturnsAsync(true)
+                .Verifiable();
+
+            string channelNameReturn = string.Empty;
+            string groupNameReturn = string.Empty;
+
+            _mockNotesNotificationsService
+                .Setup(x => x.UpdateGroupExpiriationTimeAsync(It.IsAny<string>(), It.IsAny<string>(),It.IsAny<DateTime>()))
+                .Callback<string, string, DateTime>((channelName, groupName, _) =>
+                {
+                    channelNameReturn = channelName;
+                    groupNameReturn = groupName;
+                })
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
+
+            //Act
+            NotesPack notePack = _mapper.Map<NotesPack>(updateNoteRequest);
+            await notesService.UpdateNoteExpiriationTimeAsync(updateNoteRequest);
+
+            //Assert
+            Assert.Equal("UpdateExpiriationTimeState", channelNameReturn);
+            Assert.Equal(updateNoteRequest.NoteName, groupNameReturn);
+            _mockNotesRepository
+                .Verify(c => c.UpdateNote(It.IsAny<NotesPack>()), Times.Once());
+            _mockNotesNotificationsService
+                .Verify(c => c.UpdateGroupExpiriationTimeAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>()), Times.Once());
         }
 
         private static IMapper CreateMapper()

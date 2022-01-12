@@ -22,7 +22,7 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         {
             var initialExpirationSpan = ExpirationSpan.InitialNumberOfMinutes;
 
-            _logger.LogDebug(string.Format($"Initial settings were applied. {initialExpirationSpan} of expiriation span"));
+            _logger.LogInformation(string.Format($"Initial settings were applied. {initialExpirationSpan} minutes of expiriation span"));
 
             return Ok(initialExpirationSpan);
         }

@@ -2,6 +2,7 @@
 using DomesticOrganizationGuru.Api.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace DomesticOrganizationGuru.Api.Application.Controllers
@@ -23,22 +24,49 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         /// <param name="updateNoteRequest"></param>
         /// <returns>New note's name if successfuly created</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<string>> CreateNotesPack([FromBody] CreateNotesPackDto updateNoteRequest)
+        [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<NoteSettingsDto>> CreateNotesPack([FromBody] CreateNotesPackDto updateNoteRequest)
         {
-            string noteName = await _notesService.CreateNote(updateNoteRequest);
-            return Ok(noteName);
+            var expirationDate = await _notesService.CreateNote(updateNoteRequest);
+            var noteSettingsDto = new NoteSettingsDto
+            {
+                ExpirationDate = expirationDate
+            };
+            return Ok(noteSettingsDto);
         }
 
+        /// <summary>
+        /// Update note state and distribute to connected/asociated to the noteing session users
+        /// </summary>
+        /// <param name="updateNoteRequest"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> UpdateNotesPack([FromBody] UpdateNoteRequestDto updateNoteRequest)
         {
-            await _notesService.SaveNote(updateNoteRequest);
+            await _notesService.UpdateNote(updateNoteRequest);
             return Ok();
         }
 
+        /// <summary>
+        /// Update notes expiriation timer and distribute to connected/asociated to the noteing session users
+        /// </summary>
+        /// <param name="updateExpiriationTimeDto"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<IActionResult> UpdateNoteExpiriationTime([FromBody] UpdateNoteExpiriationTimeDto updateExpiriationTimeDto)
+        {
+            await _notesService.UpdateNoteExpiriationTimeAsync(updateExpiriationTimeDto);
+            return Ok();
+        }
+
+
+        /// <summary>
+        /// Join session both from landing page and as a landing page
+        /// </summary>
+        /// <param name="keyInput"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("/api/joinSession/{keyInput}")]
         [ProducesResponseType(typeof(NotesSessionDto), StatusCodes.Status200OK)]
