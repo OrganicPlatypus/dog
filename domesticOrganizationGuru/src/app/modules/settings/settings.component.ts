@@ -32,16 +32,12 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.store.select(SettingsSelectors.getExpirationDateSelector).subscribe(date => {
-    //   this.expirationDate.setValue(date)
-    // });
-    this.expiriationMinutes.setValue(this.expiriationTimeSpan.value);
-
     this.isValueChangedDetection();
   }
 
   clickMenu(){
     this.openMenu = !this.openMenu;
+    this.expiriationMinutes.setValue(this.expiriationTimeSpan.value);
   }
 
   updateExpiriationTime(){
@@ -50,9 +46,7 @@ export class SettingsComponent implements OnInit {
       noteName = name!;
     })
     const newExpiriationTimeMinutes = this.expiriationMinutes.value;
-    const connectionId = this.signalrService.connection.connectionId;
     const updateExpiriationTimeDto = <UpdateNoteExpiriationTimeDto>{
-      connectionId: connectionId,
       noteName: noteName,
       expirationMinutesRange: newExpiriationTimeMinutes,
     }

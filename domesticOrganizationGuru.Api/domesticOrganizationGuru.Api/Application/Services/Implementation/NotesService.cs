@@ -83,7 +83,6 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             await _notesNotificationsService.UpdateGroupExpiriationTimeAsync(
                 ChannelsNames.UpdateExpiriationTimeState,
                 noteName,
-                updateExpiriationTimeDto.ConnectionId,
                 expiriationDate.UtcDateTime);
         }
 

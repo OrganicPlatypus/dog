@@ -40,7 +40,6 @@ namespace domesticOrganizationGuru.SignalR.Services.Impelentation
         public async Task UpdateGroupExpiriationTimeAsync(
             string communicationChannel,
             string groupName,
-            string connectionId,
             DateTime expirationDate)
         {
             try

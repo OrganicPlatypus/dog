@@ -24,10 +24,6 @@ namespace domesticOrganizationGuru.Validation
                     .WithMessage(ValidationMessages.ProvideNameInformation)
                 .NotNull()
                     .WithMessage(ValidationMessages.ProvideNameInformation);
-
-            RuleFor(x => x.ConnectionId)
-                .NotEmpty()
-                .NotNull();
         }
     }
 }

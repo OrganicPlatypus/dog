@@ -7,6 +7,6 @@ namespace domesticOrganizationGuru.SignalR.Services
     public interface INotesNotificationsService
     {
         Task UpdateGroupNotesAsync(string communicationChannel, string groupName, string connectionId, NoteDto[] notesPack);
-        Task UpdateGroupExpiriationTimeAsync(string communicationChannel, string groupName, string connectionId, DateTime expirationMinutesRange);
+        Task UpdateGroupExpiriationTimeAsync(string communicationChannel, string groupName, DateTime expirationMinutesRange);
     }
 }
