@@ -98,7 +98,7 @@ export class NotesSignalService {
       this.connection
         .start()
         .catch((error) => {
-          console.warn(`Error while starting connection: ${error}`);
+          console.warn(`Error while starting group communication: ${error}`);
           setTimeout(this.startConnection.bind(this), 5000);
         });
     }

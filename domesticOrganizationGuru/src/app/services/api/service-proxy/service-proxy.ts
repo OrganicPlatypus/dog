@@ -487,7 +487,6 @@ export interface IUpdateNoteRequestDto {
 }
 
 export class UpdateNoteExpiriationTimeDto implements IUpdateNoteExpiriationTimeDto {
-    connectionId?: string | undefined;
     noteName?: string | undefined;
     expirationMinutesRange?: number;
 
@@ -502,7 +501,6 @@ export class UpdateNoteExpiriationTimeDto implements IUpdateNoteExpiriationTimeD
 
     init(_data?: any) {
         if (_data) {
-            this.connectionId = _data["connectionId"];
             this.noteName = _data["noteName"];
             this.expirationMinutesRange = _data["expirationMinutesRange"];
         }
@@ -517,7 +515,6 @@ export class UpdateNoteExpiriationTimeDto implements IUpdateNoteExpiriationTimeD
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["connectionId"] = this.connectionId;
         data["noteName"] = this.noteName;
         data["expirationMinutesRange"] = this.expirationMinutesRange;
         return data;
@@ -525,7 +522,6 @@ export class UpdateNoteExpiriationTimeDto implements IUpdateNoteExpiriationTimeD
 }
 
 export interface IUpdateNoteExpiriationTimeDto {
-    connectionId?: string | undefined;
     noteName?: string | undefined;
     expirationMinutesRange?: number;
 }

@@ -16,87 +16,75 @@ export class NoteInformationService {
   private expirationDateFormed = new BehaviorSubject<string>(this.expirationDate);
 
 
-constructor(private store: Store<NotePointsState>) {
-  // let intervalId = setInterval(() => {
-  //   this.expiriationTimeMinutes = this.expiriationTimeMinutes- 1;
-  //   this.expiriationTimeMinutesSpan.next(this.expiriationTimeMinutes);
-  //   if(this.expiriationTimeMinutes === 0) clearInterval(intervalId)
-  // }, 60000)
+  constructor(private store: Store<NotePointsState>) {
+    let intervalId = setInterval(() => {
+      let timeSpan = 0;
+      let minutes = 0
+      let seconds = 0
+      this.store.select(getExpirationDateSelector)
+      .subscribe(noteExpirationDate => {
+        if(noteExpirationDate){
+          const start = new Date().getTime();
+          const end = new Date(noteExpirationDate).getTime();
+          let difference = end - start;
+          minutes = Math.floor(difference / 60000);
+          seconds = Math.floor(difference / 1000 % 60);
+          this.expiriationTimeMinutes = minutes;
+          this.expiriationTimeMinutesSpan.next(minutes);
+          this.expiriationTimeSeconds = seconds;
+          this.expiriationTimeSecondsSpan.next(seconds);
+          timeSpan = 60* minutes + seconds;
+        }
+      })
+      if (--timeSpan < 0) {
+        clearInterval(intervalId)
+      }
+    }, 1000);
+  }
 
-
-  let intervalId = setInterval(() => {
-    let timeSpan = 0;
-    let minutes = 0
-    let seconds = 0
+  public getExpirationTimeMinutes = () => {
     this.store.select(getExpirationDateSelector)
     .subscribe(noteExpirationDate => {
-      //console.log(noteExpirationDate)
       if(noteExpirationDate){
         const start = new Date().getTime();
         const end = new Date(noteExpirationDate).getTime();
-        let difference = end - start;
-        minutes = Math.floor(difference / 60000);
-        seconds = Math.floor(difference / 1000 % 60);
+        const expiriationSpan = end - start;
+        const minutes = Math.floor(expiriationSpan / 60000);
         this.expiriationTimeMinutes = minutes;
         this.expiriationTimeMinutesSpan.next(minutes);
+        }
+      })
+    return this.expiriationTimeMinutesSpan;
+  }
+
+  public getExpirationTimeSeconds = () => {
+    this.store.select(getExpirationDateSelector)
+    .subscribe(noteExpirationDate => {
+      if(noteExpirationDate){
+        const expiriationSpan = this.expiriationSpan(noteExpirationDate);
+        const seconds = Math.floor(expiriationSpan / 1000 % 60);
         this.expiriationTimeSeconds = seconds;
         this.expiriationTimeSecondsSpan.next(seconds);
-        timeSpan = 60* minutes + seconds;
-      }
-    })
-    if (--timeSpan < 0) {
-      clearInterval(intervalId)
+        }
+      })
+    return this.expiriationTimeSecondsSpan;
+  }
+
+  public getExpirationDate = () => {
+      this.store.select(getExpirationDateSelector)
+      .subscribe(noteExpirationDate => {
+        if(noteExpirationDate){
+          this.expirationDate = `${noteExpirationDate.toLocaleDateString()} ${noteExpirationDate.toLocaleTimeString()}`;
+          this.expirationDateFormed.next(this.expirationDate);
+        }
+      })
+      return this.expirationDateFormed;
     }
-  }, 1000);
- }
 
- public getExpirationTimeMinutes = () => {
-  this.store.select(getExpirationDateSelector)
-  .subscribe(noteExpirationDate => {
-    if(noteExpirationDate){
-      const start = new Date().getTime();
-      const end = new Date(noteExpirationDate).getTime();
-      const diff = end - start;
-      const minutes = Math.floor(diff / 60000);
-      this.expiriationTimeMinutes = minutes;
-      this.expiriationTimeMinutesSpan.next(minutes);
-      }
-    })
-  return this.expiriationTimeMinutesSpan;
-}
-
-public getExpirationTimeSeconds = () => {
-  this.store.select(getExpirationDateSelector)
-  .subscribe(noteExpirationDate => {
-    if(noteExpirationDate){
-      const start = new Date().getTime();
-      const end = new Date(noteExpirationDate).getTime();
-      const diff = end - start;
-      const seconds = Math.floor(diff / 1000 % 60);
-      this.expiriationTimeSeconds = seconds;
-      this.expiriationTimeSecondsSpan.next(seconds);
-      }
-    })
-  return this.expiriationTimeSecondsSpan;
-}
-
-public getExpirationDate = () => {
-    this.store.select(getExpirationDateSelector)
-    .subscribe(noteExpirationDate => {
-      if(noteExpirationDate){
-        const start = new Date().getTime();
-        const end = new Date(noteExpirationDate).getTime();
-        const diff = end - start;
-        const minutes = Math.floor(diff / 60000);
-        const seconds = Math.floor(diff / 1000 % 60);
-        this.expiriationTimeMinutes = minutes;
-        this.expiriationTimeMinutesSpan.next(minutes);
-        this.expiriationTimeSeconds = seconds;
-        this.expiriationTimeSecondsSpan.next(seconds);
-        this.expirationDate = `${noteExpirationDate.toLocaleDateString()} ${noteExpirationDate.toLocaleTimeString()}`;
-        this.expirationDateFormed.next(this.expirationDate);
-      }
-    })
-    return this.expirationDateFormed;
+  private expiriationSpan(noteExpirationDate: Date) {
+    const start = new Date().getTime();
+    const end = new Date(noteExpirationDate).getTime();
+    const expiriationSpan = end - start;
+    return expiriationSpan;
   }
 }

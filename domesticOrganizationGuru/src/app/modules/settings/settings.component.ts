@@ -41,7 +41,7 @@ export class SettingsComponent implements OnInit {
   }
 
   updateExpiriationTime(){
-    let noteName: string = "";
+    let noteName: string = '';
     this.store.select(SettingsSelectors.getNoteNameSelector).subscribe(name=>{
       noteName = name!;
     })
