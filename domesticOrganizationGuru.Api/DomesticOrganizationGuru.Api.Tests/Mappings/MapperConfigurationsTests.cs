@@ -73,7 +73,6 @@ namespace DomesticOrganizationGuru.Api.Tests.Mappings
 
             UpdateNoteExpiriationTimeDto updateNoteExpiriationTimeDto = new()
             {
-                ConnectionId = "Some Coonnection Id",
                 ExpirationMinutesRange = 2,
                 NoteName = "Valid note name"
             };

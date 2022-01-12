@@ -14,18 +14,7 @@ namespace DomesticOrganizationGuru.Api.Tests.TestData
                 new UpdateNoteExpiriationTimeDto()
                 {
                     ExpirationMinutesRange = 0,
-                    NoteName = null,
-                    ConnectionId =  null
-                }
-            };
-
-            yield return new object[]
-            {
-                new UpdateNoteExpiriationTimeDto()
-                {
-                    ExpirationMinutesRange = 0,
-                    NoteName = string.Empty,
-                    ConnectionId =  string.Empty
+                    NoteName = null
                 }
             };
             yield return new object[]
@@ -33,8 +22,7 @@ namespace DomesticOrganizationGuru.Api.Tests.TestData
                 new UpdateNoteExpiriationTimeDto()
                 {
                     ExpirationMinutesRange = 0,
-                    NoteName = new string('a', 101),
-                    ConnectionId =  null
+                    NoteName = new string('a', 101)
                 }
             };
         }

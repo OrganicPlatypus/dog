@@ -22,8 +22,7 @@ namespace DomesticOrganizationGuru.Api.Tests
             UpdateNoteExpiriationTimeDto updateExpiriationTimeDto = new()
             {
                 ExpirationMinutesRange = 1,
-                NoteName = "Correct Name",
-                ConnectionId = "Correct connection Id"
+                NoteName = "Correct Name"
             };
 
             // Act
@@ -31,7 +30,6 @@ namespace DomesticOrganizationGuru.Api.Tests
 
             // Assert
             result.ShouldNotHaveValidationErrorFor(x => x.ExpirationMinutesRange);
-            result.ShouldNotHaveValidationErrorFor(x => x.ConnectionId);
             result.ShouldNotHaveValidationErrorFor(x => x.NoteName);
         }
 
@@ -41,13 +39,11 @@ namespace DomesticOrganizationGuru.Api.Tests
         {
             // Arrange
 
-
             // Act
             var result = _updateExpiriationTimeValidator.TestValidate(updateExpiriationTimeDto);
 
             // Assert
             result.ShouldHaveValidationErrorFor(x => x.ExpirationMinutesRange);
-            result.ShouldHaveValidationErrorFor(x => x.ConnectionId);
             result.ShouldHaveValidationErrorFor(x => x.NoteName);
         }
     }

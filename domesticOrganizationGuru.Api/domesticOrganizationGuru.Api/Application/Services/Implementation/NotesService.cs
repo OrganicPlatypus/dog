@@ -91,14 +91,14 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
             var noteName = updateNoteRequest.NoteName;
             rawNote.Password = StringSha256Hash(noteName);
-            var expiriationDate = DateTimeOffset.UtcNow.AddMinutes(updateNoteRequest.ExpirationMinutesRange);
-            var expiration = expiriationDate.UtcDateTime;
-            rawNote.ExpirationDate = expiriationDate;
+            var expiriationDateOffset = DateTimeOffset.UtcNow.AddMinutes(updateNoteRequest.ExpirationMinutesRange);
+            var expirationDate = expiriationDateOffset.UtcDateTime;
+            rawNote.ExpirationDate = expiriationDateOffset;
 
             try
             {
                 await _notesRepository.CreateNote(rawNote);
-                return expiration;
+                return expirationDate;
             }
             catch
             {
