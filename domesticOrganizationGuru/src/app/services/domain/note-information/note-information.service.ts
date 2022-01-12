@@ -30,6 +30,7 @@ constructor(private store: Store<NotePointsState>) {
     let seconds = 0
     this.store.select(getExpirationDateSelector)
     .subscribe(noteExpirationDate => {
+      //console.log(noteExpirationDate)
       if(noteExpirationDate){
         const start = new Date().getTime();
         const end = new Date(noteExpirationDate).getTime();

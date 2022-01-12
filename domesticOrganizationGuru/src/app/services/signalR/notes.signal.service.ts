@@ -6,7 +6,7 @@ import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import * as signalR from "@microsoft/signalr";
 import * as SignalMethods from './signal-methods';
 import { Store } from '@ngrx/store';
-import { setExpirationTimerAction } from 'src/app/state/states/settings/settings.actions';
+import { setExpirationDateAction, setExpirationTimerAction } from 'src/app/state/states/settings/settings.actions';
 
 export const API_SIGNALR_URL = new InjectionToken<string>('API_SIGNALR_URL')
 
@@ -42,16 +42,27 @@ export class NotesSignalService {
       return notesDto
     }
 
-  public subscribeOnUpdatedExpirationSpan(): void {
-      let expirationSpan: number | undefined = undefined;
-        this.connection.on(SignalMethods.UpdateExpiriationTimeState, (data: number) => {
-          expirationSpan = data
-          if(expirationSpan){
-            this.store.dispatch(setExpirationTimerAction({ expirationTimer : expirationSpan}))
+  public subscribeOnUpdatedExpirationDate(): void {
+      let expiriationDate: Date | undefined = undefined;
+        this.connection.on(SignalMethods.UpdateExpiriationTimeState, (data: Date) => {
+          expiriationDate = new Date( data )
+          if(expiriationDate){
+            this.store.dispatch(setExpirationDateAction({ expirationDate : expiriationDate}))
           }
         })
-        return expirationSpan
+        return expiriationDate
       }
+
+      // public subscribeOnUpdatedExpirationSpan(): void {
+      //   let expirationSpan: number | undefined = undefined;
+      //     this.connection.on(SignalMethods.UpdateExpiriationTimeState, (data: number) => {
+      //       expirationSpan = data
+      //       if(expirationSpan){
+      //         this.store.dispatch(setExpirationTimerAction({ expirationTimer : expirationSpan}))
+      //       }
+      //     })
+      //     return expirationSpan
+      //   }
 
   public joinGroup(noteName: string): void {
     this.connection

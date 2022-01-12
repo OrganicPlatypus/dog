@@ -73,6 +73,7 @@ export class StartComponent implements OnInit {
               todoItem.isComplete = note.isComplete;
               todoItems.push(todoItem);
             })
+            console.log('notesPack', notesPack);
             this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}));
             this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName}));
             this.store.dispatch(SettingsActions.setExpirationDateAction({expirationDate : new Date( notesPack.expirationDate! )}))

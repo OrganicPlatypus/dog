@@ -46,13 +46,13 @@ export class JoinLandingGuard implements CanActivate {
                 todoItems.push(todoItem)
               })
             }
-            this.store.dispatch(SettingsActions.setExpirationTimerAction({expirationTimer : notesPack.expirationMinutesRange!}))
-            this.store.dispatch(SettingsActions.setExpirationDateAction({expirationDate : notesPack.expirationDate!}))
-            this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}))
-            this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName}))
-            this.signalrService.joinGroup(sessionName);
+            this.store.dispatch(SettingsActions.setExpirationTimerAction({ expirationTimer : notesPack.expirationMinutesRange! }))
+            this.store.dispatch(SettingsActions.setExpirationDateAction({ expirationDate : new Date( notesPack.expirationDate! )}))
+            this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems }))
+            this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName }))
+            this.signalrService.joinGroup( sessionName );
             this.connectionEstablished = true;
-            this.router.navigate([this.redirectToSession])
+            this.router.navigate([ this.redirectToSession ])
         });
     }
 }

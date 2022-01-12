@@ -2,6 +2,7 @@
 using domesticOrganizationGuru.Common.Dto;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace domesticOrganizationGuru.SignalR.Services.Impelentation
@@ -40,13 +41,13 @@ namespace domesticOrganizationGuru.SignalR.Services.Impelentation
             string communicationChannel,
             string groupName,
             string connectionId,
-            int expirationMinutesRange)
+            DateTime expirationDate)
         {
             try
             {
                 await _hubContext.Clients
-                    .GroupExcept(groupName, connectionId)
-                    .SendAsync(communicationChannel, expirationMinutesRange);
+                    .Group(groupName)
+                    .SendAsync(communicationChannel, expirationDate);
             }
             catch
             {

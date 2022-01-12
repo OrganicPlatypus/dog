@@ -84,7 +84,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 ChannelsNames.UpdateExpiriationTimeState,
                 noteName,
                 updateExpiriationTimeDto.ConnectionId,
-                updateExpiriationTimeDto.ExpirationMinutesRange);
+                expiriationDate.UtcDateTime);
         }
 
         public async Task<DateTime> CreateNote(CreateNotesPackDto updateNoteRequest)
