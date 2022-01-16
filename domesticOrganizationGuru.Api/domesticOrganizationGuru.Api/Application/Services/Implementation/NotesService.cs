@@ -2,7 +2,6 @@
 using domesticOrganizationGuru.Common.CustomExceptions;
 using domesticOrganizationGuru.Common.Dto;
 using domesticOrganizationGuru.Entities;
-using domesticOrganizationGuru.Redis.Proxy;
 using domesticOrganizationGuru.Repository;
 using domesticOrganizationGuru.SignalR.Resources;
 using domesticOrganizationGuru.SignalR.Services;
