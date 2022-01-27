@@ -27,10 +27,6 @@ namespace domesticOrganizationGuru.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddStackExchangeRedisCache(options =>
-            //{
-            //    options.Configuration = Configuration.GetValue<string>("RedisConnection:ConnectionString");
-            //});
             services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer
                 .Connect(Configuration.GetValue<string>("RedisConnection:ConnectionString"))
                 );

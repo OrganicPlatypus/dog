@@ -24,6 +24,7 @@ export class StartComponent implements OnInit {
   joinSessionByName = new FormControl('', [Validators.minLength(1), Validators.maxLength(100)]);
 
   hubHelloMessage: string ="";
+  isPasswordSetterOpen: boolean;
 
   constructor(
     private store: Store<NoteSettingsState>,
@@ -32,7 +33,9 @@ export class StartComponent implements OnInit {
     public organizerApiService: OrganizerApiService,
     public configurationApiService: ConfigurationApiService,
     public signalrService: NotesSignalService
-  ) {}
+  ) {
+    this.isPasswordSetterOpen = false
+  }
 
   ngOnInit() {
     this.configurationApiService.landingHomeConfiguration().subscribe(minutes => {
@@ -56,7 +59,9 @@ export class StartComponent implements OnInit {
             )
           )
           this.signalrService.joinGroup( noteName );
-          this.router.navigate(['/to-do']);
+          //TODO: Przejdź przez password
+          this.isPasswordSetterOpen = true;
+          // this.router.navigate(['/to-do']);
         });
     this.noteName.setValue('');
   }

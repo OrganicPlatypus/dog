@@ -16,6 +16,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
     {
         private readonly INotesRepository _notesRepository;
         private readonly INotesNotificationsService _notesNotificationsService;
+        private readonly IPasswordHasher _passwordHasher;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
@@ -24,11 +25,13 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             INotesRepository notesRepository,
             IMapper mapper,
             INotesNotificationsService notesNotificationsService,
+            IPasswordHasher passwordHasher,
             ILogger<NotesService> logger)
         {
             _notesRepository = notesRepository;
             _mapper = mapper;
             _notesNotificationsService = notesNotificationsService;
+            _passwordHasher = passwordHasher;
             _logger = logger;
         }
 
@@ -87,6 +90,8 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
         public async Task<DateTime> CreateNote(CreateNotesPackDto updateNoteRequest)
         {
+            var newPass = _passwordHasher.Hash("newPass");
+
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
             var noteName = updateNoteRequest.NoteName;
             rawNote.Password = StringSha256Hash(noteName);

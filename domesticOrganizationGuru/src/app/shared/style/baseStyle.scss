@@ -49,6 +49,11 @@ body {
     @extend .main-box;
     margin-top: 0%;
   }
+
+  &--password {
+    @extend .main-box;
+    margin-top: 20%;
+  }
 }
 
 input {

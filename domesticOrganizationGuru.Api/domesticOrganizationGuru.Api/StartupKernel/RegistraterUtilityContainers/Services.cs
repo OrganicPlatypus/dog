@@ -2,6 +2,7 @@
 using domesticOrganizationGuru.SignalR.Services.Impelentation;
 using DomesticOrganizationGuru.Api.Application.Services;
 using DomesticOrganizationGuru.Api.Application.Services.Implementation;
+using DomesticOrganizationGuru.Api.Application.Services.Implementation.Hashing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DomesticOrganizationGuru.Api.StartupKernel.RegistraterUtilityContainers
@@ -12,6 +13,7 @@ namespace DomesticOrganizationGuru.Api.StartupKernel.RegistraterUtilityContainer
         {
             services.AddTransient<INotesService, NotesService>();
             services.AddScoped<INotesNotificationsService, NotesNotificationsService>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
         }
     }
 }
