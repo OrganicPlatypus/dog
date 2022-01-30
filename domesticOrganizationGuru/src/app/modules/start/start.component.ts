@@ -45,26 +45,31 @@ export class StartComponent implements OnInit {
   }
 
   public createNotePack() {
-    const noteName = this.noteName.value;
-    const notesPack: CreateNotesPackDto = <CreateNotesPackDto> {
-      expirationMinutesRange: this.initialExpirationSpan,
-      noteName: noteName
-    };
-    this.organizerApiService
-      .createNote(notesPack)
-        .subscribe((expirationDateDto) => {
-          this.store.dispatch( SettingsActions.setNoteNameAction({noteName : noteName}))
-          this.store.dispatch( SettingsActions
-            .setExpirationDateAction({ expirationDate : new Date( expirationDateDto.expirationDate! ) }
-            )
-          )
-          this.signalrService.joinGroup( noteName );
-          //TODO: Przejdź przez password
-          this.isPasswordSetterOpen = true;
-          // this.router.navigate(['/to-do']);
-        });
+
+    this.store.dispatch( SettingsActions.setNoteNameAction({noteName : this.noteName.value}))
+    this.isPasswordSetterOpen = true;
     this.noteName.setValue('');
   }
+
+  // const noteName = this.noteName.value;
+  // const notesPack: CreateNotesPackDto = <CreateNotesPackDto> {
+  //   expirationMinutesRange: this.initialExpirationSpan,
+  //   noteName: noteName
+  // };
+  // this.organizerApiService
+  //   .createNote(notesPack)
+  //     .subscribe((expirationDateDto) => {
+  //       this.store.dispatch( SettingsActions.setNoteNameAction({noteName : noteName}))
+  //       this.store.dispatch( SettingsActions
+  //         .setExpirationDateAction({ expirationDate : new Date( expirationDateDto.expirationDate! ) }
+  //         )
+  //       )
+  //       this.signalrService.joinGroup( noteName );
+  //       //TODO: Przejdź przez password
+  //       this.isPasswordSetterOpen = true;
+  //       // this.router.navigate(['/to-do']);
+  //     });
+  // this.noteName.setValue('');
 
   public joinSession(){
     const sessionName = this.joinSessionByName.value;

@@ -90,7 +90,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
         public async Task<DateTime> CreateNote(CreateNotesPackDto updateNoteRequest)
         {
-            var newPass = _passwordHasher.Hash("newPass");
+            var newPass = _passwordHasher.Hash(updateNoteRequest.Password);
 
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
             var noteName = updateNoteRequest.NoteName;

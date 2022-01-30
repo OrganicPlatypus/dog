@@ -52,6 +52,7 @@ export class OrganizerApiService {
         'Accept': 'text/plain'
       })
     }
+    console.log('createNote(noteDto: CreateNotesPackDto)')
     return this.http.post<NoteSettingsDto>(`${this.baseUrl}/api/Organizer/CreateNotesPack`, noteDto, options);
   }
 }

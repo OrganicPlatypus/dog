@@ -316,6 +316,7 @@ export class Client {
 
 export class CreateNotesPackDto implements ICreateNotesPackDto {
     noteName?: string | undefined;
+    password?: string | undefined;
     expirationMinutesRange?: number;
 
     constructor(data?: ICreateNotesPackDto) {
@@ -330,6 +331,7 @@ export class CreateNotesPackDto implements ICreateNotesPackDto {
     init(_data?: any) {
         if (_data) {
             this.noteName = _data["noteName"];
+            this.password = _data["password"];
             this.expirationMinutesRange = _data["expirationMinutesRange"];
         }
     }
@@ -344,6 +346,7 @@ export class CreateNotesPackDto implements ICreateNotesPackDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["noteName"] = this.noteName;
+        data["password"] = this.password;
         data["expirationMinutesRange"] = this.expirationMinutesRange;
         return data;
     }
@@ -351,6 +354,7 @@ export class CreateNotesPackDto implements ICreateNotesPackDto {
 
 export interface ICreateNotesPackDto {
     noteName?: string | undefined;
+    password?: string | undefined;
     expirationMinutesRange?: number;
 }
 

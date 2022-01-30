@@ -5,6 +5,7 @@ using domesticOrganizationGuru.Common.Dto;
 using domesticOrganizationGuru.Entities;
 using domesticOrganizationGuru.Repository;
 using domesticOrganizationGuru.SignalR.Services;
+using DomesticOrganizationGuru.Api.Application.Services;
 using DomesticOrganizationGuru.Api.Application.Services.Implementation;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -21,6 +22,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
         private readonly Mock<INotesRepository> _mockNotesRepository;
         private readonly Mock<INotesNotificationsService> _mockNotesNotificationsService;
+        private readonly Mock<IPasswordHasher> _mockPasswordHasher;
         private readonly Mock<ILogger<NotesService>> _mocklogger;
         private readonly IMapper _mapper;
 
@@ -29,6 +31,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             _mapper = CreateMapper();
             _mockNotesRepository = new();
             _mockNotesNotificationsService = new();
+            _mockPasswordHasher = new();
             _mocklogger = new();
         }
 
@@ -56,7 +59,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             _mockNotesNotificationsService.Setup(_ =>
                 _.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()));
 
-            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
             //Act
             var notesSessionDto = await notesService.GetNotes("anyName");
@@ -92,7 +95,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             _mockNotesNotificationsService.Setup(_ =>
                 _.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()));
 
-            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
             Func<Task<NotesSessionDto>> getNote = () => notesService.GetNotes("anyName");
 
             //Act
@@ -117,7 +120,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
             //Act
             DateTime noteExpirationDate = await notesService.CreateNote(createNotesPackDto);
@@ -143,7 +146,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .ThrowsAsync(new Exception())
                 .Verifiable();
 
-            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
             Func<Task<DateTime>> createNote = () => notesService.CreateNote(createNotesPackDto);
 
@@ -179,7 +182,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
             //Act
             NotesPack notePack = _mapper.Map<NotesPack>(updateNoteRequest);
@@ -216,7 +219,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
             Func<Task> seveNote = () => notesService.UpdateNote(updateNoteRequest);
 
@@ -252,7 +255,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
             Func<Task> seveNote = () => notesService.UpdateNote(updateNoteRequest);
 
@@ -312,7 +315,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mocklogger.Object);
+            NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
             //Act
             NotesPack notePack = _mapper.Map<NotesPack>(updateNoteRequest);

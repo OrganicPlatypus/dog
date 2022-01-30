@@ -3,6 +3,7 @@
     public class CreateNotesPackDto
     {
         public string NoteName { get; set; }
+        public string Password { get; set; }
         public int ExpirationMinutesRange { get; set; }
     }
 }
