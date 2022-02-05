@@ -8,7 +8,9 @@ using domesticOrganizationGuru.SignalR.Services;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+
 using static domesticOrganizationGuru.Common.Helpers.SecurityHelper;
+using static domesticOrganizationGuru.Common.Constants.ExpirationSpan;
 
 namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 {
@@ -88,14 +90,39 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 expiriationDate.UtcDateTime);
         }
 
-        public async Task<DateTime> CreateNote(CreateNotesPackDto updateNoteRequest)
-        {
-            var newPass = _passwordHasher.Hash(updateNoteRequest.Password);
+        //public async Task<DateTime> CreateNote(CreateNotesPackDto createNoteRequest)
+        //{
+        //    var rawNote = _mapper.Map<NotesPack>(createNoteRequest);
 
-            var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
-            var noteName = updateNoteRequest.NoteName;
-            rawNote.Password = StringSha256Hash(noteName);
-            var expiriationDateOffset = DateTimeOffset.UtcNow.AddMinutes(updateNoteRequest.ExpirationMinutesRange);
+        //    var noteName = createNoteRequest.NoteName;
+        //    rawNote.Id = StringSha256Hash(noteName);
+
+        //    rawNote.Password = _passwordHasher.Hash(createNoteRequest.Password);
+
+        //    var expiriationDateOffset = DateTimeOffset.UtcNow.AddMinutes(createNoteRequest.ExpirationMinutesRange);
+        //    var expirationDate = expiriationDateOffset.UtcDateTime;
+        //    rawNote.ExpirationDate = expiriationDateOffset;
+
+        //    try
+        //    {
+        //        await _notesRepository.CreateNote(rawNote);
+        //        return expirationDate;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(string.Format($"Unable to create {noteName} note, because of: {ex.Message}"));
+        //        throw new CreateNotesException();
+        //    }
+        //}
+
+        public async Task<DateTime> CreateNote(CreateNoteDto createNoteRequest)
+        {
+            var rawNote = _mapper.Map<NotesPack>(createNoteRequest);
+
+            var noteName = createNoteRequest.NoteName;
+            rawNote.Id = StringSha256Hash(noteName);
+
+            var expiriationDateOffset = DateTimeOffset.UtcNow.AddMinutes(NoteNameReservationTimeSpan);
             var expirationDate = expiriationDateOffset.UtcDateTime;
             rawNote.ExpirationDate = expiriationDateOffset;
 
@@ -104,9 +131,34 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 await _notesRepository.CreateNote(rawNote);
                 return expirationDate;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError(string.Format($"Unable to create {noteName} note"));
+                _logger.LogError(string.Format($"Unable to create {noteName} note, because of: {ex.Message}"));
+                throw new CreateNotesException();
+            }
+        }
+
+        public async Task<DateTime> ProvisionNoteInitialSettings(NoteInitialSettingsDto createNoteRequest)
+        {
+            var rawNote = _mapper.Map<NotesPack>(createNoteRequest);
+
+            var noteName = createNoteRequest.NoteName;
+            rawNote.Id = StringSha256Hash(noteName);
+
+            rawNote.Password = _passwordHasher.Hash(createNoteRequest.Password);
+
+            var expiriationDateOffset = DateTimeOffset.UtcNow.AddMinutes(createNoteRequest.ExpirationMinutesRange);
+            var expirationDate = expiriationDateOffset.UtcDateTime;
+            rawNote.ExpirationDate = expiriationDateOffset;
+
+            try
+            {
+                await _notesRepository.UpdateNote(rawNote);
+                return expirationDate;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(string.Format($"Unable to create {noteName} note, because of: {ex.Message}"));
                 throw new CreateNotesException();
             }
         }

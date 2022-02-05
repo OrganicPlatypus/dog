@@ -1,6 +1,6 @@
 ﻿namespace domesticOrganizationGuru.Common.Dto
 {
-    public class CreateNotesPackDto
+    public class NoteInitialSettingsDto
     {
         public string NoteName { get; set; }
         public string Password { get; set; }

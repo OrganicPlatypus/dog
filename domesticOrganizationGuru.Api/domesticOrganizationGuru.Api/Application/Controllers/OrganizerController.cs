@@ -2,7 +2,6 @@
 using DomesticOrganizationGuru.Api.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace DomesticOrganizationGuru.Api.Application.Controllers
@@ -21,15 +20,34 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         /// <summary>
         /// Creates new note.
         /// </summary>
-        /// <param name="updateNoteRequest"></param>
+        /// <param name="createNoteDto"></param>
         /// <returns>New note's name if successfuly created</returns>
         [HttpPost]
         [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<NoteSettingsDto>> CreateNotesPack([FromBody] CreateNotesPackDto updateNoteRequest)
+        public async Task<ActionResult<NoteSettingsDto>> CreateNotesPack([FromBody] CreateNoteDto createNoteDto)
         {
-            var expirationDate = await _notesService.CreateNote(updateNoteRequest);
+            var expirationDate = await _notesService.CreateNote(createNoteDto);
+            var noteSettingsDto = new NoteSettingsDto
+            {
+                ExpirationDate = expirationDate
+            };
+            return Ok(noteSettingsDto);
+        }
+
+        /// <summary>
+        /// Updates note's initial settings.
+        /// </summary>
+        /// <param name="noteInitialSettings"></param>
+        /// <returns>New note's name if successfuly created</returns>
+        [HttpPut]
+        [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<NoteSettingsDto>> ProvisionNoteInitialSettings([FromBody] NoteInitialSettingsDto noteInitialSettings)
+        {
+            var expirationDate = await _notesService.ProvisionNoteInitialSettings(noteInitialSettings);
             var noteSettingsDto = new NoteSettingsDto
             {
                 ExpirationDate = expirationDate

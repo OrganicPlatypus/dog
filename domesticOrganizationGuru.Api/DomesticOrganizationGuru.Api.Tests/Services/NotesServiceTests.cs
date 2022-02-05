@@ -53,7 +53,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             _mockNotesRepository.Setup(x =>
                 x.GetNote(It.IsAny<string>()))
-                .ReturnsAsync(notesPack)
+                .ReturnsAsync(notesPack )
                 .Verifiable();
 
             _mockNotesNotificationsService.Setup(_ =>
@@ -109,10 +109,9 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
         public async Task CreateNote_HappyPath_Test()
         {
             //Arrange
-            CreateNotesPackDto createNotesPackDto = new CreateNotesPackDto()
+            CreateNoteDto createNoteDto = new CreateNoteDto()
             {
-                NoteName = "CreateNewNote",
-                ExpirationMinutesRange = 1
+                NoteName = "CreateNewNote"
             };
 
             _mockNotesRepository
@@ -123,8 +122,8 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
             //Act
-            DateTime noteExpirationDate = await notesService.CreateNote(createNotesPackDto);
-            NotesPack notePack = _mapper.Map<NotesPack>(createNotesPackDto);
+            DateTime noteExpirationDate = await notesService.CreateNote(createNoteDto);
+            NotesPack notePack = _mapper.Map<NotesPack>(createNoteDto);
 
             //Assert
             Assert.NotNull(notePack);
@@ -135,10 +134,9 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
         [Fact]
         public async Task CreateNote_NotCreated_Test()
         {
-            CreateNotesPackDto createNotesPackDto = new CreateNotesPackDto()
+            CreateNoteDto createNoteDto = new CreateNoteDto()
             {
-                NoteName = "CreateNewNote",
-                ExpirationMinutesRange = 1
+                NoteName = "CreateNewNote"
             };
 
             _mockNotesRepository
@@ -148,7 +146,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
-            Func<Task<DateTime>> createNote = () => notesService.CreateNote(createNotesPackDto);
+            Func<Task<DateTime>> createNote = () => notesService.CreateNote(createNoteDto);
 
             //Act
             

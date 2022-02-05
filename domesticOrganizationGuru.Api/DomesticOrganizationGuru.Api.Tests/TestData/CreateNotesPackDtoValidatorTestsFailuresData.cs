@@ -10,7 +10,7 @@ namespace DomesticOrganizationGuru.Api.Tests.TestData
         {
             yield return new object[]
             {
-                new CreateNotesPackDto()
+                new NoteInitialSettingsDto()
                     {
                         ExpirationMinutesRange = 1,
                         NoteName = string.Empty
@@ -21,7 +21,7 @@ namespace DomesticOrganizationGuru.Api.Tests.TestData
 
             yield return new object[]
             {
-                new CreateNotesPackDto()
+                new NoteInitialSettingsDto()
                     {
                         ExpirationMinutesRange = 1,
                         NoteName = new string('a', 101)
@@ -32,7 +32,7 @@ namespace DomesticOrganizationGuru.Api.Tests.TestData
 
             yield return new object[]
             {
-                new CreateNotesPackDto()
+                new NoteInitialSettingsDto()
                     {
                         ExpirationMinutesRange = 1,
                         NoteName = null
@@ -43,7 +43,7 @@ namespace DomesticOrganizationGuru.Api.Tests.TestData
 
             yield return new object[]
             {
-                new CreateNotesPackDto()
+                new NoteInitialSettingsDto()
                     {
                         ExpirationMinutesRange = 0,
                         NoteName = "aaa"
@@ -54,7 +54,7 @@ namespace DomesticOrganizationGuru.Api.Tests.TestData
 
             yield return new object[]
             {
-                new CreateNotesPackDto()
+                new NoteInitialSettingsDto()
                     {
                         ExpirationMinutesRange = 0,
                         NoteName = string.Concat("a", 101)

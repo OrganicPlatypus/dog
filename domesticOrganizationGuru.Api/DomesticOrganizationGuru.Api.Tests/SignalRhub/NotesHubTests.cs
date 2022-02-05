@@ -17,15 +17,15 @@ namespace DomesticOrganizationGuru.Api.Tests.SignalRhub
 
             var joinedGroup = "";
 
-            var mockHubCallerContext = new Mock<HubCallerContext>();
-            var groupManagerMock = new Mock<IGroupManager>();
+            Mock<HubCallerContext> mockHubCallerContext = new();
+            Mock<IGroupManager> groupManagerMock = new();
 
             groupManagerMock.Setup(g => g.AddToGroupAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                             .Returns(Task.CompletedTask)
                             .Callback<string, string, CancellationToken>((_, groupName, __) =>
                                 joinedGroup = groupName);
 
-            var notesHub = new NotesHub();
+            NotesHub notesHub = new();
             notesHub.Groups = groupManagerMock.Object;
             notesHub.Context = mockHubCallerContext.Object;
 

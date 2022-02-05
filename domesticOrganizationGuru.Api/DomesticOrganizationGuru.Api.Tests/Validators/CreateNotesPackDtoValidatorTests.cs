@@ -18,7 +18,7 @@ namespace DomesticOrganizationGuru.Api.Tests
           public void CreateNotesPackDtoValidatorTests_Success_Test()
         {
             // Arrange
-            CreateNotesPackDto createNotesPackDto = new()
+            NoteInitialSettingsDto createNotesPackDto = new()
             {
                 ExpirationMinutesRange = 1,
                 NoteName = "NoteName"
@@ -34,7 +34,7 @@ namespace DomesticOrganizationGuru.Api.Tests
 
         [Theory]
         [ClassData(typeof(CreateNotesPackDtoValidatorTestsFailuresData))]
-        public void CreateNotesPackDtoValidatorTests_Failures_Test(CreateNotesPackDto createNotesPackDto, bool faultyExpiriation, bool faultyName)
+        public void CreateNotesPackDtoValidatorTests_Failures_Test(NoteInitialSettingsDto createNotesPackDto, bool faultyExpiriation, bool faultyName)
         {
             // Arrange
             // Act

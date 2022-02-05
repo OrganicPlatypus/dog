@@ -5,7 +5,7 @@ using System;
 
 namespace domesticOrganizationGuru.Validation
 {
-    public class CreateNotesPackDtoValidator : AbstractValidator<CreateNotesPackDto>
+    public class CreateNotesPackDtoValidator : AbstractValidator<NoteInitialSettingsDto>
     {
         public CreateNotesPackDtoValidator()
         {

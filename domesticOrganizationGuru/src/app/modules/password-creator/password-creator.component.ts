@@ -1,8 +1,7 @@
 import { setExpirationDateAction } from 'src/app/state/states/settings/settings.actions';
 import { NotesSignalService } from 'src/app/services/signalR/notes.signal.service';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
-import { NotesService } from './../../services/domain/services/notes.service';
-import { CreateNotesPackDto } from './../../services/api/service-proxy/service-proxy';
+import { NoteInitialSettingsDto } from './../../services/api/service-proxy/service-proxy';
 import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -47,20 +46,20 @@ export class PasswordCreatorComponent implements OnInit {
   }
 
   public CreateNotes(newPassword: string){
-    let notePack = new CreateNotesPackDto();
+    let noteInitialSettingsDto = new NoteInitialSettingsDto();
     this.store
       .select(SettingsSelectors.getSettingsStateSelector)
       .subscribe(settings => {
-        notePack.expirationMinutesRange = settings.minutesUntilExpire,
-        notePack.noteName = settings.noteName,
-        notePack.password = newPassword != '' ? newPassword : undefined
+        noteInitialSettingsDto.expirationMinutesRange = settings.minutesUntilExpire,
+        noteInitialSettingsDto.noteName = settings.noteName,
+        noteInitialSettingsDto.password = newPassword != '' ? newPassword : undefined
         }
       );
       this.organizerApiService
-      .createNote(notePack)
+      .provisionNoteInitialSettings(noteInitialSettingsDto)
         .subscribe((expirationDateDto) => {
           this.store.dispatch(setExpirationDateAction({ expirationDate : new Date( expirationDateDto.expirationDate! )}));
-          this.signalrService.joinGroup( notePack.noteName! );
+          this.signalrService.joinGroup( noteInitialSettingsDto.noteName! );
           this.router.navigate(['/to-do']);
           });
   }
