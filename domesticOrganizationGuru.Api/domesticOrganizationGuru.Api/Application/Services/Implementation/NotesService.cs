@@ -21,7 +21,6 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-
         public NotesService(
             INotesRepository notesRepository,
             IMapper mapper,
@@ -106,33 +105,6 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
                 throw new CreateNotesException();
             }
         }
-
-        //public async Task<DateTime> ProvisionNoteInitialSettings(NoteInitialSettingsDto createNoteRequest)
-        //{
-        //    var rawNote = _mapper.Map<NotesPack>(createNoteRequest);
-
-        //    var noteName = createNoteRequest.NoteName;
-        //    rawNote.Id = StringSha256Hash(noteName);
-
-        //    rawNote.Password = createNoteRequest.Password is not (null or "") ? 
-        //        _passwordHasher.Hash(createNoteRequest.Password) : 
-        //        null;
-
-        //    var expiriationDateOffset = DateTimeOffset.UtcNow.AddMinutes(createNoteRequest.ExpirationMinutesRange);
-        //    var expirationDate = expiriationDateOffset.UtcDateTime;
-        //    rawNote.ExpirationDate = expiriationDateOffset;
-
-        //    try
-        //    {
-        //        await _notesRepository.CreateNote(rawNote);
-        //        return expirationDate;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(string.Format($"Unable to create {noteName} note, because of: {ex.Message}"));
-        //        throw new CreateNotesException();
-        //    }
-        //}
 
         private async Task<NotesPack> GetNote(string noteName, string hashedPassword)
         {
