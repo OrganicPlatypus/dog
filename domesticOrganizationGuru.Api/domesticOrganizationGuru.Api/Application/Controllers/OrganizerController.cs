@@ -60,21 +60,36 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
             return Ok();
         }
 
-
         /// <summary>
         /// Join session both from landing page and as a landing page
         /// </summary>
-        /// <param name="keyInput"></param>
+        /// <param name="noteName"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("/api/joinSession/{keyInput}")]
+        [Route("/api/joinSession/{noteName}")]
         [ProducesResponseType(typeof(NotesSessionDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<NotesSessionDto>> GetNotes(string keyInput)
+        public async Task<ActionResult<NotesSessionDto>> GetNotes(string noteName)
         {
-            var note = await _notesService.GetNotes(keyInput);
+            var note = await _notesService.GetNotes(noteName);
 
             return Ok(note);
+        }
+
+        /// <summary>
+        /// Verifies if password is required
+        /// </summary>
+        /// <param name="noteName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("/api/isPasswordRequired/{noteName}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<bool>> IsPasswordRequired(string noteName)
+        {
+            bool isRequired = await _notesService.IsPasswordRequired(noteName);
+
+            return Ok(isRequired);
         }
     }
 }

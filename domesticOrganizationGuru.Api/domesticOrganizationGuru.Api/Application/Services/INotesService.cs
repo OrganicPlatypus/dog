@@ -10,5 +10,6 @@ namespace DomesticOrganizationGuru.Api.Application.Services
         Task<NotesSessionDto> GetNotes(string key);
         Task UpdateNote(UpdateNoteRequestDto updateNoteRequest);
         Task UpdateNoteExpiriationTimeAsync(UpdateNoteExpiriationTimeDto updateExpiriationTimeDto);
+        Task<bool> IsPasswordRequired(string noteName);
     }
 }

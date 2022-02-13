@@ -106,6 +106,12 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             }
         }
 
+        public async Task<bool> IsPasswordRequired(string noteName)
+        {
+            NotesPack rawNotePack = await GetNote(StringSha256Hash(noteName), "hashedPassword");
+            return rawNotePack.Password is not (null);
+        }
+
         private async Task<NotesPack> GetNote(string noteName, string hashedPassword)
         {
             NotesPack rawNotePack = await _notesRepository.GetNote(noteName);
@@ -117,5 +123,6 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
             return rawNotePack;
         }
+
     }
 }

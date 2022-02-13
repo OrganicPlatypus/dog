@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PasswordConsumerComponent } from './modules/password-creator/password-consumer.component';
 import { StartComponent } from './modules/start/start.component';
 import { ToDoListComponent } from './modules/to-do-list/to-do-list.component';
 import { JoinLandingGuard } from './services/guard/join-landing.guard';
@@ -9,6 +10,9 @@ const routes: Routes = [
   { path: '',
     component: StartComponent
   },
+  { path: 'auth',
+  component: PasswordConsumerComponent,
+},
   { path: 'to-do',
     component: ToDoListComponent,
     canActivate: [NoteNameGuard],
@@ -20,7 +24,8 @@ const routes: Routes = [
     component: ToDoListComponent,
     canActivate: [JoinLandingGuard],
     data: {
-      joinSessionRedirect: 'to-do'
+      joinSessionRedirect: 'to-do',
+      passwordRequired: 'auth'
     }
    },
   { path: '**',

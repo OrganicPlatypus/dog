@@ -14,6 +14,7 @@ import * as NotesActions from '../../state/states/notes/notes.actions';
 export class JoinLandingGuard implements CanActivate {
   connectionEstablished: boolean = false;
   redirectToSession: string = '';
+  redirectToPassword: string = '';
 
   constructor(
     private router: Router,
@@ -26,11 +27,25 @@ export class JoinLandingGuard implements CanActivate {
   canActivate(routeSnapshot: ActivatedRouteSnapshot) {
     let isThereAName = false;
     this.redirectToSession = routeSnapshot.data['joinSessionRedirect'];
+    this.redirectToPassword = routeSnapshot.data['passwordRequired'];
     let sessionName = routeSnapshot.params['name'];
-    this.configurationApiService.landingHomeConfiguration()
-      .subscribe(minutes => {
-        this.bindSessionValues(sessionName);
-      })
+
+    this.organizerApiService.isPasswordRequired(sessionName).subscribe(
+      isRequired => {
+        console.log(isRequired)
+        if(isRequired){
+          this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName }))
+          this.router.navigate([ this.redirectToPassword ]);
+        }
+      }
+    )
+
+
+
+    // this.configurationApiService.landingHomeConfiguration()
+    //   .subscribe(minutes => {
+    //     this.bindSessionValues(sessionName);
+    //   })
       return isThereAName;
     }
 

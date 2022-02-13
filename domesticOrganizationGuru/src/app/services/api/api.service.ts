@@ -22,6 +22,10 @@ export class OrganizerApiService {
     })
   }
 
+  isPasswordRequired(noteName: string): Observable<boolean>{
+    return this.http.get<boolean>(`${this.baseUrl}/api/isPasswordRequired/${noteName}`);
+  }
+
   joinTheNote(key: string): Observable<NotesSessionDto> {
     return this.http.get<NotesSessionDto>(`${this.baseUrl}/api/joinSession/${key}`);
   }
