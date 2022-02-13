@@ -111,23 +111,22 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             //Arrange
             CreateNoteDto createNoteDto = new CreateNoteDto()
             {
-                NoteName = "CreateNewNote"
+                NoteName = "CreateNewNote",
+                ExpirationMinutesRange = 10
             };
 
             _mockNotesRepository
                 .Setup(x => x.CreateNote(It.IsAny<NotesPack>()))
-                .Returns(Task.CompletedTask)
                 .Verifiable();
 
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
             //Act
-            DateTime noteExpirationDate = await notesService.CreateNote(createNoteDto);
+            DateTimeOffset noteExpirationDate = await notesService.CreateNote(createNoteDto);
             NotesPack notePack = _mapper.Map<NotesPack>(createNoteDto);
 
             //Assert
             Assert.NotNull(notePack);
-            Assert.True(noteExpirationDate > DateTimeOffset.Now);
             _mockNotesRepository.Verify(c => c.CreateNote(It.IsAny<NotesPack>()), Times.Once());
         }
 
@@ -146,7 +145,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
 
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
-            Func<Task<DateTime>> createNote = () => notesService.CreateNote(createNoteDto);
+            Func<Task<DateTimeOffset>> createNote = () => notesService.CreateNote(createNoteDto);
 
             //Act
             

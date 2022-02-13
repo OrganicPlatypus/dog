@@ -24,7 +24,8 @@
 .input-line-position{
   width: 100%;
   display: inline-block;
-  margin: 20px 0
+  margin: 20px 0;
+  padding-bottom: 40px;
 }
 
 .title-box {
@@ -37,4 +38,35 @@
 
 .main-box-max {
   max-width: 600px !important;
+}
+
+.container-password{
+  display: flex;
+  align-items: baseline;
+  &--input-line {
+    @extend .container-password;
+    display: flex;
+  }
+}
+.checkbox-set-password {
+  width: 10%;
+  min-width: 50px;
+  }
+
+.password-label{
+  width: 210px;
+}
+
+.flex-item{
+  flex-grow: 1;
+}
+
+.input-container-line {
+  display: flex;
+  align-items: center;
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

@@ -1,4 +1,4 @@
-import { CreateNoteDto, NoteInitialSettingsDto, NoteSettingsDto, NotesSessionDto, UpdateNoteExpiriationTimeDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
+import { CreateNoteDto, NoteSettingsDto, NotesSessionDto, UpdateNoteExpiriationTimeDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -53,14 +53,5 @@ export class OrganizerApiService {
       })
     }
     return this.http.post<NoteSettingsDto>(`${this.baseUrl}/api/Organizer/CreateNotesPack`, noteDto, options);
-  }
-
-  provisionNoteInitialSettings(updateExpiriationTimeDto: NoteInitialSettingsDto): Observable<NoteSettingsDto> {
-    const options: Object = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    }
-    return this.http.put<NoteSettingsDto>(`${this.baseUrl}/api/Organizer/ProvisionNoteInitialSettings`, updateExpiriationTimeDto, options);
   }
 }

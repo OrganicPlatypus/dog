@@ -63,5 +63,4 @@ export class SettingsComponent implements OnInit {
         .some(key => this.expiriationMinutes.value[key] != initialValue[key]);
     });
   }
-
 }

@@ -3,19 +3,40 @@
 </div>
 
 <div class="main-box main-box-max">
-  <form>
-    <div class="input-line-position">
-      <form>
-        <input placeholder="Note name" class="input-line" [formControl]="noteName" #input maxlength="100"
-          name="nameNote">
-        <button type="submit" class="button" (click)="createNotePack()">Create Note</button>
+    <div>
+      <form [formGroup]="createNote">
+        <input placeholder="Enter note name" class="input-line" formControlName="noteName" #input name="nameNote">
+        <button type="submit" [ngClass]="{'disabled': !buttonEnabled()}" class="button" (click)="createNotePack()">Create
+          Note</button>
+        <div class="container-password">
+          <span class="password-label item">
+            <p class="settings-label-text">Create with password protection:</p>
+          </span>
+          <input type="checkbox" class="checkbox-set-password" [(ngModel)]="isPasswordRequested"
+            [ngModelOptions]="{standalone: true}" (click)="resetPassword()">
+        </div>
+        <div class="container-password--input-line">
+          <div class="input-container-line" [ngClass]="{'disabled': !isPasswordRequested}">
+            <div class="fixed">
+              <span class="password-label item">
+                <p class="settings-label-text">Set password (5-30 characters):</p>
+              </span>
+            </div>
+            <div class="flex-item">
+              <input class="input-password-settings" formControlName="newPassword" name="newPassword" #input>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
-    <form>
-      <input placeholder="Existing session name" [formControl]="joinSessionByName" name="joinSessionByName" maxlength="100">
-      <button type="submit" class="button" (click)="joinSession()">Join session</button>
-    </form>
+</div>
+
+<div class="main-box main-box-max">
+  <form>
+    <input placeholder="Enter existing note-sharing session name" [formControl]="joinSessionByName" name="joinSessionByName"
+      maxlength="100">
+    <button type="submit" class="button" (click)="joinSession()">
+      Join note-sharing</button>
   </form>
 </div>
-<password-creator [(isOpen)]="isPasswordSetterOpen">
-  <password-creator>
+

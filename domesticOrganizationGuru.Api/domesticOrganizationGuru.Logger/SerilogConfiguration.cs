@@ -16,7 +16,7 @@ namespace domesticOrganizationGuru.Logger
 
         public static void ConfigureLogger()
         {
-            ExpressionTemplate formatter = new ExpressionTemplate(
+            var formatter = new ExpressionTemplate(
                     "[{@t:HH:mm:ss} {@l:u3} " +
                     "{Substring(SourceContext, LastIndexOf(SourceContext, '.') + 1)}] {@m}\n{@x}");
             Log.Logger = _loggerConfiguration

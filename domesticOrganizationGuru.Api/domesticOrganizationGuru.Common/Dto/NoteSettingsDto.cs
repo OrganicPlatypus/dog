@@ -4,6 +4,6 @@ namespace domesticOrganizationGuru.Common.Dto
 {
     public class NoteSettingsDto
     {
-        public DateTime ExpirationDate { get; set; }
+        public DateTimeOffset ExpirationDate { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 import { setExpirationDateAction } from 'src/app/state/states/settings/settings.actions';
 import { NotesSignalService } from 'src/app/services/signalR/notes.signal.service';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
-import { NoteInitialSettingsDto } from './../../services/api/service-proxy/service-proxy';
 import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -9,6 +8,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import * as SettingsSelectors from '../../state/states/settings/settings.selector'
+import { CreateNoteDto } from 'src/app/services/api/service-proxy/service-proxy';
 
 @Component({
   selector: 'password-creator',
@@ -35,18 +35,14 @@ export class PasswordCreatorComponent implements OnInit {
 
   ngOnInit() {
   }
+
   goForward(){
     const newPassword = this.newPassword.value;
     this.CreateNotes(newPassword);
-
-
-    // console.log('newPassword', this.newPassword.value);
-    // console.log('newPassword.valid', this.newPassword.valid);
-    // this.router.navigate(['/to-do']);
   }
 
   public CreateNotes(newPassword: string){
-    let noteInitialSettingsDto = new NoteInitialSettingsDto();
+    let noteInitialSettingsDto = new CreateNoteDto();
     this.store
       .select(SettingsSelectors.getSettingsStateSelector)
       .subscribe(settings => {
@@ -56,35 +52,13 @@ export class PasswordCreatorComponent implements OnInit {
         }
       );
       this.organizerApiService
-      .provisionNoteInitialSettings(noteInitialSettingsDto)
+      .createNote(noteInitialSettingsDto)
         .subscribe((expirationDateDto) => {
           this.store.dispatch(setExpirationDateAction({ expirationDate : new Date( expirationDateDto.expirationDate! )}));
           this.signalrService.joinGroup( noteInitialSettingsDto.noteName! );
           this.router.navigate(['/to-do']);
           });
   }
-
-
-
-    // const noteName = this.noteName.value;
-  // const notesPack: CreateNotesPackDto = <CreateNotesPackDto> {
-  //   expirationMinutesRange: this.initialExpirationSpan,
-  //   noteName: noteName
-  // };
-  // this.organizerApiService
-  //   .createNote(notesPack)
-  //     .subscribe((expirationDateDto) => {
-  //       this.store.dispatch( SettingsActions.setNoteNameAction({noteName : noteName}))
-  //       this.store.dispatch( SettingsActions
-  //         .setExpirationDateAction({ expirationDate : new Date( expirationDateDto.expirationDate! ) }
-  //         )
-  //       )
-  //       this.signalrService.joinGroup( noteName );
-  //       //TODO: Przejdź przez password
-  //       this.isPasswordSetterOpen = true;
-  //       // this.router.navigate(['/to-do']);
-  //     });
-  // this.noteName.setValue('');
 
   buttonEnabled(): boolean{
     return !this.isPasswordRequested || this.isPasswordRequested && this.newPassword.valid;

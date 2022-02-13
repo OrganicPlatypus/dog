@@ -151,76 +151,6 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    provisionNoteInitialSettings(body: NoteInitialSettingsDto | undefined): Observable<NoteSettingsDto> {
-        let url_ = this.baseUrl + "/api/Organizer/ProvisionNoteInitialSettings";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processProvisionNoteInitialSettings(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processProvisionNoteInitialSettings(<any>response_);
-                } catch (e) {
-                    return <Observable<NoteSettingsDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<NoteSettingsDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processProvisionNoteInitialSettings(response: HttpResponseBase): Observable<NoteSettingsDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = NoteSettingsDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status === 422) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result422: any = null;
-            let resultData422 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result422 = NoteSettingsDto.fromJS(resultData422);
-            return throwException("Client Error", status, _responseText, _headers, result422);
-            }));
-        } else if (status === 400) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = NoteSettingsDto.fromJS(resultData400);
-            return throwException("Bad Request", status, _responseText, _headers, result400);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<NoteSettingsDto>(<any>null);
-    }
-
-    /**
-     * @param body (optional)
-     * @return Success
-     */
     updateNotesPack(body: UpdateNoteRequestDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Organizer/UpdateNotesPack";
         url_ = url_.replace(/[?&]$/, "");
@@ -386,6 +316,8 @@ export class Client {
 
 export class CreateNoteDto implements ICreateNoteDto {
     noteName?: string | undefined;
+    password?: string | undefined;
+    expirationMinutesRange?: number;
 
     constructor(data?: ICreateNoteDto) {
         if (data) {
@@ -399,6 +331,8 @@ export class CreateNoteDto implements ICreateNoteDto {
     init(_data?: any) {
         if (_data) {
             this.noteName = _data["noteName"];
+            this.password = _data["password"];
+            this.expirationMinutesRange = _data["expirationMinutesRange"];
         }
     }
 
@@ -412,12 +346,16 @@ export class CreateNoteDto implements ICreateNoteDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["noteName"] = this.noteName;
+        data["password"] = this.password;
+        data["expirationMinutesRange"] = this.expirationMinutesRange;
         return data;
     }
 }
 
 export interface ICreateNoteDto {
     noteName?: string | undefined;
+    password?: string | undefined;
+    expirationMinutesRange?: number;
 }
 
 export class NoteSettingsDto implements INoteSettingsDto {
@@ -454,50 +392,6 @@ export class NoteSettingsDto implements INoteSettingsDto {
 
 export interface INoteSettingsDto {
     expirationDate?: Date;
-}
-
-export class NoteInitialSettingsDto implements INoteInitialSettingsDto {
-    noteName?: string | undefined;
-    password?: string | undefined;
-    expirationMinutesRange?: number;
-
-    constructor(data?: INoteInitialSettingsDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.noteName = _data["noteName"];
-            this.password = _data["password"];
-            this.expirationMinutesRange = _data["expirationMinutesRange"];
-        }
-    }
-
-    static fromJS(data: any): NoteInitialSettingsDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new NoteInitialSettingsDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["noteName"] = this.noteName;
-        data["password"] = this.password;
-        data["expirationMinutesRange"] = this.expirationMinutesRange;
-        return data;
-    }
-}
-
-export interface INoteInitialSettingsDto {
-    noteName?: string | undefined;
-    password?: string | undefined;
-    expirationMinutesRange?: number;
 }
 
 export class NoteDto implements INoteDto {

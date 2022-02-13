@@ -29,21 +29,24 @@ namespace DomesticOrganizationGuru.Api.Repositories.Implementation
             return notesPack;
         }
 
-        public async Task CreateNote(NotesPack rawNote)
+        public async Task<DateTimeOffset> CreateNote(NotesPack rawNote)
         {
-            NotesPack note = await GetNote(rawNote.Password);
+            NotesPack note = await GetNote(rawNote.Id);
             if (note is not null)
                 throw new Exception();
 
+            var expiriationDateOffset = DateTimeOffset.UtcNow.AddMinutes(rawNote.ExpirationMinutesRange);
+            rawNote.ExpirationDate = expiriationDateOffset;
             var expirationTimeSpan = TimeSpan.FromMinutes(rawNote.ExpirationMinutesRange);
             var jsonData = JsonSerializer.Serialize(rawNote);
 
-            await _database.StringSetAsync(rawNote.Password, jsonData, expirationTimeSpan);
+            await _database.StringSetAsync(rawNote.Id, jsonData, expirationTimeSpan);
+            return expiriationDateOffset;
         }
 
         public async Task<bool> UpdateNote(NotesPack notesPack)
         {
-            var note = await GetNote(notesPack.Password);
+            var note = await GetNote(notesPack.Id);
             if (note is null)
             {
                 return false;
@@ -52,7 +55,7 @@ namespace DomesticOrganizationGuru.Api.Repositories.Implementation
             var expirationTimeSpan = TimeSpan.FromMinutes(notesPack.ExpirationMinutesRange);
             var jsonData = JsonSerializer.Serialize(notesPack);
 
-            await _database.StringSetAsync(notesPack.Password, jsonData, expirationTimeSpan);
+            await _database.StringSetAsync(notesPack.Id, jsonData, expirationTimeSpan);
 
             return true;
         }

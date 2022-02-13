@@ -10,7 +10,6 @@ using System;
 using System.Threading.Tasks;
 
 using static domesticOrganizationGuru.Common.Helpers.SecurityHelper;
-using static domesticOrganizationGuru.Common.Constants.ExpirationSpan;
 
 namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 {
@@ -39,15 +38,13 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
         public async Task<NotesSessionDto> GetNotes(string noteName)
         {
-            string hashedPassword = StringSha256Hash(noteName);
-            NotesPack rawNotePack = await GetNote(noteName, hashedPassword);
+            NotesPack rawNotePack = await GetNote(StringSha256Hash(noteName), "hashedPassword");
             return _mapper.Map<NotesSessionDto>(rawNotePack);
         }
 
         public async Task UpdateNote(UpdateNoteRequestDto updateNoteRequest)
         {
             var rawNote = _mapper.Map<NotesPack>(updateNoteRequest);
-            rawNote.Password = StringSha256Hash(updateNoteRequest.NoteName);
             var expiriationDate = DateTimeOffset.UtcNow.AddMinutes(updateNoteRequest.ExpirationMinutesRange);
             rawNote.ExpirationDate = expiriationDate;
             var isUpdated = await _notesRepository.UpdateNote(rawNote);
@@ -67,9 +64,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
         public async Task UpdateNoteExpiriationTimeAsync(UpdateNoteExpiriationTimeDto updateExpiriationTimeDto)
         {
-            string noteName = updateExpiriationTimeDto.NoteName;
-            var hashedPassword = StringSha256Hash(noteName);
-            var rawNote = await GetNote(updateExpiriationTimeDto.NoteName, hashedPassword);
+            NotesPack rawNote = await GetNote(StringSha256Hash(updateExpiriationTimeDto.NoteName), "hashedPassword");
 
             int expirationMinutesRange = updateExpiriationTimeDto.ExpirationMinutesRange;
             rawNote.ExpirationMinutesRange = expirationMinutesRange; 
@@ -86,18 +81,42 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
             await _notesNotificationsService.UpdateGroupExpiriationTimeAsync(
                 ChannelsNames.UpdateExpiriationTimeState,
-                noteName,
+                updateExpiriationTimeDto.NoteName,
                 expiriationDate.UtcDateTime);
         }
 
-        //public async Task<DateTime> CreateNote(CreateNotesPackDto createNoteRequest)
+        public async Task<DateTimeOffset> CreateNote(CreateNoteDto createNoteRequest)
+        {
+            var rawNote = _mapper.Map<NotesPack>(createNoteRequest);
+
+            var noteName = createNoteRequest.NoteName;
+            rawNote.Id = StringSha256Hash(noteName);
+
+            rawNote.Password = createNoteRequest.Password is not (null or "") ?
+                _passwordHasher.Hash(createNoteRequest.Password) :
+                null;
+
+            try
+            {
+                return await _notesRepository.CreateNote(rawNote);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(string.Format($"Unable to create {noteName} note, because of: {ex.Message}"));
+                throw new CreateNotesException();
+            }
+        }
+
+        //public async Task<DateTime> ProvisionNoteInitialSettings(NoteInitialSettingsDto createNoteRequest)
         //{
         //    var rawNote = _mapper.Map<NotesPack>(createNoteRequest);
 
         //    var noteName = createNoteRequest.NoteName;
         //    rawNote.Id = StringSha256Hash(noteName);
 
-        //    rawNote.Password = _passwordHasher.Hash(createNoteRequest.Password);
+        //    rawNote.Password = createNoteRequest.Password is not (null or "") ? 
+        //        _passwordHasher.Hash(createNoteRequest.Password) : 
+        //        null;
 
         //    var expiriationDateOffset = DateTimeOffset.UtcNow.AddMinutes(createNoteRequest.ExpirationMinutesRange);
         //    var expirationDate = expiriationDateOffset.UtcDateTime;
@@ -115,57 +134,9 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
         //    }
         //}
 
-        public async Task<DateTime> CreateNote(CreateNoteDto createNoteRequest)
-        {
-            var rawNote = _mapper.Map<NotesPack>(createNoteRequest);
-
-            var noteName = createNoteRequest.NoteName;
-            rawNote.Id = StringSha256Hash(noteName);
-
-            var expiriationDateOffset = DateTimeOffset.UtcNow.AddMinutes(NoteNameReservationTimeSpan);
-            var expirationDate = expiriationDateOffset.UtcDateTime;
-            rawNote.ExpirationDate = expiriationDateOffset;
-
-            try
-            {
-                await _notesRepository.CreateNote(rawNote);
-                return expirationDate;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(string.Format($"Unable to create {noteName} note, because of: {ex.Message}"));
-                throw new CreateNotesException();
-            }
-        }
-
-        public async Task<DateTime> ProvisionNoteInitialSettings(NoteInitialSettingsDto createNoteRequest)
-        {
-            var rawNote = _mapper.Map<NotesPack>(createNoteRequest);
-
-            var noteName = createNoteRequest.NoteName;
-            rawNote.Id = StringSha256Hash(noteName);
-
-            rawNote.Password = _passwordHasher.Hash(createNoteRequest.Password);
-
-            var expiriationDateOffset = DateTimeOffset.UtcNow.AddMinutes(createNoteRequest.ExpirationMinutesRange);
-            var expirationDate = expiriationDateOffset.UtcDateTime;
-            rawNote.ExpirationDate = expiriationDateOffset;
-
-            try
-            {
-                await _notesRepository.UpdateNote(rawNote);
-                return expirationDate;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(string.Format($"Unable to create {noteName} note, because of: {ex.Message}"));
-                throw new CreateNotesException();
-            }
-        }
-
         private async Task<NotesPack> GetNote(string noteName, string hashedPassword)
         {
-            NotesPack rawNotePack = await _notesRepository.GetNote(hashedPassword);
+            NotesPack rawNotePack = await _notesRepository.GetNote(noteName);
             if (rawNotePack == null)
             {
                 _logger.LogError(string.Format($"Unable to get {noteName} notes pack"));

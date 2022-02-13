@@ -37,25 +37,6 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         }
 
         /// <summary>
-        /// Updates note's initial settings.
-        /// </summary>
-        /// <param name="noteInitialSettings"></param>
-        /// <returns>New note's name if successfuly created</returns>
-        [HttpPut]
-        [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<NoteSettingsDto>> ProvisionNoteInitialSettings([FromBody] NoteInitialSettingsDto noteInitialSettings)
-        {
-            var expirationDate = await _notesService.ProvisionNoteInitialSettings(noteInitialSettings);
-            var noteSettingsDto = new NoteSettingsDto
-            {
-                ExpirationDate = expirationDate
-            };
-            return Ok(noteSettingsDto);
-        }
-
-        /// <summary>
         /// Update note state and distribute to connected/asociated to the noteing session users
         /// </summary>
         /// <param name="updateNoteRequest"></param>
