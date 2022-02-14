@@ -30,7 +30,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation.Hashi
             return string.Format($"{Options.Iterations}.{salt}.{key}");
         }
 
-        public (bool Verified, bool NeedsUpgrade) Check(string hash, string password)
+        public bool  Check(string hash, string password)
         {
             var parts = hash.Split('.', 3);
 
@@ -44,8 +44,6 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation.Hashi
             var salt = Convert.FromBase64String(parts[1]);
             var key = Convert.FromBase64String(parts[2]);
 
-            var needsUpgrade = iterations != Options.Iterations;
-
             using var algorithm = new Rfc2898DeriveBytes(
               password,
               salt,
@@ -53,9 +51,13 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation.Hashi
               HashAlgorithmName.SHA512);
             var keyToCheck = algorithm.GetBytes(KeySize);
 
-            var verified = keyToCheck.SequenceEqual(key);
+            bool isValid = keyToCheck.SequenceEqual(key);
 
-            return (verified, needsUpgrade);
+            if (!isValid)
+            {
+                throw new UnauthorizedAccessException("Password is not valid");
+            }
+            return isValid;
         }
     }
 }

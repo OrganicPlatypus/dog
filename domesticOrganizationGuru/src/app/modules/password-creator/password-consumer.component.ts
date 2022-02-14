@@ -8,7 +8,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import * as SettingsSelectors from '../../state/states/settings/settings.selector'
-import { CreateNoteDto } from 'src/app/services/api/service-proxy/service-proxy';
+import * as SettingsActions from '../../state/states/settings/settings.actions';
+import * as NotesActions from '../../state/states/notes/notes.actions';
+import { TodoItem } from '../to-do-list/models/to-do';
 
 @Component({
   selector: 'password-consumer',
@@ -21,10 +23,9 @@ export class PasswordConsumerComponent implements OnInit {
 
   isPasswordRequested:boolean = false;
 
-  newPassword = new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]);
+  password = new FormControl('', [Validators.required]);
 
-  @Output()
-  readonly isOpenChange = new EventEmitter<boolean>();
+  noteName: string = "";
 
   constructor(
     private store: Store<NoteSettingsState>,
@@ -34,37 +35,33 @@ export class PasswordConsumerComponent implements OnInit {
     ) {}
 
   ngOnInit() {
+      this.store.select(SettingsSelectors.getNoteNameSelector)
+    .subscribe(noteName => { this.noteName = noteName! }
+    )
   }
 
-  goForward(){
-    const newPassword = this.newPassword.value;
-    this.CreateNotes(newPassword);
+  JoinNoteShareing(){
+    this.joinNoteSession()
   }
 
-  public CreateNotes(newPassword: string){
-    let noteInitialSettingsDto = new CreateNoteDto();
-    this.store
-      .select(SettingsSelectors.getSettingsStateSelector)
-      .subscribe(settings => {
-        noteInitialSettingsDto.expirationMinutesRange = settings.minutesUntilExpire,
-        noteInitialSettingsDto.noteName = settings.noteName,
-        noteInitialSettingsDto.password = newPassword != '' ? newPassword : undefined
-        }
-      );
-      this.organizerApiService
-      .createNote(noteInitialSettingsDto)
-        .subscribe((expirationDateDto) => {
-          this.store.dispatch(setExpirationDateAction({ expirationDate : new Date( expirationDateDto.expirationDate! )}));
-          this.signalrService.joinGroup( noteInitialSettingsDto.noteName! );
-          this.router.navigate(['/to-do']);
-          });
-  }
-
-  buttonEnabled(): boolean{
-    return !this.isPasswordRequested || this.isPasswordRequested && this.newPassword.valid;
-  }
-
-  resetPassword(): void {
-    this.newPassword.setValue("");
+  public joinNoteSession(){
+    this.organizerApiService
+      .joinNoteSessionWithPassword(this.noteName, this.password.value)
+        .subscribe((notesPack) => {
+          if(notesPack){
+            let todoItems : TodoItem[] = []
+            notesPack.notes?.map((note) => {
+              let todoItem = new TodoItem(note.noteText);
+              todoItem.isComplete = note.isComplete;
+              todoItems.push(todoItem);
+            })
+            this.store.dispatch(NotesActions.setExistingNotesAction({ notes : todoItems}));
+            this.store.dispatch(SettingsActions.setExpirationDateAction({expirationDate : new Date( notesPack.expirationDate! )}))
+            this.store.dispatch(SettingsActions.setExpirationTimerAction({expirationTimer : notesPack.expirationMinutesRange!}));
+            this.signalrService.joinGroup(this.noteName);
+            this.router.navigate(['/to-do']);
+          }
+        });
+    this.password.setValue('');
   }
 }

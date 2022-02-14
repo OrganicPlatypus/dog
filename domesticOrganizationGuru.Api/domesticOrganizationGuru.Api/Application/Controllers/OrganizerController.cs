@@ -67,11 +67,13 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("/api/joinSession/{noteName}")]
+        [Route("/api/joinSession/{noteName}/{password}")]
         [ProducesResponseType(typeof(NotesSessionDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<NotesSessionDto>> GetNotes(string noteName)
+        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<NotesSessionDto>> GetNotes(string noteName, string password = null)
         {
-            var note = await _notesService.GetNotes(noteName);
+            var note = await _notesService.GetNotes(noteName, password);
 
             return Ok(note);
         }

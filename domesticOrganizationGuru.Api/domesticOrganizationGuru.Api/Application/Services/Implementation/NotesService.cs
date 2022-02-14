@@ -35,9 +35,15 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             _logger = logger;
         }
 
-        public async Task<NotesSessionDto> GetNotes(string noteName)
+        public async Task<NotesSessionDto> GetNotes(string noteName, string password)
         {
-            NotesPack rawNotePack = await GetNote(StringSha256Hash(noteName), "hashedPassword");
+            NotesPack rawNotePack = await GetNote(StringSha256Hash(noteName));
+
+            if (password is not null)
+            {
+                var isAccessable = _passwordHasher.Check(rawNotePack.Password, password);
+            }
+
             return _mapper.Map<NotesSessionDto>(rawNotePack);
         }
 
@@ -63,7 +69,7 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
         public async Task UpdateNoteExpiriationTimeAsync(UpdateNoteExpiriationTimeDto updateExpiriationTimeDto)
         {
-            NotesPack rawNote = await GetNote(StringSha256Hash(updateExpiriationTimeDto.NoteName), "hashedPassword");
+            NotesPack rawNote = await GetNote(StringSha256Hash(updateExpiriationTimeDto.NoteName));
 
             int expirationMinutesRange = updateExpiriationTimeDto.ExpirationMinutesRange;
             rawNote.ExpirationMinutesRange = expirationMinutesRange; 
@@ -108,11 +114,11 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
         public async Task<bool> IsPasswordRequired(string noteName)
         {
-            NotesPack rawNotePack = await GetNote(StringSha256Hash(noteName), "hashedPassword");
+            NotesPack rawNotePack = await GetNote(StringSha256Hash(noteName));
             return rawNotePack.Password is not (null);
         }
 
-        private async Task<NotesPack> GetNote(string noteName, string hashedPassword)
+        private async Task<NotesPack> GetNote(string noteName)
         {
             NotesPack rawNotePack = await _notesRepository.GetNote(noteName);
             if (rawNotePack == null)

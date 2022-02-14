@@ -30,6 +30,10 @@ export class OrganizerApiService {
     return this.http.get<NotesSessionDto>(`${this.baseUrl}/api/joinSession/${key}`);
   }
 
+  joinNoteSessionWithPassword(key: string, password: string): Observable<NotesSessionDto> {
+    return this.http.get<NotesSessionDto>(`${this.baseUrl}/api/joinSession/${key}/${password}`);
+  }
+
   updateNotePack(noteDto: UpdateNoteRequestDto): Observable<void> {
     const options: Object = {
       headers: new HttpHeaders({
