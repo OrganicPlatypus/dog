@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System;
 
 namespace DomesticOrganizationGuru.Api.StartupKernel
 {
@@ -52,6 +53,17 @@ namespace DomesticOrganizationGuru.Api.StartupKernel
                 {
                     StatusCode = StatusCodes.Status422UnprocessableEntity,
                     Value = updateException.Message
+                };
+
+                context.ExceptionHandled = true;
+            }
+
+            if (context.Exception is UnauthorizedAccessException unauthorizedAccessException)
+            {
+                context.Result = new ObjectResult(unauthorizedAccessException)
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized,
+                    Value = unauthorizedAccessException.Message
                 };
 
                 context.ExceptionHandled = true;

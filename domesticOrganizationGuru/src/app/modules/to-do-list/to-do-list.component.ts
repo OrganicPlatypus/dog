@@ -1,11 +1,10 @@
 import { NotesSignalService } from './../../services/signalR/notes.signal.service';
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OrganizerApiService } from 'src/app/services/api/api.service';
 import { UpdateNoteRequestDto } from 'src/app/services/api/service-proxy/service-proxy';
 import { TodoItem } from './models/to-do';
 import { ToDoService } from '../../services/domain/services/to-do-service.service';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, zip } from 'rxjs';
 import * as SettingsSelectors from '../../state/states/settings/settings.selector'
 import { NoteSettingsState } from 'src/app/state/states/settings/settings.inteface';
 import { NoteInformationService } from 'src/app/services/domain/note-information/note-information.service';
@@ -25,7 +24,6 @@ export class ToDoListComponent implements OnInit {
   editValue: boolean = false;
 
   notesPackName: string = '';
-  //notesLifespan: number = 0;
 
 
   newNotesState!: UpdateNoteRequestDto;
@@ -40,14 +38,10 @@ export class ToDoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    zip(
-      this.store.select(SettingsSelectors.getNoteNameSelector),
-      //this.store.select(SettingsSelectors.getMinutesTillExpireSelector)
-    )
+      this.store.select(SettingsSelectors.getNoteNameSelector)
     .subscribe(
-      noteSettings => {
-        this.notesPackName = noteSettings[0]!
-        //this.notesLifespan = noteSettings[1]!
+      noteName => {
+        this.notesPackName = noteName!
       }
     )
 
@@ -60,8 +54,6 @@ export class ToDoListComponent implements OnInit {
     const updateNoteRequestDto = <UpdateNoteRequestDto> {
       noteName: this.notesPackName,
       expirationMinutesRange: this.expiriationTimeSpan.value,
-      //expirationMinutesRange: this.notesLifespan,
-
       notesPack: this.toDoList.value
     }
     this.organizerApiService.updateNotePack(updateNoteRequestDto).subscribe(()=>{

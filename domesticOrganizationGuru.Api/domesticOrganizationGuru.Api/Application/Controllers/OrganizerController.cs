@@ -2,7 +2,6 @@
 using DomesticOrganizationGuru.Api.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace DomesticOrganizationGuru.Api.Application.Controllers
@@ -21,15 +20,15 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         /// <summary>
         /// Creates new note.
         /// </summary>
-        /// <param name="updateNoteRequest"></param>
+        /// <param name="createNoteDto"></param>
         /// <returns>New note's name if successfuly created</returns>
         [HttpPost]
         [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(NoteSettingsDto), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<NoteSettingsDto>> CreateNotesPack([FromBody] CreateNotesPackDto updateNoteRequest)
+        public async Task<ActionResult<NoteSettingsDto>> CreateNotesPack([FromBody] CreateNoteDto createNoteDto)
         {
-            var expirationDate = await _notesService.CreateNote(updateNoteRequest);
+            var expirationDate = await _notesService.CreateNote(createNoteDto);
             var noteSettingsDto = new NoteSettingsDto
             {
                 ExpirationDate = expirationDate
@@ -61,21 +60,38 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
             return Ok();
         }
 
-
         /// <summary>
         /// Join session both from landing page and as a landing page
         /// </summary>
-        /// <param name="keyInput"></param>
+        /// <param name="noteName"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("/api/joinSession/{keyInput}")]
+        [Route("/api/joinSession/{noteName}")]
+        [Route("/api/joinSession/{noteName}/{password}")]
         [ProducesResponseType(typeof(NotesSessionDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<NotesSessionDto>> GetNotes(string keyInput)
+        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<NotesSessionDto>> GetNotes(string noteName, string password = null)
         {
-            var note = await _notesService.GetNotes(keyInput);
+            var note = await _notesService.GetNotes(noteName, password);
 
             return Ok(note);
+        }
+
+        /// <summary>
+        /// Verifies if password is required
+        /// </summary>
+        /// <param name="noteName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("/api/isPasswordRequired/{noteName}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<bool>> IsPasswordRequired(string noteName)
+        {
+            bool isRequired = await _notesService.IsPasswordRequired(noteName);
+
+            return Ok(isRequired);
         }
     }
 }

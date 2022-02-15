@@ -1,4 +1,4 @@
-import { CreateNotesPackDto, NoteSettingsDto, NotesSessionDto, UpdateNoteExpiriationTimeDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
+import { CreateNoteDto, NoteSettingsDto, NotesSessionDto, UpdateNoteExpiriationTimeDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -22,8 +22,21 @@ export class OrganizerApiService {
     })
   }
 
+  isPasswordRequired(noteName: string): Observable<boolean>{
+    return this.http.get<boolean>(`${this.baseUrl}/api/isPasswordRequired/${noteName}`);
+  }
+
   joinTheNote(key: string): Observable<NotesSessionDto> {
     return this.http.get<NotesSessionDto>(`${this.baseUrl}/api/joinSession/${key}`);
+  }
+
+  joinNoteSessionWithPassword(key: string, password: string): Observable<NotesSessionDto> {
+    const options: Object = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin':'*'
+      })
+    }
+    return this.http.get<NotesSessionDto>(`${this.baseUrl}/api/joinSession/${key}/${password}`, options);
   }
 
   updateNotePack(noteDto: UpdateNoteRequestDto): Observable<void> {
@@ -45,7 +58,7 @@ export class OrganizerApiService {
     return this.http.put<void>(`${this.baseUrl}/api/Organizer/UpdateNoteExpiriationTime`, updateExpiriationTimeDto, options);
   }
 
-  createNote(noteDto: CreateNotesPackDto): Observable<NoteSettingsDto>  {
+  createNote(noteDto: CreateNoteDto): Observable<NoteSettingsDto>  {
     const options: Object = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',

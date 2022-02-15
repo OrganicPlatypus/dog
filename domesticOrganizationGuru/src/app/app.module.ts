@@ -21,11 +21,13 @@ import { HandleErrorsInterceptor } from './services/error-handler/handle-errors-
 import { NoteNameGuard } from './services/guard/note-name.guard';
 import { JoinLandingGuard } from './services/guard/join-landing.guard';
 import { NoteInformationComponent } from './modules/note-information/note-information.component';
+import { PasswordConsumerComponent } from './modules/password-creator/password-consumer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StartComponent,
+    PasswordConsumerComponent,
     ToDoListComponent,
     SettingsComponent,
     NoteInformationComponent

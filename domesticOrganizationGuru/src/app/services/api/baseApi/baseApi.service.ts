@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken, Optional, OnInit } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');

@@ -81,7 +81,7 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    createNotesPack(body: CreateNotesPackDto | undefined): Observable<NoteSettingsDto> {
+    createNotesPack(body: CreateNoteDto | undefined): Observable<NoteSettingsDto> {
         let url_ = this.baseUrl + "/api/Organizer/CreateNotesPack";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -314,11 +314,12 @@ export class Client {
     }
 }
 
-export class CreateNotesPackDto implements ICreateNotesPackDto {
+export class CreateNoteDto implements ICreateNoteDto {
     noteName?: string | undefined;
+    password?: string | undefined;
     expirationMinutesRange?: number;
 
-    constructor(data?: ICreateNotesPackDto) {
+    constructor(data?: ICreateNoteDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -330,13 +331,14 @@ export class CreateNotesPackDto implements ICreateNotesPackDto {
     init(_data?: any) {
         if (_data) {
             this.noteName = _data["noteName"];
+            this.password = _data["password"];
             this.expirationMinutesRange = _data["expirationMinutesRange"];
         }
     }
 
-    static fromJS(data: any): CreateNotesPackDto {
+    static fromJS(data: any): CreateNoteDto {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateNotesPackDto();
+        let result = new CreateNoteDto();
         result.init(data);
         return result;
     }
@@ -344,13 +346,15 @@ export class CreateNotesPackDto implements ICreateNotesPackDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["noteName"] = this.noteName;
+        data["password"] = this.password;
         data["expirationMinutesRange"] = this.expirationMinutesRange;
         return data;
     }
 }
 
-export interface ICreateNotesPackDto {
+export interface ICreateNoteDto {
     noteName?: string | undefined;
+    password?: string | undefined;
     expirationMinutesRange?: number;
 }
 

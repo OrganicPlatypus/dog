@@ -1,4 +1,5 @@
 ﻿using domesticOrganizationGuru.Entities;
+using System;
 using System.Threading.Tasks;
 
 namespace domesticOrganizationGuru.Repository
@@ -7,6 +8,6 @@ namespace domesticOrganizationGuru.Repository
     {
         Task<NotesPack> GetNote(string password);
         Task<bool> UpdateNote(NotesPack notesPack);
-        Task CreateNote(NotesPack rawNote);
+        Task<DateTimeOffset> CreateNote(NotesPack rawNote);
     }
 }

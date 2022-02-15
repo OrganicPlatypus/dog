@@ -6,9 +6,10 @@ namespace DomesticOrganizationGuru.Api.Application.Services
 {
     public interface INotesService
     {
-        Task<DateTime> CreateNote(CreateNotesPackDto updateNoteRequest);
-        Task<NotesSessionDto> GetNotes(string key);
+        Task<DateTimeOffset> CreateNote(CreateNoteDto createNoteDto);
+        Task<NotesSessionDto> GetNotes(string key, string password);
         Task UpdateNote(UpdateNoteRequestDto updateNoteRequest);
         Task UpdateNoteExpiriationTimeAsync(UpdateNoteExpiriationTimeDto updateExpiriationTimeDto);
+        Task<bool> IsPasswordRequired(string noteName);
     }
 }

@@ -1,7 +1,8 @@
-﻿using domesticOrganizationGuru.Common.Constants;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net;
+
+using static domesticOrganizationGuru.Common.Constants.ExpirationSpan;
 
 namespace DomesticOrganizationGuru.Api.Application.Controllers
 {
@@ -20,11 +21,9 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         public ActionResult<int> LandingConfiguration()
         {
-            var initialExpirationSpan = ExpirationSpan.InitialNumberOfMinutes;
+            _logger.LogInformation(string.Format($"Initial settings were applied. {InitialNumberOfMinutes} minutes of expiriation span"));
 
-            _logger.LogInformation(string.Format($"Initial settings were applied. {initialExpirationSpan} minutes of expiriation span"));
-
-            return Ok(initialExpirationSpan);
+            return Ok(InitialNumberOfMinutes);
         }
     }
 }

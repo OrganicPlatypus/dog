@@ -10,6 +10,6 @@ namespace domesticOrganizationGuru.Common.CustomExceptions
         public NoteNotFoundException() { }
 
         public NoteNotFoundException(string key)
-            : base($"Note {key} was not found") { }
+            : base($"Note was not found") { }
     }
 }
