@@ -62,7 +62,7 @@ export class StartComponent implements OnInit {
     this.CreateNotes(newPassword);
     this.createNote.patchValue({
       noteName: ''
-    });;
+    });
   }
 
   public CreateNotes(newPassword: string){
@@ -86,6 +86,21 @@ export class StartComponent implements OnInit {
 
   public joinSession(){
     const sessionName = this.joinSessionByName.value;
+
+    this.organizerApiService.isPasswordRequired(sessionName).subscribe(
+      isRequired => {
+        if(isRequired){
+          this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName }))
+          this.router.navigate([ '/auth' ]);
+        }
+        else{
+          this.bindSessionValues(sessionName);
+        }
+      }
+    )
+  }
+
+  bindSessionValues(sessionName: string){
     this.organizerApiService
       .joinTheNote(sessionName)
         .subscribe((notesPack) => {

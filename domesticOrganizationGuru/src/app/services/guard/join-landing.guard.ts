@@ -19,7 +19,6 @@ export class JoinLandingGuard implements CanActivate {
   constructor(
     private router: Router,
     private store: Store<NoteSettingsState>,
-    private configurationApiService: ConfigurationApiService,
     private organizerApiService: OrganizerApiService,
     public signalrService: NotesSignalService
     ) {}
@@ -32,20 +31,15 @@ export class JoinLandingGuard implements CanActivate {
 
     this.organizerApiService.isPasswordRequired(sessionName).subscribe(
       isRequired => {
-        console.log(isRequired)
         if(isRequired){
           this.store.dispatch(SettingsActions.setNoteNameAction({ noteName : sessionName }))
           this.router.navigate([ this.redirectToPassword ]);
         }
+        else{
+          this.bindSessionValues(sessionName);
+        }
       }
-    )
-
-
-
-    // this.configurationApiService.landingHomeConfiguration()
-    //   .subscribe(minutes => {
-    //     this.bindSessionValues(sessionName);
-    //   })
+      )
       return isThereAName;
     }
 

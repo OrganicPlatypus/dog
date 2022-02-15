@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using domesticOrganizationGuru.Common.CustomExceptions;
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Security.Cryptography;

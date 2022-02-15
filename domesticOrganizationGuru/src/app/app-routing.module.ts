@@ -12,6 +12,10 @@ const routes: Routes = [
   },
   { path: 'auth',
   component: PasswordConsumerComponent,
+  canActivate: [NoteNameGuard],
+  data: {
+    noteNameGuardRedirect: '',
+  }
 },
   { path: 'to-do',
     component: ToDoListComponent,

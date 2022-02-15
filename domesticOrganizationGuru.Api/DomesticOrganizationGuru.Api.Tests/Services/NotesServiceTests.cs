@@ -62,7 +62,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
 
             //Act
-            var notesSessionDto = await notesService.GetNotes("anyName");
+            var notesSessionDto = await notesService.GetNotes("anyName", "anyPassword");
 
             //Assert
             _mockNotesRepository.Verify(m => m.GetNote(It.IsAny<string>()), Times.Once);
@@ -96,7 +96,7 @@ namespace DomesticOrganizationGuru.Api.Tests.Services
                 _.UpdateGroupNotesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<NoteDto[]>()));
 
             NotesService notesService = new(_mockNotesRepository.Object, _mapper, _mockNotesNotificationsService.Object, _mockPasswordHasher.Object, _mocklogger.Object);
-            Func<Task<NotesSessionDto>> getNote = () => notesService.GetNotes("anyName");
+            Func<Task<NotesSessionDto>> getNote = () => notesService.GetNotes("anyName", "anyPassword");
 
             //Act
 

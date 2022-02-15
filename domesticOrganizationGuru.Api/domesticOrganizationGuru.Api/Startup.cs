@@ -81,6 +81,7 @@ namespace domesticOrganizationGuru.Api
 
             app.UseCors(PolicyName);
 
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
