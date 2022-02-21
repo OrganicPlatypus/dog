@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  DOG.api:
+    image: ${DOCKER_REGISTRY-}domesticorganizationguruapi
+    build:
+      context: .
+      dockerfile: domesticOrganizationGuru.Api/Dockerfile
+    ports:
+      - "44365:44365"
+      - "8000:80"
+    volumes:
+      - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets
+      - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/
+    depends_on:
+      - "redis_db"
+    environment:
+      - RedisConnection=redis_db
+      - ASPNETCORE_URLS-"https://+;http://+"
+      - ASPNETCORE_HTTPS_PORT="44365"
+      - ASPNETCORE_ENVIRONMENT=Development
+    links:
+        - "redis_db"
+  redis_db:
+    image: redis
+    ports:
+      - 6379:6379
+    container_name: dog_redisDB
+    command: redis-server --loglevel warning
