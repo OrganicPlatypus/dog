@@ -31,7 +31,11 @@ namespace domesticOrganizationGuru.Api
             var redisConnection = Environment.GetEnvironmentVariable("RedisConnection", EnvironmentVariableTarget.Process);
 
             services.AddSingleton(
-                (IConnectionMultiplexer)ConnectionMultiplexer.Connect(redisConnection));
+                (IConnectionMultiplexer)ConnectionMultiplexer
+                .Connect(
+                    redisConnection ??
+                    Configuration.GetValue<string>("RedisConnection:ConnectionString"))
+                );
 
             services.RegisterServices();
             services.RegisterRopositories();
