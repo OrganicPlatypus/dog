@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
+using System;
 using static DomesticOrganizationGuru.Api.StartupKernel.RegistraterUtilityContainers.ValidationErrorsHelper.ValidationErrorsCustomResponseHelper;
 
 namespace domesticOrganizationGuru.Api
@@ -27,9 +28,10 @@ namespace domesticOrganizationGuru.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer
-                .Connect(Configuration.GetValue<string>("RedisConnection:ConnectionString"))
-                );
+            var redisConnection = Environment.GetEnvironmentVariable("RedisConnection", EnvironmentVariableTarget.Process);
+
+            services.AddSingleton(
+                (IConnectionMultiplexer)ConnectionMultiplexer.Connect(redisConnection));
 
             services.RegisterServices();
             services.RegisterRopositories();
@@ -70,7 +72,6 @@ namespace domesticOrganizationGuru.Api
         {
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "domesticOrganizationGuru.Api v1"));
             }
@@ -80,7 +81,6 @@ namespace domesticOrganizationGuru.Api
             app.UseRouting();
 
             app.UseCors(PolicyName);
-
 
             app.UseAuthorization();
 
