@@ -72,7 +72,6 @@ namespace domesticOrganizationGuru.Api
         {
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "domesticOrganizationGuru.Api v1"));
             }
@@ -82,7 +81,6 @@ namespace domesticOrganizationGuru.Api
             app.UseRouting();
 
             app.UseCors(PolicyName);
-
 
             app.UseAuthorization();
 
