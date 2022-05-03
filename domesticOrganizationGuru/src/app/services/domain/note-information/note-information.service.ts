@@ -1,8 +1,10 @@
 import { NotePointsState } from './../../../state/states/notes/notes.inteface';
-import { Injectable, enableProdMode } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { getExpirationDateSelector, getMinutesTillExpireSelector } from 'src/app/state/states/settings/settings.selector';
+import { getExpirationDateSelector, getNoteNameSelector } from 'src/app/state/states/settings/settings.selector';
+import { Router } from '@angular/router';
+import { OrganizerApiService } from '../../api/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +17,11 @@ export class NoteInformationService {
   private expiriationTimeSecondsSpan = new BehaviorSubject<number>(this.expiriationTimeMinutes);
   private expirationDateFormed = new BehaviorSubject<string>(this.expirationDate);
 
-
-  constructor(private store: Store<NotePointsState>) {
+  constructor(
+    private store: Store<NotePointsState>,
+    public router: Router,
+    private organizerApiService: OrganizerApiService,
+    ) {
     let intervalId = setInterval(() => {
       let timeSpan = 0;
       let minutes = 0
@@ -29,6 +34,15 @@ export class NoteInformationService {
           let difference = end - start;
           minutes = Math.floor(difference / 60000);
           seconds = Math.floor(difference / 1000 % 60);
+          if(minutes === 0 && seconds === 0){
+            this.store.select(getNoteNameSelector)
+              .subscribe(
+                noteName => {
+                  if(noteName != undefined)
+                    this.organizerApiService.confirmNoteDeletion(noteName);
+                })
+            this.router.navigate(['']);
+          }
           this.expiriationTimeMinutes = minutes;
           this.expiriationTimeMinutesSpan.next(minutes);
           this.expiriationTimeSeconds = seconds;

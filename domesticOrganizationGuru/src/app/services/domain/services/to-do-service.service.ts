@@ -40,24 +40,6 @@ export class ToDoService {
       return this.todoList;
     }
 
-    // public getExpirationTime = () => {
-    //   this.store.select(getMinutesTillExpireSelector)
-    //     .subscribe(minutes => {
-    //       if(minutes){
-    //         this.expiriationTime = minutes!;
-    //         this.expiriationTimeSpan.next(this.expiriationTime);
-    //       }
-    //     })
-    //   return this.expiriationTimeSpan;
-    // }
-
-    // public getExpirationDate = () => {
-    //   let expirationDate = new Date(Date.now() + this.expiriationTimeSpan.value! * 60000);
-    //   this.expirationDate = `${expirationDate.toLocaleDateString()} ${expirationDate.toLocaleTimeString()}`;
-    //   this.expirationDateFormed.next(this.expirationDate);
-    //   return this.expirationDateFormed;
-    // }
-
     public addItem = (newItem: TodoItem) =>
       this.todos.unshift(newItem) && this.todoList.next(this.todos);
 

@@ -1,4 +1,4 @@
-import { CreateNoteDto, NoteSettingsDto, NotesSessionDto, UpdateNoteExpiriationTimeDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
+import { CreateNoteDto, DeleteNoteDto, NoteSettingsDto, NotesSessionDto, UpdateNoteExpiriationTimeDto, UpdateNoteRequestDto } from './service-proxy/service-proxy';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -66,5 +66,9 @@ export class OrganizerApiService {
       })
     }
     return this.http.post<NoteSettingsDto>(`${this.baseUrl}/api/Organizer/CreateNotesPack`, noteDto, options);
+  }
+
+  confirmNoteDeletion(noteName: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/api/deleteNote/${noteName}`);
   }
 }
