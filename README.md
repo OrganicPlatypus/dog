@@ -39,7 +39,7 @@ Project was created with:
   * [fluentValidation](https://docs.fluentvalidation.net/en/latest/aspnet.html)
   * [serilog](https://serilog.net/)
   * [xunit](https://xunit.net/)
-  * [mock]
+  * [mock](https://www.nuget.org/packages/Moq/)
   * [nswag](https://github.com/RicoSuter/NSwag)
 
 [Redis](https://redis.io/) was chosen as a database provider for this project due to following reasons:
