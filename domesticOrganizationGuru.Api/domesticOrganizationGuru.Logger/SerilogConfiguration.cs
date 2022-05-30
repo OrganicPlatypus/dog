@@ -19,11 +19,12 @@ namespace domesticOrganizationGuru.Logger
             var formatter = new ExpressionTemplate(
                     "[{@t:HH:mm:ss} {@l:u3} " +
                     "{Substring(SourceContext, LastIndexOf(SourceContext, '.') + 1)}] {@m}\n{@x}");
+
             Log.Logger = _loggerConfiguration
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .MinimumLevel.Override("System", LogEventLevel.Information)
-                .WriteTo.File(formatter, "dog.log_.log", rollingInterval: RollingInterval.Day)
+                .WriteTo.File(formatter, "C://log//dog.log_.log", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
         }
         public static ILoggingBuilder AddCustomLogger(ILoggingBuilder loggingBuilder)

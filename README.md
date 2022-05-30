@@ -5,23 +5,15 @@ Domestic Organization Guru
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
+* [What I would have done differently](#WhatWouldHaveBeenDifferentNow )
 * [Setup](#setup)
 
 ## General info against requirements
-Important disclaimer: Certainly in production life-cycle I would have arrange a meeting, gather more pieces of information, probably conduct event storming session, however as this code serves only demonstrative purposes I made very autonomic decisions.
-
 This project meant to serve following requirements:
   * allow notes sharing
   * lifetime of a note might be defined
   * access using paraphrase
-
-d.o.g. meets the requirements above by implementing them as follows:
-  * notes are in the form of list
-  * list is shared among any participant having access to noting space
-  * one can join the noting session both from the landing page or by a link provided by anyone within existing noting session
-  * any note lifetime at first is a default value
-  * the lifetime can be changed while noting in in the dedicated settings window
-  * notes access names are stored hashed in database.
+  * no accounts required
 
 ## Technologies
 Project was created with:
@@ -49,24 +41,39 @@ Project was created with:
 
 
 ## Setup
-##### Database
-In docker container
-```
-docker run --name dog_redisDB -d -p 6379:6379 redis redis-server
-```
 
 ##### Frontend
 To run this project, install it locally using npm:
 ```
-$ cd.. domesticOrganizationGuru
+$ cd domesticOrganizationGuru
 $ npm install
 $ npm serve -o
 ```
 
-##### Backend
-TODO!
-At this moment run the .sln and fire up DomesticOrganizationGuru.Api project.
+##### Database
+To fire redisDb, if you would like to setup .net dev enviornment separately, you'll have to run redis docker first as connectionMultiplixer will throw
+```
+docker run --name dog_redisDB -d -p 6379:6379 redis redis-server
+```
 
+##### Backend
+Warning: to run project Database image has to be running
+```
+$ cd cd .\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\
+$ dotnet run .\DomesticOrganizationGuru.Api.csproj
+```
+
+
+
+## What I would have done differently
+* Introduce CQRS to decouple logic in a batter way, shift validation into behavior pipeline.
+* Reconsider Redis as a database, or at least pick better datatype representation of notes
+* Dockerize the application properly not by parts
+* Change notes type in frontend from BehaviorSubject to a hashset of a kind
+* Change messages into not suggesting any information on an already existing data
+* Have hardcoded values placed into appconfigs, consts, resxes
+* I would have frontend part cleaned from any unused leftovers and tested properly
+* Focus either on nswag or on direct implementation of api endpoints
 ## Acknowledgments
 
 My inspirations:

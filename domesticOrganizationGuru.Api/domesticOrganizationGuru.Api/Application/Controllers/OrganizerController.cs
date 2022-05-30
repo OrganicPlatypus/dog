@@ -93,5 +93,14 @@ namespace DomesticOrganizationGuru.Api.Application.Controllers
 
             return Ok(isRequired);
         }
+
+
+        [HttpDelete]
+        [Route("/api/deleteNote/{noteName}")]
+        public async Task<IActionResult> DeleteNotesPack([FromQuery] string noteId)
+        {
+            await _notesService.DeleteNoteAsync(noteId);
+            return Ok();
+        }
     }
 }

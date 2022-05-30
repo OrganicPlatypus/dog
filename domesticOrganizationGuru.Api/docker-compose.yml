@@ -10,8 +10,8 @@ services:
       - "44365:44365"
       - "8000:80"
     volumes:
-      - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets
-      - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/
+      - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets/
+      - ${USERPROFILE}\.aspnet\https\:/root/.aspnet/https/
     depends_on:
       - "redis_db"
     environment:

@@ -118,6 +118,11 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
             return rawNotePack.Password is not (null);
         }
 
+        public Task DeleteNoteAsync(string deleteNoteDto)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<NotesPack> GetNote(string noteName)
         {
             NotesPack rawNotePack = await _notesRepository.GetNote(noteName);
@@ -129,6 +134,5 @@ namespace DomesticOrganizationGuru.Api.Application.Services.Implementation
 
             return rawNotePack;
         }
-
     }
 }
