@@ -44,6 +44,27 @@ Project was created with:
 
 ## Setup
 
+### When run from main branch
+
+#### Frontend
+To run frontend app, install it locally using npm:
+```
+$ cd domesticOrganizationGuru
+$ npm install
+$ npm serve -o
+```
+
+#### Backend
+
+Run docker compose
+```
+$ cd .\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\
+$ docker-compose up --build
+```
+
+
+### When run from develop branch
+
 #### Frontend
 To run frontend app, install it locally using npm:
 ```
@@ -61,7 +82,7 @@ docker run --name dog_redisDB -d -p 6379:6379 redis redis-server
 #### Backend
 ##### Warning: to run project Database image has to be running
 ```
-$ cd cd .\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\
+$ cd .\dog\domesticOrganizationGuru.Api\domesticOrganizationGuru.Api\
 $ dotnet run .\DomesticOrganizationGuru.Api.csproj
 ```
 
