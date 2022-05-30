@@ -8,6 +8,7 @@ Domestic Organization Guru
 * [Technologies](#technologies)
 * [IfRefreshed](#IfRefreshed)
 * [Setup](#setup)
+* [Acknowledgments](#Acknowledgments)
 
 ## General info and intention
 This project meant to serve following requirements:
